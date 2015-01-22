@@ -1,7 +1,1124 @@
 <!DOCTYPE html>
-<html>
+<meta charset="utf-8">
+<style>
+
+/* CSS goes here. */
+/*@import url(map.Style.css);*/
+
+body {
+font-family: proxima-nova, sans-serif;
+ color: #252525;
+}
+
+.background {
+  fill: none;
+  pointer-events: all;
+}
+
+.feature {
+  fill: #f7f7f7;
+  cursor: pointer;
+}
+
+.feature.active {
+  fill: white;
+}
+
+.mesh {
+  fill: none;
+  stroke: #fff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 8px;
+  background: black;
+  color: white;
+  border-radius: 6px;
+}
+
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 12px;
+  width: 100%;
+  line-height: 1;
+  color: black;
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+.legend {
+    font-size: 16px;         
+    font-weight: bold;         
+    text-anchor: start;
+    }
+
+.sublegend {
+    font-size: 14px;         
+    font-weight: bold;         
+    text-anchor: start;
+    }
+
+/*.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+/*.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+} */
+/*.places.rr1{ fill: #fee5d9; }
+.places.rr2{ fill: #fcae91; }
+.places.rr3{ fill: #fb6a4a; }
+.places.rr4{ fill: #de2d26; }
+.places.rr5{ fill: #a50f15; }
+
+.places.nr1{ fill: #fee5d9; }
+.places.nr2{ fill: #fcae91; }
+.places.nr3{ fill: #fb6a4a; }
+.places.nr4{ fill: #de2d26; }
+.places.nr5{ fill: #a50f15; }
+*/
+/*text{
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  pointer-events: none;
+}*/
+
+</style>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
-</body>
-</html>
+<script src="d3.v3.min.js"></script>
+<script src="topojson.v1.min.js"></script>
+<script src="d3.tip.v0.6.3.js"></script>
+<script>
+
+/* JavaScript goes here. */
+
+var margin = {top: 20, right: 30, bottom: 30, left: 20};
+
+var width = 1300 - margin.left - margin.right,
+	  height = 750 - margin.top - margin.bottom,
+    rr = ["#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f"], //rate 1 to rate 5
+    nb = ["#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061"], // same
+    active = d3.select(null);
+
+//var rcolScale = d3.scale.quantize()
+//                 .domain([0, 5]) 
+ //                .range(foodreds);
+
+//var bcolScale = d3.scale.quantize()
+//                .domain([0, 5]) 
+//                .range(nightblues);
+
+var projection = d3.geo.mercator()
+    .center([-73.97, 40.79])
+    .scale(160000)
+    .translate([width / 2, height / 2]);
+// Compute the bounds of a feature of interest, then derive scale & translate.
+
+// Update the projection to use computed scale & translate.
+var zoom = d3.behavior.zoom()
+    .translate([0, 0])
+    .scale(1)
+    .scaleExtent([1, 20])
+    .on("zoom", zoomed);
+
+var path = d3.geo.path()
+    .pointRadius([0.6])
+    .projection(projection);
+
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    if (d.properties.SUBCATEGOR === null ){ 
+      return d.properties.NAME ;
+    }
+    else {
+      return d.properties.NAME + "<br>" +  d.properties.SUBCATEGOR ;
+    }
+
+  //return d.properties.NAME;
+ /*     if (d.properties.PHONE === null && d.properties.SUBCATEGOR != null ){
+     return d.properties.NAME + "<br>" +  d.properties.SUBCATEGOR ;}
+                if (d.properties.PHONE != null && d.properties.SUBCATEGOR === null ){
+     return d.properties.NAME + "<br>" + d.properties.PHONE;}
+           if (d.properties.PHONE != null && d.properties.SUBCATEGOR != null ){
+     return d.properties.NAME + "<br>" +  d.properties.SUBCATEGOR + "<br>" + d.properties.PHONE;}*/
+  });
+
+var svg = d3.select("body").append("svg")
+  .attr("width", width)
+  .attr("height", height)
+  .on("click", stopped, true);
+
+svg.append("rect")
+  .attr("class", "background")
+  .attr("width", width)
+  .attr("height", height)
+  .on("click", reset);
+
+svg.call(tip);
+
+var g = svg.append("g")
+ //           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg
+    .call(zoom)
+    .call(zoom.event);
+
+d3.json("manhattan.json", function(error, manhattan) {
+  g.selectAll("path")
+    .data(topojson.feature(manhattan, manhattan.objects.boundary).features)
+    .enter().append("path")
+    .attr("d", path)
+    .attr("class", "feature")
+    .style("stroke", "#ccc")
+    .style("stroke-width", 0.3)
+    .on("click", clicked);
+
+ /* g.append("path")
+    .datum(topojson.mesh(manhattan, manhattan.objects.boundary, function(a, b){return a !== b;}))
+    .attr("class", "mesh")
+    .attr("d", path);*/
+
+  g.selectAll(".nightone")
+    .data(topojson.feature(manhattan, manhattan.objects.nightone).features)
+    .enter().append("path")
+    .style("fill",  nb[0])
+    .attr("id", "nightone")
+    .on("mouseover", tip.show)
+    .on("mouseout", tip.hide)
+    .attr("d", path);
+
+
+  g.selectAll(".nighttwo")
+    .data(topojson.feature(manhattan, manhattan.objects.nighttwo).features)
+    .enter().append("path")
+    .style("fill",  nb[1])
+    .attr("id", "nighttwo")
+    .on("mouseover", tip.show)
+    .on("mouseout", tip.hide)
+    .attr("d", path);
+
+  g.selectAll(".nightthree")
+    .data(topojson.feature(manhattan, manhattan.objects.nightthree).features)
+    .enter().append("path")
+    .style("fill",  nb[2])
+    .attr("id", "nightthree")
+    .on("mouseover", tip.show)
+    .on("mouseout", tip.hide)
+    .attr("d", path);
+
+  g.selectAll(".nightfour")
+    .data(topojson.feature(manhattan, manhattan.objects.nightfour).features)
+    .enter().append("path")
+    .style("fill",  nb[3])
+    .attr("id", "nightfour")
+    .on("mouseover", tip.show)
+    .on("mouseout", tip.hide)
+    .attr("d", path);
+
+  g.selectAll(".nightfive")
+    .data(topojson.feature(manhattan, manhattan.objects.nightfive).features)
+    .enter().append("path")
+    .style("fill",  nb[4])
+    .attr("id", "nightfive")
+    .on("mouseover", tip.show)
+    .on("mouseout", tip.hide)
+    .attr("d", path);
+
+  g.selectAll(".restaurantone")
+    .data(topojson.feature(manhattan, manhattan.objects.restaurantone).features)
+    .enter().append("path")
+    .style("fill",  rr[0])
+    .attr("id", "restaurantone")
+    .on("mouseover", tip.show)
+    .on("mouseout", tip.hide)
+    .attr("d", path);
+
+  g.selectAll(".restauranttwo")
+    .data(topojson.feature(manhattan, manhattan.objects.restauranttwo).features)
+    .enter().append("path")
+    .style("fill",  rr[1])
+    .attr("id", "restauranttwo")
+    .on("mouseover", tip.show)
+    .on("mouseout", tip.hide)
+    .attr("d", path);
+
+  g.selectAll(".restaurantthree")
+    .data(topojson.feature(manhattan, manhattan.objects.restaurantthree).features)
+    .enter().append("path")
+    .style("fill",  rr[2])
+    .attr("id", "restaurantthree")
+    .on("mouseover", tip.show)
+    .on("mouseout", tip.hide)
+    .attr("d", path);
+
+  g.selectAll(".restaurantfour")
+    .data(topojson.feature(manhattan, manhattan.objects.restaurantfour).features)
+    .enter().append("path")
+    .style("fill",  rr[3])
+    .attr("id", "restaurantfour")
+    .on("mouseover", tip.show)
+    .on("mouseout", tip.hide)
+    .attr("d", path);
+
+
+  
+
+ /*d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+ //   .attr("id", "restaurantfive")
+    .append("path")
+    .datum(topojson.feature(manhattan, manhattan.objects.restaurantfive))
+  //  .data(topojson.feature(manhattan, manhattan.objects.restaurantfive).features)
+    .on("mouseover", tip.show)
+    .on("mouseout", tip.hide)
+    .attr("d", path);*/
+
+  g.selectAll(".restaurantfive")
+   .data(topojson.feature(manhattan, manhattan.objects.restaurantfive).features)
+   .enter().append("path")
+    .style("fill",  rr[4])
+    .attr("id", "restaurantfive")
+    .attr("calss", "on")
+    .on("mouseover", tip.show)
+    .on("mouseout", tip.hide)
+    .attr("d", path);  
+
+/*  navigator.geolocation.getCurrentPosition(function(pos){
+    console.log(pos);
+    var coords = [pos.coords.longitude, pos.coords.latitude]
+    g.append("circle")
+    .datum(coords)
+    .attr({
+      cx: function(d) { return projection(d)[0] },
+      cy: function(d) { return projection(d)[1] },
+      r: 4,
+    })
+    .attr("id", "Currentlocation")
+    .classed("point", true)
+    .style("fill", "none")
+    .style({"stroke":"black","stroke-width":2 })
+  }); */
+
+/* g.append("svg") //other svgs
+    .attr("width", width)
+    .attr("height", height)
+    //.attr("id", "restaurantfive")
+    .append("path")
+    .attr("class", "reataurantlayers")
+    .style("fill", rr[4])
+    .datum(topojson.feature(manhattan, manhattan.objects.restaurantfive))
+  //  .data(topojson.feature(manhattan, manhattan.objects.restaurantfive).features)
+   // .on("mouseover", tip.show)
+  //  .on("mouseout", tip.hide)
+    .attr("d", path);
+
+ /*g.append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    //.attr("id", "restaurantfive")
+    .append("path")
+    .attr("class", "reataurantlayers")
+    .attr("id", "r1")
+    .style("fill", rr[3])
+    .datum(topojson.feature(manhattan, manhattan.objects.restaurantfour))
+  //  .data(topojson.feature(manhattan, manhattan.objects.restaurantfive).features)
+   // .on("mouseover", tip.show)
+  //  .on("mouseout", tip.hide)
+    .attr("d", path);*/
+/*  g.append("text")
+    .attr("x", 100)
+    .attr("y", 100)
+    .attr("class", "legend")
+    .style("fill", "#a50026")
+    .on("click", function(d){
+                 var active = restaurantone.active ? false : true,
+                 newopacity = active ? 0 : 1;
+                 d3.select("#restaurantone").style("opacity", newopacity);
+                 d3.select("#restauranttwo").style("opacity", newopacity);
+                 d3.select("#restaurantthree").style("opacity", newopacity);
+                 d3.select("#restaurantfour").style("opacity", newopacity);
+                 d3.select("#restaurantfive").style("opacity", newopacity);                 
+                 restaurantone.active = active;
+
+    })
+    .text("Restaurant");
+
+//    .attr("class", function(d) { return  "places rr5"} );
+
+ /* g.selectAll(".place")
+    .data(topojson.feature(manhattan, manhattan.objects.places).features)
+    .enter().append("path")
+    .text(function(d){return d.properties.NAME;})
+    .on("mouseover", function(d){
+                    d3.select(this).select("text").style("visibility", "visible")
+                    })
+    .on("mouseout", function(d){
+                    d3.select(this).select("text").style("visibility", "hidden")
+                    })
+    .attr("d", path); */
+//function(d) { return "places1";}
+  //g.selectAll("path")
+   // .data(topojson.feature(manhattan, manhattan.objects.places).features)
+   // .enter().append("path")
+    //.style("stroke", "white");
+ //   .attr("class", function(d) { return "places " + Math.round(d.properties.rating); })
+  //  .attr("d", path);
+});
+
+  svg.append("text")
+    .attr("x", 130)
+    .attr("y", 30)
+    .attr("class", "legend")
+    .style("fill", "black")
+    .on("click", function(){
+//                if ( d3.select("#restaurantfive").attr("visibility") === null ){
+                   d3.selectAll("#restaurantfive").attr("visibility", "hidden"); 
+                   d3.selectAll("#restaurantfour").attr("visibility", "hidden"); 
+                   d3.selectAll("#restaurantthree").attr("visibility", "hidden"); 
+                   d3.selectAll("#restauranttwo").attr("visibility", "hidden"); 
+                   d3.selectAll("#restaurantone").attr("visibility", "hidden");  
+                   d3.selectAll("#nightfive").attr("visibility", "hidden");  
+                   d3.selectAll("#nightfour").attr("visibility", "hidden"); 
+                   d3.selectAll("#nightthree").attr("visibility", "hidden"); 
+                   d3.selectAll("#nighttwo").attr("visibility", "hidden"); 
+                   d3.selectAll("#nightone").attr("visibility", "hidden"); 
+                   d3.select("#rr4").transition().style("fill", "none");
+                   d3.select("#rr5").transition().style("fill", "none");
+                   d3.select("#rr3").transition().style("fill", "none");
+                   d3.select("#rr2").transition().style("fill", "none");
+                   d3.select("#rr1").transition().style("fill", "none");
+                   d3.select("#nb5").transition().style("fill", "none");
+                   d3.select("#nb4").transition().style("fill", "none");
+                   d3.select("#nb3").transition().style("fill", "none");
+                   d3.select("#nb2").transition().style("fill", "none");
+                   d3.select("#nb1").transition().style("fill", "none");
+                     
+                   d3.selectAll("#restaurantfive")
+                                .transition()
+                                .delay(1000)
+                                .attr("visibility", "visible")
+                                .transition()
+                                .delay(3000)
+                                .attr("visibility", "hidden");
+
+                   d3.selectAll("#restaurantfour")
+                                .transition()
+                                .delay(4000)
+                                .attr("visibility", "visible")
+                                .transition()
+                                .delay(6000)
+                                .attr("visibility", "hidden");
+
+                   d3.selectAll("#restaurantthree")
+                                .transition()
+                                .delay(7000)
+                                .attr("visibility", "visible")
+                                .transition()
+                                .delay(9000)
+                                .attr("visibility", "hidden");
+
+                   d3.selectAll("#restauranttwo")
+                                .transition()
+                                .delay(10000)
+                                .attr("visibility", "visible")
+                                .transition()
+                                .delay(12000)
+                                .attr("visibility", "hidden");
+
+                   d3.selectAll("#restaurantone")
+                                .transition()
+                                .delay(13000)
+                                .attr("visibility", "visible")
+                                .transition()
+                                .delay(15000)
+                                .attr("visibility", "hidden");
+
+
+       //            d3.selectAll("#restaurantfour")
+          //                     .transition()
+         //                       .delay(1000)
+          //                      .attr("visibility", "visible");
+
+ /*                 d3.selectAll("#restaurantthree")
+                                .transition()
+                                .delay(function(d, i) { return i * 0.3;})
+                         //       .duration(100)
+                                .attr("visibility", "visible")   ;
+                   d3.selectAll("#restauranttwo")
+                                .transition()
+                                .delay(function(d, i) { return i * 0.3;})
+                         //       .duration(100)
+                                .attr("visibility", "visible");
+                   d3.selectAll("#restaurantone")
+                                .transition()
+                                .delay(function(d, i) { return i * 0.3;})
+                         //       .duration(100)
+                                .attr("visibility", "visible");                 
+//                  return;
+ /*               }
+                if  ( d3.select("#restaurantfive").attr("visibility") === "hidden" ){
+                   d3.selectAll("#restaurantfive").attr("visibility", "visible");  
+                   d3.selectAll("#restaurantfour").attr("visibility", "visible");  
+                   d3.selectAll("#restaurantthree").attr("visibility", "visible");  
+                   d3.selectAll("#restauranttwo").attr("visibility", "visible");  
+                   d3.selectAll("#restaurantone").attr("visibility", "visible");  
+                   //break;          
+               }*/
+   /*            else {
+
+                d3.selectAll("#nightfive").attr("visibility", "hidden");  
+                d3.selectAll("#nightfour").attr("visibility", "hidden"); 
+                d3.selectAll("#nightthree").attr("visibility", "hidden"); 
+                d3.selectAll("#nighttwo").attr("visibility", "hidden"); 
+                d3.selectAll("#nightone").attr("visibility", "hidden"); 
+                d3.selectAll("#restaurantfive").attr("visibility", "hidden");  
+                d3.selectAll("#restaurantfour").attr("visibility", "hidden");  
+                d3.selectAll("#restaurantthree").attr("visibility", "hidden");  
+                d3.selectAll("#restauranttwo").attr("visibility", "hidden");  
+                d3.selectAll("#restaurantone").attr("visibility", "hidden");  
+               } */
+
+   //                  d3.selectAll("#restaurantfour").attr("visibility", "visible"); 
+    //                 d3.selectAll("#restaurantthree").attr("visibility", "visible"); 
+    //                 d3.selectAll("#restauranttwo").attr("visibility", "visible"); 
+    //                 d3.selectAll("#restaurantone").attr("visibility", "visible");  
+
+    })
+    .text("Restaurant"); 
+
+
+svg.append("circle")
+  .attr("class", "background")
+  .attr("id", "rr5")
+  .attr("cx", 198)
+  .attr("cy", 45)       
+  .attr("r", 6)
+      .on("click", function(){
+                if ( d3.select("#restaurantfive").attr("visibility") === null ){
+                   d3.selectAll("#restaurantfive")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3;})
+                      .attr("visibility", "hidden"); 
+
+                    d3.select("#rr5").transition().style("fill", "none");
+                      return;
+                }
+                if  ( d3.select("#restaurantfive").attr("visibility") === "hidden" ){
+                   d3.selectAll("#restaurantfive")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3 ;})
+                      .attr("visibility", "visible");    
+                      d3.select("#rr5").transition().style("fill", rr[4]);      
+               }
+               else {
+                d3.selectAll("#restaurantfive")
+                .transition()
+                .delay(function(d, i) { return i  *0.3;})
+                .attr("visibility", "hidden");  
+                d3.select("#rr5").transition().style("fill", "none");
+               }
+    })
+  .style({"fill": rr[4], "stroke": "black", "stroke-width": 1});
+
+svg.append("circle")
+  .attr("class", "background")
+  .attr("id", "rr4")
+  .attr("cx", 198)
+  .attr("cy", 65)
+  .attr("r", 6)
+      .on("click", function(){
+                if ( d3.select("#restaurantfour").attr("visibility") === null ){
+                   d3.selectAll("#restaurantfour")
+                      .transition()
+                      .delay(function(d, i) { return i  *0.2;})
+                      .attr("visibility", "hidden"); 
+
+                    d3.select("#rr4").transition().style("fill", "none");
+                      return;
+                }
+                if  ( d3.select("#restaurantfour").attr("visibility") === "hidden" ){
+                   d3.selectAll("#restaurantfour")
+                      .transition()
+                      .delay(function(d, i) { return i *0.2;})
+                      .attr("visibility", "visible");    
+                      d3.select("#rr4").transition().style("fill", rr[3]);      
+               }
+               else {
+                d3.selectAll("#restaurantfour")
+                .transition()
+                .delay(function(d, i) { return i  *0.2;})
+                .attr("visibility", "hidden");  
+                d3.select("#rr4").transition().style("fill", "none");
+               }
+    })
+  .style({"fill": rr[3], "stroke": "black", "stroke-width": 1});
+
+
+
+svg.append("circle")
+  .attr("class", "background")
+  .attr("id", "rr3")
+  .attr("cx", 198)
+  .attr("cy", 85)
+  .attr("r", 6)
+      .on("click", function(){
+                if ( d3.select("#restaurantthree").attr("visibility") === null ){
+                   d3.selectAll("#restaurantthree")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3;})
+                      .attr("visibility", "hidden"); 
+
+                    d3.select("#rr3").transition().style("fill", "none");
+                      return;
+                }
+                if  ( d3.select("#restaurantthree").attr("visibility") === "hidden" ){
+                   d3.selectAll("#restaurantthree")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3 ;})
+                      .attr("visibility", "visible");    
+                      d3.select("#rr3").transition().style("fill", rr[2]);      
+               }
+               else {
+                d3.selectAll("#restaurantthree")
+                .transition()
+                .delay(function(d, i) { return i  *0.3;})
+                .attr("visibility", "hidden");  
+                d3.select("#rr3").transition().style("fill", "none");
+               }
+    })
+  .style({"fill": rr[2], "stroke": "black", "stroke-width": 1});
+
+
+
+svg.append("circle")
+  .attr("class", "background")
+  .attr("id", "rr2")
+  .attr("cx", 198)
+  .attr("cy", 105)
+  .attr("r", 6)
+      .on("click", function(){
+                if ( d3.select("#restauranttwo").attr("visibility") === null ){
+                   d3.selectAll("#restauranttwo")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3;})
+                      .attr("visibility", "hidden"); 
+
+                    d3.select("#rr2").transition().style("fill", "none");
+                      return;
+                }
+                if  ( d3.select("#restauranttwo").attr("visibility") === "hidden" ){
+                   d3.selectAll("#restauranttwo")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3 ;})
+                      .attr("visibility", "visible");    
+                      d3.select("#rr2").transition().style("fill", rr[1]);      
+               }
+               else {
+                d3.selectAll("#restauranttwo")
+                .transition()
+                .delay(function(d, i) { return i  *0.3;})
+                .attr("visibility", "hidden");  
+                d3.select("#rr2").transition().style("fill", "none");
+               }
+    })
+  .style({"fill": rr[1], "stroke": "black", "stroke-width": 1});
+
+
+
+
+svg.append("circle")
+  .attr("class", "background")
+  .attr("id", "rr1")
+  .attr("cx", 198)
+  .attr("cy", 125)
+  .attr("r", 6)
+      .on("click", function(){
+                if ( d3.select("#restaurantone").attr("visibility") === null ){
+                   d3.selectAll("#restaurantone")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3;})
+                      .attr("visibility", "hidden"); 
+
+                    d3.select("#rr1").transition().style("fill", "none");
+                      return;
+                }
+                if  ( d3.select("#restaurantone").attr("visibility") === "hidden" ){
+                   d3.selectAll("#restaurantone")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3 ;})
+                      .attr("visibility", "visible");    
+                      d3.select("#rr1").transition().style("fill", rr[0]);      
+               }
+               else {
+                d3.selectAll("#restaurantone")
+                .transition()
+                .delay(function(d, i) { return i  *0.3;})
+                .attr("visibility", "hidden");  
+                d3.select("#rr1").transition().style("fill", "none");
+               }
+    })
+  .style({"fill": rr[0], "stroke": "black", "stroke-width": 1});
+
+
+
+
+
+
+svg.append("text")
+    .attr("x", 170)
+    .attr("y", 50)
+    .attr("class", "sublegend")
+    .style("fill", "black")
+    .text("5"); 
+
+svg.append("text")
+    .attr("x", 170)
+    .attr("y", 70)
+    .attr("class", "sublegend")
+    .style("fill", "black")
+    .text("4"); 
+
+svg.append("text")
+    .attr("x", 170)
+    .attr("y", 90)
+    .attr("class", "sublegend")
+    .style("fill", "black")
+    .text("3");
+
+svg.append("text")
+    .attr("x", 170)
+    .attr("y", 110)
+    .attr("class", "sublegend")
+    .style("fill", "black")
+    .text("2"); 
+
+
+svg.append("text")
+    .attr("x", 170)
+    .attr("y", 130)
+    .attr("class", "sublegend")
+    .style("fill", "black")
+    .text("1"); 
+
+
+
+  svg.append("text")
+    .attr("x", 148)
+    .attr("y", 170)
+    .attr("class", "legend")
+    .style("fill", "black")
+    .on("click", function(){
+                   d3.selectAll("#restaurantfive").attr("visibility", "hidden"); 
+                   d3.selectAll("#restaurantfour").attr("visibility", "hidden"); 
+                   d3.selectAll("#restaurantthree").attr("visibility", "hidden"); 
+                   d3.selectAll("#restauranttwo").attr("visibility", "hidden"); 
+                   d3.selectAll("#restaurantone").attr("visibility", "hidden");  
+                   d3.selectAll("#nightfive").attr("visibility", "hidden");  
+                   d3.selectAll("#nightfour").attr("visibility", "hidden"); 
+                   d3.selectAll("#nightthree").attr("visibility", "hidden"); 
+                   d3.selectAll("#nighttwo").attr("visibility", "hidden"); 
+                   d3.selectAll("#nightone").attr("visibility", "hidden"); 
+                   d3.select("#rr4").transition().style("fill", "none");
+                   d3.select("#rr5").transition().style("fill", "none");
+                   d3.select("#rr3").transition().style("fill", "none");
+                   d3.select("#rr2").transition().style("fill", "none");
+                   d3.select("#rr1").transition().style("fill", "none");
+                   d3.select("#nb5").transition().style("fill", "none");
+                   d3.select("#nb4").transition().style("fill", "none");
+                   d3.select("#nb3").transition().style("fill", "none");
+                   d3.select("#nb2").transition().style("fill", "none");
+                   d3.select("#nb1").transition().style("fill", "none");
+/*                if ( d3.select("#nightfive").attr("visibility") === null ){
+                   d3.selectAll("#nightfive").attr("visibility", "hidden");  
+                   d3.selectAll("#nightfour").attr("visibility", "hidden"); 
+                   d3.selectAll("#nightthree").attr("visibility", "hidden"); 
+                   d3.selectAll("#nighttwo").attr("visibility", "hidden"); 
+                   d3.selectAll("#nightone").attr("visibility", "hidden"); 
+                   return;
+                }
+                if  ( d3.select("#nightfive").attr("visibility") === "hidden" ){
+                   d3.selectAll("#nightfour").attr("visibility", "visible");   
+                   d3.selectAll("#nightthree").attr("visibility", "visible");  
+                   d3.selectAll("#nightfive").attr("visibility", "visible");  
+                   d3.selectAll("#nighttwo").attr("visibility", "visible");  
+                   d3.selectAll("#nightone").attr("visibility", "visible");   
+                   //break;          
+               }
+               else {
+                d3.selectAll("#nightfive").attr("visibility", "hidden");  
+                d3.selectAll("#nightfour").attr("visibility", "hidden"); 
+                d3.selectAll("#nightthree").attr("visibility", "hidden"); 
+                d3.selectAll("#nighttwo").attr("visibility", "hidden"); 
+                d3.selectAll("#nightone").attr("visibility", "hidden"); 
+               } */
+                  d3.selectAll("#nightfive")
+                                .transition()
+                                .delay(1000)
+                                .attr("visibility", "visible")
+                                .transition()
+                                .delay(3000)
+                                .attr("visibility", "hidden");
+
+                   d3.selectAll("#nightfour")
+                                .transition()
+                                .delay(4000)
+                                .attr("visibility", "visible")
+                                .transition()
+                                .delay(6000)
+                                .attr("visibility", "hidden");
+
+                   d3.selectAll("#nightthree")
+                                .transition()
+                                .delay(7000)
+                                .attr("visibility", "visible")
+                                .transition()
+                                .delay(9000)
+                                .attr("visibility", "hidden");
+
+                   d3.selectAll("#nighttwo")
+                                .transition()
+                                .delay(10000)
+                                .attr("visibility", "visible")
+                                .transition()
+                                .delay(12000)
+                                .attr("visibility", "hidden");
+
+                   d3.selectAll("#nightone")
+                                .transition()
+                                .delay(13000)
+                                .attr("visibility", "visible")
+                                .transition()
+                                .delay(15000)
+                                .attr("visibility", "hidden");                                                                 
+    })
+    .text("Nightlife"); 
+
+
+svg.append("circle")
+  .attr("class", "background")
+  .attr("id", "nb5")
+  .attr("cx", 198)
+  .attr("cy", 185)
+  .attr("r", 6)
+      .on("click", function(){
+                if ( d3.select("#nightfive").attr("visibility") === null ){
+                   d3.selectAll("#nightfive")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3;})
+                      .attr("visibility", "hidden"); 
+
+                    d3.select("#nb5").transition().style("fill", "none");
+                      return;
+                }
+                if  ( d3.select("#nightfive").attr("visibility") === "hidden" ){
+                   d3.selectAll("#nightfive")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3 ;})
+                      .attr("visibility", "visible");    
+                      d3.select("#nb5").transition().style("fill", nb[4]);      
+               }
+               else {
+                d3.selectAll("#nightfive")
+                .transition()
+                .delay(function(d, i) { return i  *0.3;})
+                .attr("visibility", "hidden");  
+                d3.select("#nb5").transition().style("fill", "none");
+               }
+    })
+  .style({"fill": nb[4], "stroke": "black", "stroke-width": 1});
+
+
+
+svg.append("circle")
+  .attr("class", "background")
+  .attr("id", "nb4")
+  .attr("cx", 198)
+  .attr("cy", 205)
+  .attr("r", 6)
+      .on("click", function(){
+                if ( d3.select("#nightfour").attr("visibility") === null ){
+                   d3.selectAll("#nightfour")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3;})
+                      .attr("visibility", "hidden"); 
+
+                    d3.select("#nb4").transition().style("fill", "none");
+                      return;
+                }
+                if  ( d3.select("#nightfour").attr("visibility") === "hidden" ){
+                   d3.selectAll("#nightfour")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3 ;})
+                      .attr("visibility", "visible");    
+                      d3.select("#nb4").transition().style("fill", nb[3]);      
+               }
+               else {
+                d3.selectAll("#nightfour")
+                .transition()
+                .delay(function(d, i) { return i  *0.3;})
+                .attr("visibility", "hidden");  
+                d3.select("#nb4").transition().style("fill", "none");
+               }
+    })
+  .style({"fill": nb[3], "stroke": "black", "stroke-width": 1});
+
+
+
+
+svg.append("circle")
+  .attr("class", "background")
+  .attr("id", "nb3")
+  .attr("cx", 198)
+  .attr("cy", 225)
+  .attr("r", 6)
+      .on("click", function(){
+                if ( d3.select("#nightthree").attr("visibility") === null ){
+                   d3.selectAll("#nightthree")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3;})
+                      .attr("visibility", "hidden"); 
+
+                    d3.select("#nb3").transition().style("fill", "none");
+                      return;
+                }
+                if  ( d3.select("#nightthree").attr("visibility") === "hidden" ){
+                   d3.selectAll("#nightthree")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3 ;})
+                      .attr("visibility", "visible");    
+                      d3.select("#nb3").transition().style("fill", nb[2]);      
+               }
+               else {
+                d3.selectAll("#nightthree")
+                .transition()
+                .delay(function(d, i) { return i  *0.3;})
+                .attr("visibility", "hidden");  
+                d3.select("#nb3").transition().style("fill", "none");
+               }
+    })
+  .style({"fill": nb[2], "stroke": "black", "stroke-width": 1});
+
+
+
+svg.append("circle")
+  .attr("class", "background")
+  .attr("id", "nb2")
+  .attr("cx", 198)
+  .attr("cy", 245)
+  .attr("r", 6)
+      .on("click", function(){
+                if ( d3.select("#nighttwo").attr("visibility") === null ){
+                   d3.selectAll("#nighttwo")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3;})
+                      .attr("visibility", "hidden"); 
+
+                    d3.select("#nb2").transition().style("fill", "none");
+                      return;
+                }
+                if  ( d3.select("#nighttwo").attr("visibility") === "hidden" ){
+                   d3.selectAll("#nighttwo")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3 ;})
+                      .attr("visibility", "visible");    
+                      d3.select("#nb2").transition().style("fill", nb[1]);      
+               }
+               else {
+                d3.selectAll("#nighttwo")
+                .transition()
+                .delay(function(d, i) { return i  *0.3;})
+                .attr("visibility", "hidden");  
+                d3.select("#nb2").transition().style("fill", "none");
+               }
+    })
+  .style({"fill": nb[1], "stroke": "black", "stroke-width": 1});
+
+
+svg.append("circle")
+  .attr("class", "background")
+  .attr("id", "nb1")
+  .attr("cx", 198)
+  .attr("cy", 265)
+  .attr("r", 6)
+      .on("click", function(){
+                if ( d3.select("#nightone").attr("visibility") === null ){
+                   d3.selectAll("#nightone")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3;})
+                      .attr("visibility", "hidden"); 
+
+                    d3.select("#nb1").transition().style("fill", "none");
+                      return;
+                }
+                if  ( d3.select("#nightone").attr("visibility") === "hidden" ){
+                   d3.selectAll("#nightone")
+                      .transition()
+                      .delay(function(d, i) { return i *0.3 ;})
+                      .attr("visibility", "visible");    
+                      d3.select("#nb1").transition().style("fill", nb[0]);      
+               }
+               else {
+                d3.selectAll("#nightone")
+                .transition()
+                .delay(function(d, i) { return i  *0.3;})
+                .attr("visibility", "hidden");  
+                d3.select("#nb1").transition().style("fill", "none");
+               }
+    })
+  .style({"fill": nb[0], "stroke": "black", "stroke-width": 1});
+
+
+svg.append("text")
+    .attr("x", 170)
+    .attr("y", 190)
+    .attr("class", "sublegend")
+    .text("5"); 
+
+svg.append("text")
+    .attr("x", 170)
+    .attr("y", 210)
+    .attr("class", "sublegend")
+    .text("4"); 
+
+
+svg.append("text")
+    .attr("x", 170)
+    .attr("y", 230)
+    .attr("class", "sublegend")
+    .text("3"); 
+
+
+svg.append("text")
+    .attr("x", 170)
+    .attr("y", 250)
+    .attr("class", "sublegend")
+    .text("2"); 
+
+
+svg.append("text")
+    .attr("x", 170)
+    .attr("y", 270)
+    .attr("class", "sublegend")
+    .text("1"); 
+
+svg.append("text")
+    .attr("x", 170)
+    .attr("y", 310)
+    .attr("class", "legend")
+    .style("fill", "black")
+    .on("click", function(){
+                   d3.selectAll("#restaurantfive").attr("visibility", "hidden"); 
+                   d3.selectAll("#restaurantfour").attr("visibility", "hidden"); 
+                   d3.selectAll("#restaurantthree").attr("visibility", "hidden"); 
+                   d3.selectAll("#restauranttwo").attr("visibility", "hidden"); 
+                   d3.selectAll("#restaurantone").attr("visibility", "hidden");  
+                   d3.selectAll("#nightfive").attr("visibility", "hidden");  
+                   d3.selectAll("#nightfour").attr("visibility", "hidden"); 
+                   d3.selectAll("#nightthree").attr("visibility", "hidden"); 
+                   d3.selectAll("#nighttwo").attr("visibility", "hidden"); 
+                   d3.selectAll("#nightone").attr("visibility", "hidden"); 
+                   d3.select("#rr4").transition().style("fill", "none");
+                   d3.select("#rr5").transition().style("fill", "none");
+                   d3.select("#rr3").transition().style("fill", "none");
+                   d3.select("#rr2").transition().style("fill", "none");
+                   d3.select("#rr1").transition().style("fill", "none");
+                   d3.select("#nb5").transition().style("fill", "none");
+                   d3.select("#nb4").transition().style("fill", "none");
+                   d3.select("#nb3").transition().style("fill", "none");
+                   d3.select("#nb2").transition().style("fill", "none");
+                   d3.select("#nb1").transition().style("fill", "none");
+
+
+
+    })
+    .text("Clear"); 
+
+
+
+/*svg.append("text")
+    .attr("x", 96)
+    .attr("y", 330)
+    .attr("class", "legend")
+    .style("fill", "black")
+    .on("click", function(){
+          var active   = Currentlocation.active ? false : true ,
+      newOpacity = active ? 0 : 1;
+    d3.select("#Currentlocation").style("opacity", newOpacity);
+    Currentlocation.active = active;
+
+    })
+    .text("Current location"); */
+
+
+
+
+function clicked(d){
+  if (active.node() === this) return reset();
+  active.classed("active", false);
+  active = d3.select(this).classed("active", true);
+
+  var bounds = path.bounds(d),
+      dx = bounds[1][0] - bounds[0][0],
+      dy = bounds[1][1] - bounds[0][1],
+      x = (bounds[0][0] + bounds[1][0])/2,
+      y = (bounds[0][1] + bounds[1][1])/2,
+      scale = .9/ Math.max(dx / width, dy / height),
+      translate = [width / 2 - scale * x, height / 2 - scale * y];
+
+  svg.transition()
+      .duration(750)
+      .call(zoom.translate(translate).scale(scale).event);
+
+}
+
+function reset(){
+  active.classed("active", false);
+  active = d3.select(null);
+
+  svg.transition()
+      .duration(750)
+      .call(zoom.translate([0 , 0]).scale(1).event);
+
+}
+
+function zoomed(){
+  g.style("stroke-width", 1.5 / d3.event.scale + "px");
+  g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+
+}
+
+function stopped(){
+  if (d3.event.defaultPrevented) d3.event.stopPropagation();
+}
+
+
+
+//d3.select(self.frameElement).style("height", height + "px");
+
+</script>
