@@ -1,0 +1,554 @@
+<html>
+  <head>
+    <title>Isle of Manhattan - 3D Interactive Model</title>
+    <style>
+      body {
+
+        color: #000;
+        font-family:proxima-nova, sans-serif;
+        font-size:12px;
+        font-weight: bold;
+        background-color: #fff;
+        margin: 0px;
+        overflow: hidden;
+
+      }
+
+
+.legend{
+
+     position: absolute;
+    right: 13px;
+    bottom: 26px;
+    width: 150px;
+    height: 26px;
+    border : 1px solid #000;
+     background: -moz-linear-gradient( top ,
+        rgba(255, 0, 0, 1) 100%,
+        rgba(255, 255, 0, 1) 60%,
+        rgba(0, 255, 0, 1) 30%,
+        rgba(0, 255, 255, 1) 0%);
+    background: -webkit-gradient(linear,  left top,  right top, 
+        color-stop(100%, rgba(255, 0, 0, 1)), 
+        color-stop(60%, rgba(255, 255, 0, 1)),
+        color-stop(30%, rgba(0, 255, 0, 1)),
+        color-stop(0%, rgba(0, 255, 255, 1)));
+
+}
+
+#Start{
+
+ font-size:12px;
+        font-weight: normal;
+     position: absolute;
+    right: 157px;
+    bottom: 10px;
+    text-align: center;
+
+}
+
+#End{
+
+ font-size:12px;     
+        font-weight: normal;
+     position: absolute;
+    right: 11px;
+    bottom: 10px;
+    text-align: center;
+
+}
+
+#Title{
+
+ font-size:12px;     
+        font-weight: normal;
+     position: absolute;
+    right: 80px;
+    bottom: 60px;
+    text-align: center;
+
+}
+
+#Current{
+
+ font-size:12px;
+        color: darkblue;
+        font-weight: bold;
+     position: absolute;
+    right: 180px;
+    bottom: 30px;
+    opacity: 0.9;
+text-align: center;
+
+}
+
+
+    </style>
+  </head>
+  <body>
+
+
+<script src="../files/Three.js"></script>
+<script src="../files/Detector.js"></script>
+<script src="../files/OrbitControls.js"></script>
+<script src="../files/THREEx.FullScreen.js"></script>
+<script src="../files/THREEx.WindowResize.js"></script>
+
+      <script src="../files/d3.v3.min.js"></script>
+       <script src="../files/Tween.js"></script>
+       <script src="../files/RequestAnimationFrame.js"></script>
+      <script src="../files/dat.gui.js"></script> 
+      <script src="../files/d3-threeD.js"></script>
+
+      <link type="text/css" rel="stylesheet" href="../files/dat-gui-swec.css"></link>
+
+<div id="ThreeJS" style="position: absolute; left:0px; top:0px">
+  
+  <div id = "Overlay" class = "legend"> </div>
+ <div id = "Start"> <span id = "Startvalue"></span>  </div>
+  <div id = "Title"> <span id = "Currenttitle"></span> </div>
+  <div id = "Current"> <span id = "Currentvalue" style = "text-align:middle"></span></div>
+  <div id = "End"> <span id = "Endvalue"></span></div>
+</div>
+    <script>
+
+// standard global variables
+var container, scene, camera, renderer, controls, stats;
+var raycaster;
+
+      var mouse = new THREE.Vector2(), INTERSECTED;
+      var radius = 100, theta = 0;
+
+
+var clock = new THREE.Clock();
+
+// custom global variables
+var mesh, position;
+
+init();
+animate();
+
+// FUNCTIONS    
+function init() 
+{
+  // SCENE
+  scene = new THREE.Scene();
+
+  // CAMERA
+  var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+  var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 10000;
+  camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+  scene.add(camera);
+  camera.position.z = 462.861;
+  camera.position.y = 758.8;
+  camera.position.x = 120.56568;
+  camera.lookAt({x:0, y:0, z:0});  
+
+  // RENDERER
+  if ( Detector.webgl )
+    renderer = new THREE.WebGLRenderer( {antialias:true} );
+  else
+    renderer = new THREE.CanvasRenderer(); 
+  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  container = document.getElementById( 'ThreeJS' );
+  container.appendChild( renderer.domElement );
+
+  // EVENTS
+  THREEx.WindowResize(renderer, camera);
+  THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0) });
+
+  // CONTROLS
+  controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+  // LIGHT 
+    var light = new THREE.DirectionalLight( 0xffffff , 1);
+   camera.add( light );
+
+//
+projector = new THREE.Projector();  
+
+        window.addEventListener( 'resize', onWindowResize, false );
+         document.addEventListener('mousemove', onDocumentMouseMove, false);  
+
+//LEGEND
+currentvalue = 0;
+
+
+var valueElement = document.getElementById("Currentvalue");
+ valueNode = document.createTextNode("");
+valueElement.appendChild(valueNode);
+valueNode.nodeValue = "Hover over a block";
+
+
+currenttitle = "Floor";
+var valuetitle = document.getElementById("Currenttitle");
+ titleNode = document.createTextNode("");
+valuetitle.appendChild(titleNode);
+titleNode.nodeValue = currenttitle;
+
+
+
+//ADD COUNTRIES
+var projection = d3.geo.equirectangular()
+    .scale(250000)
+    .translate([720, 450])
+    .center([-73.89, 40.66]);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+
+d3.json("newblock.json", function(data) {
+
+        term = 'FLOOR';
+        var countries = [];
+        var i, j;
+        var toAdd = [];
+        k =1;
+        start = 0;
+
+        
+        // convert to threejs meshes
+        for (i = 0 ; i < data.features.length ; i++) {
+          var geoFeature = data.features[i];
+          var properties = geoFeature.properties;
+          var feature = path(geoFeature);
+          
+          // we only need to convert it to a three.js path
+          var mesh = transformSVGPathExposed(feature);
+          
+          // add to array
+          for (j = 0 ; j < mesh.length ; j++) {
+              countries.push({"data": properties, "mesh": mesh[j]});
+          }
+        }
+        
+        //find the max value
+        var max = getMax(countries, term);
+
+        // extrude paths and add color
+        for (i = 0 ; i < countries.length ; i++) {
+  
+          var material = new THREE.MeshLambertMaterial({
+            opacity:0.9
+          }); 
+
+          // extrude mesh
+          var shape3d = countries[i].mesh.extrude({
+            amount: 2, 
+            bevelEnabled: false
+          });
+
+
+          // create a mesh based on material and extruded shape
+          toAdd[i] = new THREE.Mesh(shape3d, material);
+          
+          //set mesh color
+          setColorHeight(toAdd[i], countries[i].data, max, term, k, start);
+          
+          // rotate and position the elements
+          toAdd[i].rotation.x = Math.PI/2;
+          toAdd[i].translateX(-450);
+          toAdd[i].translateZ(50);
+          toAdd[i].translateY(20);
+
+          // add to scene
+          scene.add(toAdd[i]);
+}
+
+
+var endElement = document.getElementById("Endvalue");
+var endNode = document.createTextNode("");
+endElement.appendChild(endNode);
+endNode.nodeValue = max.toFixed(0);
+
+
+var startElement = document.getElementById("Startvalue");
+var startNode = document.createTextNode("");
+startElement.appendChild(startNode);
+startNode.nodeValue = 0;
+
+var startdiv = document.getElementById("Start");
+var titlediv = document.getElementById("Title");
+
+//CONTROL OBJECT
+var obj = { 'Floor':function(){ 
+term = 'FLOOR';
+k = 1;
+start = 0;
+
+var max = getMax(countries, term);
+
+ for (i = 0 ; i < countries.length ; i++) {
+
+setColorHeight(toAdd[i], countries[i].data, max, term, k, start);
+
+ }
+
+ endNode.nodeValue = max.toFixed(0);
+titleNode.nodeValue = 'Floor';
+startNode.nodeValue = 0;
+startdiv.style.right = '157px';
+titlediv.style.right = '80px';
+
+        }, 
+
+'FAR':function(){ 
+
+term = 'FAR';
+k =2.5;
+start = 0;
+var max = getMax(countries, term);
+
+//update mesh color and height
+ for (i = 0 ; i < countries.length ; i++) {
+setColorHeight(toAdd[i], countries[i].data, max, term, k, start);
+ }
+
+//change lengend
+ endNode.nodeValue = max.toFixed(0);
+titleNode.nodeValue = 'FAR';
+startNode.nodeValue = 0;
+startdiv.style.right = '157px';
+titlediv.style.right = '80px';
+
+        },
+
+'Built Year':function(){ 
+
+term = 'BUILDYEAR';
+k =0.5;
+start = 1900;
+var max = getMax(countries, term);
+
+ for (i = 0 ; i < countries.length ; i++) {
+setColorHeight(toAdd[i], countries[i].data, max, term, k, start);
+ }
+
+ endNode.nodeValue = max.toFixed(0);
+titleNode.nodeValue = 'Built Year';
+startNode.nodeValue = 1900;
+startdiv.style.right = '140px';
+titlediv.style.right = '60px';
+
+        },
+
+'Alteration Year':function(){ 
+
+term = 'ALTERYEAR';
+k =1.5;
+start = 1970;
+var max = getMax(countries, term);
+
+ for (i = 0 ; i < countries.length ; i++) {
+setColorHeight(toAdd[i], countries[i].data, max, term, k, start);
+ }
+
+ endNode.nodeValue = max.toFixed(0);
+titleNode.nodeValue = 'Alteration Year';
+startNode.nodeValue = 1950;
+startdiv.style.right = '140px';
+titlediv.style.right = '50px';
+
+        },
+
+'All Units':function(){ 
+
+term = 'ALLUNITS';
+k =0.01;
+start = 0;
+var max = getMax(countries, term);
+
+ for (i = 0 ; i < countries.length ; i++) {
+setColorHeight(toAdd[i], countries[i].data, max, term, k, start);
+ }
+
+ endNode.nodeValue = max.toFixed(0);
+titleNode.nodeValue = 'All Units';
+startNode.nodeValue = 0;
+startdiv.style.right = '157px';
+titlediv.style.right = '70px';
+
+
+        },
+
+'Residential Units':function(){ 
+
+term = 'REUNITS';
+k =0.01;
+start = 0;
+var max = getMax(countries, term);
+
+ for (i = 0 ; i < countries.length ; i++) {
+setColorHeight(toAdd[i], countries[i].data, max, term, k, start);
+ }
+
+ endNode.nodeValue = max.toFixed(0);
+titleNode.nodeValue = 'Residential Units';
+startNode.nodeValue = 0;
+startdiv.style.right = '157px';
+titlediv.style.right = '50px';
+
+        },
+
+      };
+
+ var gui = new dat.GUI({
+  height: 26,
+width: 250,
+ });
+
+//ADD ITEMS TO CONTROL
+    gui.add(obj, 'Floor');
+    gui.add(obj, 'FAR');
+    gui.add(obj, 'Built Year');
+    gui.add(obj, 'Alteration Year');
+    gui.add(obj, 'All Units');
+    gui.add(obj, 'Residential Units');
+
+    gui.close();
+});
+
+ }
+
+
+function animate(time) 
+{
+    requestAnimationFrame( animate );
+    TWEEN.update(time);
+  render();   
+  update();
+}
+
+
+function update()
+{
+  //find intersection
+   var vector = new THREE.Vector3(mouse.x, mouse.y, 1);  
+                projector.unprojectVector(vector, camera);  
+                var ray = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());  
+  
+                  
+                var intersects = ray.intersectObjects(scene.children);  
+  
+                  
+                if (intersects.length > 0) {  
+                     
+                    if (intersects[0].object != INTERSECTED) {  
+                         
+                        if (INTERSECTED)  
+                            INTERSECTED.material.color.setHex(INTERSECTED.currentHex);  
+                         
+                        INTERSECTED = intersects[0].object;  
+
+                  // change legend value
+                       if (INTERSECTED.material.color.r == 1  && INTERSECTED.material.color.g == 1 &&  INTERSECTED.material.color.b == 1){
+                        if (term == 'BUILDYEAR'){
+                        valueNode.nodeValue  = 'Before 1900 or None';}
+                         if (term == 'ALTERYEAR'){
+                        valueNode.nodeValue  = 'Before 1970 or None';}
+
+}
+                      else{                      
+
+                        valueNode.nodeValue  = ((INTERSECTED.scale.z)/k-1 + start).toFixed(0);
+
+                      }
+
+                        INTERSECTED.currentHex = INTERSECTED.material.color.getHex();  
+                        
+                        INTERSECTED.material.color.setHex(0x00008b);  
+                    }  
+                }  
+                else   
+                {  
+                    if (INTERSECTED)  
+                        INTERSECTED.material.color.setHex(INTERSECTED.currentHex);  
+                      valueNode.nodeValue  = "Hover over a block";
+                    INTERSECTED = null;  
+                }  
+
+  controls.update();
+}
+
+
+ function onDocumentMouseMove(event) {  
+                
+                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;  
+                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;  
+                 
+            }  
+
+
+function render() 
+{
+  renderer.render( scene, camera );
+}
+
+
+function onWindowResize() {
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        render();
+
+      }
+
+
+function changePositionsmooth(value, element){
+
+var p0 = {y: element.position.y, element: element};
+
+var updateCallback = function() {
+            this.element.position.y = this.y;
+          }
+
+t0 = new TWEEN.Tween(p0).to({y: value}, 250) 
+.easing( TWEEN.Easing.Cubic.InOut)
+.delay(Math.random() * 250)
+.onUpdate(updateCallback)
+.start();
+
+}
+
+
+function getMax(data, term){
+
+var value_list = [];
+
+for (i = 0 ; i < data.length ; i++) {
+value_list.push(data[i].data[term]);
+ }
+
+ return Math.max.apply(Math, value_list);;
+
+}
+
+
+function setColorHeight(object, data, max, term, k, start){
+
+if ((data[term] - start) >= 0 ){
+
+object.scale.z = (data[term]+1 - start) * k ;
+var value = 0.5-((data[term]+1 - start)/(2*(max+1-start)));
+object.material.color.setHSL(value, 1.0, 0.5);
+changePositionsmooth((data[term]+1 -start)*2*k - 50, object);
+
+}
+
+else{
+
+object.scale.z = 1;
+object.material.color.setHSL(0, 0, 1);
+changePositionsmooth((1 )*2 - 50, object);
+
+}
+
+}
+
+
+    </script>
+  </body>
+</html>

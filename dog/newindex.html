@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)http://leafletjs.com/examples/choropleth-example.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>New York City Dog Map</title>
+	<meta charset="utf-8">
+
+<!--	<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+
+    <script type="text/javascript" src="../files/d3.v3.min.js"></script>
+    <script type="text/javascript" src="../files/d3.csv.js"></script>
+    <script type="text/javascript" src="../files/d3.geo.js"></script>
+<script src='../files/mapbox.js'></script>
+<link href='../files/mapbox.css' rel='stylesheet' />
+
+	<style>
+/*		#map {
+			width: 1200px;
+			height: 650px;
+		}*/
+		body {
+    padding: 0;
+    margin: 0;
+}
+html, body, #map {
+    height: 100%;
+}
+
+		.info {
+			padding: 6px 8px;
+			font: 12px/14px proxima-nova, sans-serif;
+			background: white;
+			width: 285px;
+			height : 283px;
+			overflow-x: hidden;
+			overflow-y: hidden;
+			background: rgba(255,255,255,0.8);
+			box-shadow: 0 0 15px rgba(0,0,0,0.2);
+			border-radius: 5px;
+		}
+
+		.innfo {
+			padding: 6px 8px;
+			font: 12px/14px proxima-nova, sans-serif;
+			background: white;
+			background: rgba(255,255,255,0.8);
+			box-shadow: 0 0 15px rgba(0,0,0,0.2);
+			border-radius: 5px;
+		}
+		.infoo {
+			padding: 6px 8px;
+			width: 235px;
+			height: 490px;
+			overflow-x: hidden;
+      		overflow-y: hidden;
+			font: 12px/14px proxima-nova, sans-serif;
+			background: white;
+			background: rgba(255,255,255,0.8);
+			box-shadow: 0 0 15px rgba(0,0,0,0.2);
+			border-radius: 5px;
+		}
+		.info h4 {
+			font-size: 14px;
+			margin: 0 0 0px;
+			color: #777;
+		}
+
+				.info h5 {
+			font-size: 12px;
+			margin: 0 0 3px;
+			color: #444;
+		}
+
+
+		.infoo h4 {
+			margin: 0 0 5px;
+			color: #777;
+		}
+		.legend {
+			font:  proxima-nova, sans-serif;
+			text-align: left;
+			line-height: 18px;
+			color: #555;
+		}
+		.legend i {
+			font: proxima-nova, sans-serif;
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+		}
+.infotext{
+	fill: #444;
+}
+
+.infotitle{
+	font: 14px proxima-nova, sans-serif;
+	font-weight: bold;
+			fill: #777;
+	
+}
+
+.infoti{
+	fill: #444;
+}
+.custom-popup .leaflet-popup-content-wrapper {
+  font: 12px/14px proxima-nova, sans-serif;
+  background:rgba(255,255,255,0.8);
+  color:black;
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  }
+
+.custom-popup .leaflet-popup-tip-container {
+
+    margin-bottom: 35px;
+  }
+
+.custom-popup .leaflet-popup-tip {
+  
+  border-top:10px solid rgba(255,255,255,0.8);
+  }
+
+.leaflet-control-layers-toggle:after{ 
+    content:"Layers"; 
+    color: rgba(255,255,255,0.8);
+    color:#000 ;
+    font: 12px proxima-nova, sans-serif;
+}
+.leaflet-control-layers-toggle{ 
+    width:52px;
+    padding: 8px 8px;
+    color:rgba(255,255,255,0.8);
+    
+
+			background: rgba(255,255,255,0.8);
+			box-shadow: 0 0 15px rgba(0,0,0,0.2);
+			border-radius: 5px;
+    text-decoration:none;
+    line-height:8px;
+
+}
+
+.leaflet-control-layers-expanded{
+font: 12px proxima-nova, sans-serif;
+	} 
+
+.leaflet-control-layers-list{
+font: 12px proxima-nova, sans-serif;	
+background: white;
+background: rgba(255,255,255,0.8);
+}
+
+.leaflet-popup-content img {
+  max-width:32%;
+  }
+
+	</style>
+</head>
+<body>
+<style>/*
+.filter-ui {
+  position:absolute;
+  top:10px;
+  bottom:10px;
+  left:10px;
+  z-index:100;
+  display: block;
+
+padding: 6px 8px;
+      font: 14px/16px proxima-nova, sans-serif;
+      background: white;
+      background: rgba(255,255,255,0.8);
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      border-radius: 5px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+  }*/
+
+</style>
+
+<nav id='filters' class='filter-ui'></nav>
+
+
+	<div class="custom-popup" id="map"></div>
+
+	
+	<script type="text/javascript" src="nyzipcode.json"></script>
+	<script type="text/javascript">
+
+
+//set up the map
+
+
+	L.mapbox.accessToken = 'pk.eyJ1IjoieGN6aGFvIiwiYSI6Ik41U2ptc2MifQ.ebOrer0bcIeHd3FB9jfUUQ';
+//var map = L.map('map', {zoomControl: false})
+//    .setView([40.75, -73.97], 13);
+//var map = L.map('map', {zoomControl: false})
+  //  .setView([40.6, -74.1], 11);
+//L.control.layers({
+//    'Base Map': L.mapbox.tileLayer('xczhao.l1818fkf').addTo(map)
+//}).addTo(map);
+var map = L.map('map', {zoomControl: false})
+    .setView([40.705, -74.06], 11);
+//L.control.layers({
+//    'Base Map': L.mapbox.tileLayer('xczhao.l1818fkf').addTo(map)
+//}).addTo(map);
+var layer = L.mapbox.tileLayer('xczhao.l3034l31', {maxZoom: 14,  minZoom: 11}).addTo(map);
+
+
+		var infoo = L.control({position: 'topleft', overflow: 'scroll'});
+
+		infoo.onAdd = function (map) {
+			this._div = L.DomUtil.create('div', 'info');
+
+// L.DomEvent.on(this._div, 'mousedown', function(event) {
+//     L.DomEvent.stopPropagation(event);
+// });
+// L.DomEvent.on(this._div, 'mouseup', function(event) {
+//     L.DomEvent.stopPropagation(event);
+// });
+// L.DomEvent.on(this._div, 'mousemove', function(event) {
+//     L.DomEvent.stopPropagation(event);
+// });
+
+
+			this.update();
+			return this._div;
+		};
+
+		infoo.update = function (props) {
+			this._div.innerHTML =  '<h4>' 
+		//	+ '&nbsp'+ '&nbsp'+ '&nbsp'+ '&nbsp'+ '&nbsp'+ '&nbsp'+ '&nbsp'+ '&nbsp'+ '&nbsp'+ '&nbsp'+ '&nbsp'
+			+'New York City Dogs Map</h4><br>' +'Two years after WNYC&apos;s mapping of NYC dogs, we&apos;ve revisited the topic to provide you with the most up-to-date visual of dog data that&apos;s available to the public. Information depicted as part of this interactive map related to all currently active licensed dogs living in New York City.<br><br>'+'Data presented in the accompanying map is courtesy of the New York City Department of Health and Mental Hygiene and details all licensing data for dogs throughout New York City between January 2007 and January 2015. Information included as part of this dataset are dog license status, name, breed type, sex, vaccination status, neutered status, and coloration. All 311 information was obtained via NYC OpenData.';
+			//+'<br>'+'<br>'+'<h4>Select Category:</h4>'+'<form><input id = "command" type = "checkbox"/>command</form>';
+		};
+
+//infoo.addTo(map);
+
+
+
+		// control that shows state info on hover
+		var info = L.control({position: 'topleft'});
+
+		info.onAdd = function (map) {
+			this._div = L.DomUtil.create('div', 'infoo');
+		//	this.update();
+			return this._div;
+		};
+
+
+		info.addTo(map);
+
+
+
+d3.selectAll("div.infoo").append("svg").attr("width",220).attr("height",525);
+
+
+// d3.selectAll("div.infoo").select("svg").append("rect").attr("height", 510).attr("width", 280).style("fill", '#ccc');
+var ylocations = [ 50, 164, 240, 316, 392];
+var i = 0;
+var label = ['Dog Numbers', 'Top Three Names', 'Top Three Breeds', 'Top Three Colors', '311 Service Requests'];
+
+for (var ix in label)
+{
+
+	d3.selectAll("div.infoo").select("svg").append("text").attr("x", 0).attr("y", function(){ 
+		return  10 + ylocations[i]; }).text(label[ix]).attr("class", "infotext").style("font-weight", 'bold');
+ 	i = i + 1;
+}
+
+
+
+	d3.selectAll("div.infoo").select("svg").append("text").attr("x", 0).attr("y", 40).text("Zip Code").attr("class", "infotext").style("font-weight", 'bold');
+ 
+	d3.selectAll("div.infoo").select("svg").append("text").attr("x", 215).attr("y", 40).text("All").attr("class", "infoti").style("font-weight", 'bold').attr("text-anchor", "end");
+
+
+numlabel = ['Total', 'Male', 'Female', 'Vaccinated', 'Neutered'];
+i = 0
+for (var ix in numlabel)
+{
+
+	d3.selectAll("div.infoo").select("svg").append("text").attr("x", 0).attr("y", function(){ 
+		return  80 + i*18; }).text(numlabel[ix]).attr("text-anchor", "start").attr("class", "infotext");
+ 	i = i + 1;
+}
+
+
+complainlabel = ['Noise from Dog', 'Canine Violation', 'Unleashed Dog', 'Dog Waste'];
+i = 0
+for (var ix in complainlabel)
+{
+
+	d3.selectAll("div.infoo").select("svg").append("text").attr("x", 0).attr("y", function(){ 
+		return  422 + i*18; }).text(complainlabel[ix]).attr("text-anchor", "start").attr("class", "infotext");
+ 	i = i + 1;
+}
+
+
+
+
+
+
+
+
+ d3.selectAll("div.infoo").select("svg").append("text").attr("x", 0).attr("y", 16).text("NYC Dog Statistics").attr("class", "infotitle");
+
+
+
+
+//load and parse dog data
+
+d3.csv("dog_newdata.csv", function(zipdogdata) {
+
+var zip_dict = {};
+
+for (var x = 0; x<zipdogdata.length; x++){
+	zip_dict[zipdogdata[x].zipcode] = zipdogdata[x];
+}
+
+var name_dict = {};
+
+for (var x = 0; x<zipdogdata.length; x++){
+
+	name_dict[zipdogdata[x].zipcode] = [];
+
+	var name_list = [ "nameone", 'nametwo', 'namethree',  'breedone', 'breedtwo',  'breedthree', 'colorone', 'colortwo', 'colorthree'];
+	for (var y in name_list){
+		var dict = {};
+	//	console.log(zipdogdata[x][name_list[y]]);
+		dict['name']  =  zipdogdata[x][name_list[y]];
+		name_dict[zipdogdata[x].zipcode].push(dict);
+	}
+
+}
+//console.log(name_dict['10001']);
+
+
+
+var num_dict = {};
+var rect_dict = {};
+
+for (var x = 0; x<zipdogdata.length; x++){
+	num_dict[zipdogdata[x].zipcode] = [];
+	rect_dict[zipdogdata[x].zipcode] = [];
+
+	var num_list = [ 'dognumber', 'Mnum', 'Fnum', 'Vaccinated', 'Neutered', 'nameonenum', 'nametwonum', 'namethreenum',  'breedonenum', 'breedtwonum',  'breedthreenum', 'coloronenum', 'colortwonum', 'colorthreenum', 'barking','violation', 'unleashed', 'poop'];
+	var rect_list = ['Mnum', 'Fnum', 'Vaccinated', 'Neutered', 'coloronenum', 'colortwonum', 'colorthreenum'];
+	for (var y in num_list){
+		var dict = {};
+	//	console.log(zipdogdata[x][name_list[y]]);
+		if (y == 0){
+		dict['number']  =  zipdogdata[x][num_list[y]];}
+		else if( y == 14 || y == 15 || y == 16 || y == 17) {
+			dict['number']  =  zipdogdata[x][num_list[y]]/(52*8);
+		}
+		else{
+		dict['number']  =  zipdogdata[x][num_list[y]]/zipdogdata[x][num_list[0]];
+		}
+		num_dict[zipdogdata[x].zipcode].push(dict);
+	}
+for (var y in rect_list){
+		var newdict = {};
+	//	console.log(zipdogdata[x][name_list[y]]);
+		// if (y == 0){
+		// dict['number']  =  zipdogdata[x][num_list[y]];}
+		// else if( y == 14 || y == 15 || y == 16 || y == 17) {
+		// 	dict['number']  =  zipdogdata[x][num_list[y]]/(52*8);
+		// }
+		// else{
+		
+		newdict['number']  =  zipdogdata[x][rect_list[y]]/zipdogdata[x][num_list[0]];
+		// }
+		rect_dict[zipdogdata[x].zipcode].push(newdict);
+	}
+
+
+
+
+}
+
+
+
+
+
+var current_name = name_dict['all'],
+    current_num = num_dict['all'],
+    current_rect = rect_dict['all'];
+
+//console.log(current_name.length);
+var name_location = [ 194, 194+18, 194+18*2, 270, 270+18, 270+18*2, 346, 346+18, 346+18*2];
+
+var back = d3.selectAll("div.infoo").select("svg");
+var names = back.selectAll("names")
+			.data(current_name)
+			.enter().append("text")
+			.attr("x", function(d ,i){ return 0;
+				//console.log(i);
+				// if(i==3 || i==4 || i == 5){
+				// 	return 228;
+				// }
+				// else{return 80;}
+			})
+			.attr("y", function(d, i){ 
+		return  name_location[i]; })
+			.text(function(d, i){ //console.log(i);
+			return d.name;})
+		.attr("text-anchor", 
+			function(d, i) {
+//if(i==3 || i==4 || i == 5){
+//					return 'middle';
+//				}
+				//else{
+					return 'start';
+					//}
+
+			}).attr("class", "infotext");
+
+var num_location = [ 80, 80+18, 80+18*2, 80+18*3 , 80+18*4, 194, 194+18, 194+18*2, 270, 270+18, 270+18*2, 346, 346+18, 346+18*2, 422, 422+18, 422+18*2, 422+18*3];
+//for(x in num_location){num_location[x] = num_location[x] + 17}
+
+var numbers = back.selectAll("numbers")
+			.data(current_num)
+			.enter().append("text")
+			.attr("x", 215)
+			.attr("y", function(d, i){ 
+		return  num_location[i]; })
+			.text(function(d, i){ 
+
+if (i==14 ||i==15 ||i==16 ||i == 17)
+{return Math.round(d.number*10)/10 + "/week"}
+else if (i==13 ||i==12 ||i==11 || i == 10|| i==9 ||i == 8)
+{return Math.round(d.number*100)+ "%"}
+else if (i==5 ||i==6 ||i==7 )
+{return Math.round(d.number*1000)+ '‰'}
+else if (i==1 ||i==2 ||i==3 || i ==4 )
+{return Math.round(d.number*100)+ '%'}
+
+else{			return (Math.round(d.number)).toLocaleString();}})
+		.attr("text-anchor",  'end').attr("class", "infotext");
+
+
+
+var rect_location = [42+18, 42+18*2 , 42+18*3, 42+18*4, 308, 308+18, 308+18*2];
+for(x in rect_location){rect_location[x] = rect_location[x] + 20+10}
+var rects = back.selectAll("rects")
+			.data(current_rect)
+			.enter().append("rect") 
+ 							.attr("x", 80)
+                            	.attr("y", function(d, i){ 
+		return  rect_location[i]; })
+                            .attr("width", function(d, i){
+//console.log(d.number);
+                            	return d.number*100})
+                           .attr("height", 8)
+                           .style("fill", function(d, i){
+ if (i == 0||i == 1||i ==2 ||i ==3)
+ {return '#969696'}
+ else{return current_name[i+2].name}
+//return '#969696';
+                           })
+                           .style("stroke", "#ccc");
+
+
+//load json file
+//
+//
+//
+
+
+		// get color depending on population density value
+		function getColor(d) {
+			return d > 1500 ? '#084594' :
+			       d > 1200  ? '#2171b5' :
+			       d > 600  ? '#4292c6' :
+			       d > 300  ? '#6baed6' :
+			       d > 100   ? '#9ecae1' :
+			       d > 50   ? '#c6dbef' :
+			       d > 20   ? '#deebf7' :
+			                  '#f7fbff';
+		}
+
+		function style(feature) {
+			//console.log(zip_dict[feature.properties.ZIP].dognumber);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+				fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};}
+		else{
+return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+		}
+		}
+
+		function lightFeature(e) {
+
+			// e.layer.openPopup();
+			var layer = e.target;
+
+			layer.setStyle({
+				weight: 2.5,
+				color: '#666',
+				//dashArray: '',
+				//fillOpacity: 0.7,
+				//fillColor: '#f7f7f7'
+			});
+
+			if (!L.Browser.ie && !L.Browser.opera) {
+				layer.bringToFront();
+			}
+
+			d3.selectAll("div.infoo").select("svg").select("text.infoti").transition().text( layer.feature.properties.ZIP);
+
+ current_name = name_dict[layer.feature.properties.ZIP];
+    current_num = num_dict[layer.feature.properties.ZIP];
+    current_rect = rect_dict[layer.feature.properties.ZIP];
+
+names.data(current_name).transition().attr("x", function(d ,i){ return 0;
+				// //console.log(i);
+				// if(i==3 || i==4 || i == 5){
+				// 	return 228;
+				// }
+				// else{return 80;}
+			})
+			.attr("y", function(d, i){ 
+		return  name_location[i]; })
+			.text(function(d, i){ //console.log(i);
+			return d.name;})
+		.attr("text-anchor", 
+			function(d, i) {
+//if(i==3 || i==4 || i == 5){
+//					return 'middle';
+//				}
+				//else{
+					return 'start';
+					//}
+
+			}).attr("class", "infotext");
+
+rects.data(current_rect).transition().attr("width", function(d, i){
+                            	return d.number*100}).style("fill", function(d, i){
+ if (i == 0||i == 1||i ==2 ||i ==3)
+ {return '#969696'}
+ else{return current_name[i+2].name}
+//return '#969696'
+;
+                           });
+
+
+numbers.data(current_num).text(function(d, i){ 
+
+if (i==14 ||i==15 ||i==16 ||i == 17)
+{return Math.round(d.number*10)/10 + "/week"}
+else if (i==13 ||i==12 ||i==11 || i == 10|| i==9 ||i == 8)
+{return Math.round(d.number*100)+ "%"}
+else if (i==5 ||i==6 ||i==7 )
+{return Math.round(d.number*1000)+ '‰'}
+else if (i==1 ||i==2 ||i==3 || i ==4 )
+{return Math.round(d.number*100)+ '%'}
+
+else{			return (Math.round(d.number)).toLocaleString();}});
+
+
+
+		//	console.log(layer.feature.properties.ZIP);
+			//info.update(layer.feature.properties);
+		}
+
+		
+
+		function setHighlight(e) {
+			    // e.layer.closePopup();
+			geojson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+		}
+
+		function zmToFeature(e) {
+			map.fitBounds(e.target.getBounds());
+		}
+
+		function EachFeature(feature, layer) {
+			layer.on({
+				mouseover: lightFeature,
+				mouseout: setHighlight,
+				click: zmToFeature
+			});
+		}
+
+		var geojson = L.geoJson(zipcode, {
+			style: style,
+			onEachFeature: EachFeature
+		})
+		.addTo(map)
+		;
+
+
+
+
+
+ geojson.eachLayer(function(marker) { 
+ 	var a = name_dict[marker.toGeoJSON().properties['ZIP']][3].name || 0;
+ 	var b = name_dict[marker.toGeoJSON().properties['ZIP']][4].name || 0;
+ 	var c = name_dict[marker.toGeoJSON().properties['ZIP']][5].name || 0;
+
+//console.log(marker.toGeoJSON().properties['ZIP'], name_dict[marker.toGeoJSON().properties['ZIP']][3].name , name_dict[marker.toGeoJSON().properties['ZIP']][4].name, name_dict[marker.toGeoJSON().properties['ZIP']][5].name);
+          marker.bindPopup('<strong>Zip Code ' + marker.toGeoJSON().properties['ZIP']+ ' Top Three Breeds</strong>'+ '<br \/>'+ '<img src="images/'+ a+'.jpg"/>' +'&nbsp'+ '<img src="images/' + b +'.jpg"/>' +'&nbsp' + '<img src="images/'+ c+ '.jpg"/>');
+           
+          });
+
+
+
+ geojson.on('mouseover', function(e) {
+    e.layer.openPopup();
+});
+geojson.on('mouseout', function(e) {
+    e.layer.closePopup();
+});
+
+
+
+		var complainjson = L.geoJson(zipcode, {
+
+			style: function(feature){
+
+	var total = parseInt(zip_dict[feature.properties.ZIP].unleashed) + parseInt(zip_dict[feature.properties.ZIP].poop) + parseInt(zip_dict[feature.properties.ZIP].barking) + parseInt(zip_dict[feature.properties.ZIP].violation);
+			//console.log(feature.properties.ZIP, total);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			
+				fillColor: getcomplainColor(total)
+			};}
+else{
+	return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+}
+
+			},
+
+			onEachFeature: function(feature, layer){
+
+	layer.on({
+				mouseover: lightFeature,
+				mouseout: function(e){
+
+complainjson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+
+
+				},
+				click: zmToFeature
+			});
+
+
+			}
+		})
+	//	.addTo(map)
+		;
+
+	function getcomplainColor(d) {
+			return d > 900 ? '#99000d' :
+			       d > 700  ? '#cb181d' :
+			       d > 500  ? '#ef3b2c' :
+			       d > 250  ? '#fb6a4a' :
+			       d > 150   ? '#fc9272' :
+			       d > 75   ? '#fcbba1' :
+			       d > 20   ? '#fee0d2' :
+			                  '#fff5f0';
+		}
+
+
+	var complainlegend = L.control({position: 'bottomright'});
+
+		complainlegend.onAdd = function (map) {
+
+			var div = L.DomUtil.create('div', 'innfo legend'),
+				grades = [0, 20, 75, 150, 250, 500, 700, 900],
+				labels = ['<strong>311 Count</strong>'],
+				from, to;
+
+			for (var i = 0; i < grades.length; i++) {
+				from = grades[i];
+				to = grades[i + 1];
+
+				labels.push(
+					'<i style="background:' + getcomplainColor(from + 1) + '"></i> ' +
+					from + (to ? '&ndash;' + to : '+'));
+			}
+
+			div.innerHTML = labels.join('<br>');
+			return div;
+		};
+
+	
+
+
+		var noisejson = L.geoJson(zipcode, {
+
+			style: function(feature){
+
+	var total = (zip_dict[feature.properties.ZIP].barking);
+		//	console.log(total);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			
+				fillColor: getnoiseColor(total)
+			};}
+else{
+	return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+}
+
+			},
+
+			onEachFeature: function(feature, layer){
+
+	layer.on({
+				mouseover: lightFeature,
+				mouseout: function(e){
+
+noisejson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+
+
+				},
+				click: zmToFeature
+			});
+
+
+			}
+		})
+		//.addTo(map)
+		;
+
+	function getnoiseColor(d) {
+			return d > 600 ? '#4a1486' :
+			       d > 400  ? '#6a51a3' :
+			       d > 200  ? '#807dba' :
+			       d > 100  ? '#9e9ac8' :
+			       d > 50   ? '#bcbddc' :
+			       d > 20   ? '#dadaeb' :
+			       d > 10   ? '#efedf5' :
+			                  '#fcfbfd';
+		}
+
+
+
+	var noiselegend = L.control({position: 'bottomright'});
+
+		noiselegend.onAdd = function (map) {
+
+			var div = L.DomUtil.create('div', 'innfo legend'),
+				grades = [0, 10, 20, 50, 100, 200, 400, 600],
+				labels = ['<strong>311 Count</strong>'],
+				from, to;
+
+			for (var i = 0; i < grades.length; i++) {
+				from = grades[i];
+				to = grades[i + 1];
+
+				labels.push(
+					'<i style="background:' + getnoiseColor(from + 1) + '"></i> ' +
+					from + (to ? '&ndash;' + to : '+'));
+			}
+
+			div.innerHTML = labels.join('<br>');
+			return div;
+		};
+
+
+
+
+		var violationjson = L.geoJson(zipcode, {
+
+			style: function(feature){
+
+	var total = (zip_dict[feature.properties.ZIP].violation);
+		//	console.log(total);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			
+				fillColor: getnoiseColor(total)
+			};}
+else{
+	return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+}
+
+			},
+
+			onEachFeature: function(feature, layer){
+
+	layer.on({
+				mouseover: lightFeature,
+				mouseout: function(e){
+
+violationjson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+
+
+				},
+				click: zmToFeature
+			});
+
+
+			}
+		})
+	//	.addTo(map)
+		;
+
+
+
+
+		var wastejson = L.geoJson(zipcode, {
+
+			style: function(feature){
+
+	var total = (zip_dict[feature.properties.ZIP].poop);
+		//	console.log(total);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			
+				fillColor: getnoiseColor(total)
+			};}
+else{
+	return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+}
+
+			},
+
+			onEachFeature: function(feature, layer){
+
+	layer.on({
+				mouseover: lightFeature,
+				mouseout: function(e){
+
+wastejson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+
+
+				},
+				click: zmToFeature
+			});
+
+
+			}
+		})
+	//	.addTo(map)
+		;
+
+
+
+		var unleashedjson = L.geoJson(zipcode, {
+
+			style: function(feature){
+
+	var total = (zip_dict[feature.properties.ZIP].unleashed);
+		//	console.log(total);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			
+				fillColor: getnoiseColor(total)
+			};}
+else{
+	return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+}
+
+			},
+
+			onEachFeature: function(feature, layer){
+
+	layer.on({
+				mouseover: lightFeature,
+				mouseout: function(e){
+
+unleashedjson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+
+
+				},
+				click: zmToFeature
+			});
+
+
+			}
+		})
+		//.addTo(map)
+		;
+
+
+
+
+
+
+		var BELLAjson = L.geoJson(zipcode, {
+
+			style: function(feature){
+
+	var total = (zip_dict[feature.properties.ZIP].BELLA);
+		//	console.log(total);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			
+				fillColor: getBELLAColor(total)
+			};}
+else{
+	return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+}
+
+			},
+
+			onEachFeature: function(feature, layer){
+
+	layer.on({
+				mouseover: lightFeature,
+				mouseout: function(e){
+
+BELLAjson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+
+
+				},
+				click: zmToFeature
+			});
+
+
+			}
+		})
+	//	.addTo(map)
+		;
+
+	function getBELLAColor(d) {
+return d > 35 ? '#005a32' :
+			       d > 30  ? '#238b45' :
+			       d > 25  ? '#41ab5d' :
+			       d > 20  ? '#74c476' :
+			       d > 15   ? '#a1d99b' :
+			       d > 10   ? '#c7e9c0' :
+			       d > 5   ? '#e5f5e0' :
+			                  '#f7fcf5';
+		}
+
+
+	var namelegend = L.control({position: 'bottomright'});
+
+		namelegend.onAdd = function (map) {
+
+			var div = L.DomUtil.create('div', 'innfo legend'),
+				grades = [0, 5, 10, 15, 20, 25, 30, 35],
+				labels = ['<strong>Dog Count</strong>'],
+				from, to;
+
+			for (var i = 0; i < grades.length; i++) {
+				from = grades[i];
+				to = grades[i + 1];
+
+				labels.push(
+					'<i style="background:' + getBELLAColor(from + 1) + '"></i> ' +
+					from + (to ? '&ndash;' + to : '+'));
+			}
+
+			div.innerHTML = labels.join('<br>');
+			return div;
+		};
+//NAMElegend.addTo(map);
+
+
+
+
+
+		var MAXjson = L.geoJson(zipcode, {
+
+			style: function(feature){
+
+	var total = (zip_dict[feature.properties.ZIP].MAX);
+		//	console.log(total);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			
+				fillColor: getBELLAColor(total)
+			};}
+else{
+	return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+}
+
+			},
+
+			onEachFeature: function(feature, layer){
+
+	layer.on({
+				mouseover: lightFeature,
+				mouseout: function(e){
+
+MAXjson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+
+
+				},
+				click: zmToFeature
+			});
+
+
+			}
+		})
+		//.addTo(map)
+		;
+
+
+
+
+
+
+
+		var COCOjson = L.geoJson(zipcode, {
+
+			style: function(feature){
+
+	var total = (zip_dict[feature.properties.ZIP].COCO);
+		//	console.log(total);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			
+				fillColor: getBELLAColor(total)
+			};}
+else{
+	return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+}
+
+			},
+
+			onEachFeature: function(feature, layer){
+
+	layer.on({
+				mouseover: lightFeature,
+				mouseout: function(e){
+
+COCOjson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+
+
+				},
+				click: zmToFeature
+			});
+
+
+			}
+		})
+	//	.addTo(map)
+		;
+
+
+
+
+
+
+		var shihjson = L.geoJson(zipcode, {
+
+			style: function(feature){
+
+	var total = (zip_dict[feature.properties.ZIP].SHIH);
+		//	console.log(total);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			
+				fillColor: getshihColor(total)
+			};}
+else{
+	return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+}
+
+			},
+
+			onEachFeature: function(feature, layer){
+
+	layer.on({
+				mouseover: lightFeature,
+				mouseout: function(e){
+
+shihjson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+
+
+				},
+				click: zmToFeature
+			});
+
+
+			}
+		})
+	//	.addTo(map)
+		;
+
+	function getshihColor(d) {
+			return d > 100 ? '#084594' :
+			       d > 80  ? '#2171b5' :
+			       d > 60  ? '#4292c6' :
+			       d > 40  ? '#6baed6' :
+			       d > 20   ? '#9ecae1' :
+			       d > 10   ? '#c6dbef' :
+			       d > 5   ? '#deebf7' :
+			                  '#f7fbff';
+		}
+
+
+
+	var breedlegend = L.control({position: 'bottomright'});
+
+		breedlegend.onAdd = function (map) {
+
+			var div = L.DomUtil.create('div', 'innfo legend'),
+				grades = [0, 5, 15, 20, 40, 60, 80, 100],
+				labels = ['<strong>Dog Count</strong>'],
+				from, to;
+
+			for (var i = 0; i < grades.length; i++) {
+				from = grades[i];
+				to = grades[i + 1];
+
+				labels.push(
+					'<i style="background:' + getshihColor(from + 1) + '"></i> ' +
+					from + (to ? '&ndash;' + to : '+'));
+			}
+
+			div.innerHTML = labels.join('<br>');
+			return div;
+		};
+//breedlegend.addTo(map);
+
+
+
+
+		var yorkjson = L.geoJson(zipcode, {
+
+			style: function(feature){
+
+	var total = (zip_dict[feature.properties.ZIP].YORKSHIRE);
+		//	console.log(total);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			
+				fillColor: getshihColor(total)
+			};}
+else{
+	return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+}
+
+			},
+
+			onEachFeature: function(feature, layer){
+
+	layer.on({
+				mouseover: lightFeature,
+				mouseout: function(e){
+
+yorkjson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+
+
+				},
+				click: zmToFeature
+			});
+
+
+			}
+		})
+	//	.addTo(map)
+		;
+
+
+
+		var chijson = L.geoJson(zipcode, {
+
+			style: function(feature){
+
+	var total = (zip_dict[feature.properties.ZIP].CHIHUAHUA);
+		//	console.log(total);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			
+				fillColor: getshihColor(total)
+			};}
+else{
+	return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+}
+
+			},
+
+			onEachFeature: function(feature, layer){
+
+	layer.on({
+				mouseover: lightFeature,
+				mouseout: function(e){
+
+chijson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+
+
+				},
+				click: zmToFeature
+			});
+
+
+			}
+		})
+	//	.addTo(map)
+		;
+
+
+
+
+
+		var blackjson = L.geoJson(zipcode, {
+
+			style: function(feature){
+
+	var total = (zip_dict[feature.properties.ZIP].BLACK);
+		//	console.log(total);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			
+				fillColor: getcolorColor(total)
+			};}
+else{
+	return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+}
+
+			},
+
+			onEachFeature: function(feature, layer){
+
+	layer.on({
+				mouseover: lightFeature,
+				mouseout: function(e){
+
+blackjson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+
+
+				},
+				click: zmToFeature
+			});
+
+
+			}
+		})
+	//	.addTo(map)
+		;
+
+	function getcolorColor(d) {
+			return d > 300 ? '#8c2d04' :
+			       d > 200  ? '#d94801' :
+			       d > 100  ? '#f16913' :
+			       d > 75  ? '#fd8d3c' :
+			       d > 50   ? '#fdae6b' :
+			       d > 25   ? '#fdd0a2' :
+			       d > 10  ? '#fee6ce' :
+			                  '#fff5eb';
+		}
+
+
+
+	var colorlegend = L.control({position: 'bottomright'});
+
+		colorlegend.onAdd = function (map) {
+
+			var div = L.DomUtil.create('div', 'innfo legend'),
+				grades = [0, 10, 25, 50, 75, 100, 200, 300],
+				labels = ['<strong>Dog Count</strong>'],
+				from, to;
+
+			for (var i = 0; i < grades.length; i++) {
+				from = grades[i];
+				to = grades[i + 1];
+
+				labels.push(
+					'<i style="background:' + getcolorColor(from + 1) + '"></i> ' +
+					from + (to ? '&ndash;' + to : '+'));
+			}
+
+			div.innerHTML = labels.join('<br>');
+			return div;
+		};
+//colorlegend.addTo(map);
+
+
+
+
+		var whitejson = L.geoJson(zipcode, {
+
+			style: function(feature){
+
+	var total = (zip_dict[feature.properties.ZIP].WHITE);
+		//	console.log(total);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			
+				fillColor: getcolorColor(total)
+			};}
+else{
+	return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+}
+
+			},
+
+			onEachFeature: function(feature, layer){
+
+	layer.on({
+				mouseover: lightFeature,
+				mouseout: function(e){
+
+whitejson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+
+
+				},
+				click: zmToFeature
+			});
+
+
+			}
+		})
+		//.addTo(map)
+		;
+
+
+
+		var brownjson = L.geoJson(zipcode, {
+
+			style: function(feature){
+
+	var total = (zip_dict[feature.properties.ZIP].BROWN);
+		//	console.log(total);
+if ( zip_dict[feature.properties.ZIP].dognumber>0){
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			
+				fillColor: getcolorColor(total)
+			};}
+else{
+	return {
+				weight: 2,
+				opacity: 1,
+				color: 'none',
+				//dashArray: '3',
+				fill: 'none',
+				fillOpacity: 0.7,
+			//	fillColor: '#f7f7f7'
+			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+			};
+}
+
+			},
+
+			onEachFeature: function(feature, layer){
+
+	layer.on({
+				mouseover: lightFeature,
+				mouseout: function(e){
+
+brownjson.resetStyle(e.target);
+			//info.update();
+resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
+
+
+
+				},
+				click: zmToFeature
+			});
+
+
+			}
+		})
+	//	.addTo(map)
+		;
+
+
+
+
+
+ //'Dog Name - Max':MAXjson, 'Dog Name - Coco':COCOjson, 'All 311': complainjson,   '311 - Noise from Dog': noisejson, '311 - Canine Violation': violationjson,  '311 - Unleashed Dog': unleashedjson
+
+L.control.layers({'All Dogs': geojson,  'Dog Name - Bella':BELLAjson, 'Dog Name - Max':MAXjson, 'Dog Name - Coco':COCOjson,  'Dog Breed - Shih Tzu': shihjson, 'Dog Breed - Yorkshire Terrier':yorkjson, 'Dog Breed - Chihuahua': chijson, 'All 311': complainjson,    '311 - Noise from Dog': noisejson, '311 - Canine Violation': violationjson,  '311 - Unleashed Dog': unleashedjson , '311 - Dog Waste': wastejson ,'Dog Color - Black': blackjson, 'Dog Color - White': whitejson, 'Dog Color - Brown': brownjson,}).addTo(map);
+
+
+		map.attributionControl.addAttribution('Data &copy; <a href="http://www.compass.com/">Compass</a>, <a href="http://www.nyc.gov/html/doh/html/home/home.shtml">NYCDHMH</a>,  <a href="https://nycopendata.socrata.com/">NYCOpenData</a>, <a href="http://www.nyc.gov/html/doitt/html/home/home.shtml">DoITT</a>');
+
+		var legend = L.control({position: 'bottomright'});
+
+		legend.onAdd = function (map) {
+
+			var div = L.DomUtil.create('div', 'innfo legend'),
+				grades = [0, 20, 50, 100, 300, 600, 1200, 1500],
+				labels = ['<strong>Dog Count</strong>'],
+				from, to;
+
+			for (var i = 0; i < grades.length; i++) {
+				from = grades[i];
+				to = grades[i + 1];
+
+				labels.push(
+					'<i style="background:' + getColor(from + 1) + '"></i> ' +
+					from + (to ? '&ndash;' + to : '+'));
+			}
+
+			div.innerHTML = labels.join('<br>');
+			return div;
+		};
+
+	
+  legend.addTo(map);
+
+
+
+
+map.on('baselayerchange', function (eventLayer) {
+    // Switch to the Population legend...
+    if (eventLayer.name === 'All Dogs') {
+
+try{ this.removeControl(namelegend); } catch( err ){}
+try{ this.removeControl(noiselegend); } catch( err ){}
+try{ this.removeControl(breedlegend); } catch( err ){}
+try{ this.removeControl(complainlegend); } catch( err ){}
+try{ this.removeControl(colorlegend); } catch( err ){}
+try{ this.removeControl(legend); } catch( err ){}
+
+        legend.addTo(this);
+    } 
+    else if (eventLayer.name === 'All 311' ){          // Or switch to the Population Change legend...
+   	
+try{ this.removeControl(namelegend); } catch( err ){}
+try{ this.removeControl(noiselegend); } catch( err ){}
+try{ this.removeControl(breedlegend); } catch( err ){}
+try{ this.removeControl(complainlegend); } catch( err ){}
+try{ this.removeControl(colorlegend); } catch( err ){}
+try{ this.removeControl(legend); } catch( err ){}
+        complainlegend.addTo(this);
+    
+    }
+    else if  (eventLayer.name.substring(0, 3) === '311' ) {    	
+try{ this.removeControl(namelegend); } catch( err ){}
+try{ this.removeControl(noiselegend); } catch( err ){}
+try{ this.removeControl(breedlegend); } catch( err ){}
+try{ this.removeControl(complainlegend); } catch( err ){}
+try{ this.removeControl(colorlegend); } catch( err ){}
+try{ this.removeControl(legend); } catch( err ){}
+
+        noiselegend.addTo(this);
+
+    }
+
+    else if  (eventLayer.name.substring(0, 8) === 'Dog Name' ) { // Or switch to the Population Change legend...
+   	
+try{ this.removeControl(namelegend); } catch( err ){}
+try{ this.removeControl(noiselegend); } catch( err ){}
+try{ this.removeControl(breedlegend); } catch( err ){}
+try{ this.removeControl(complainlegend); } catch( err ){}
+try{ this.removeControl(colorlegend); } catch( err ){}
+try{ this.removeControl(legend); } catch( err ){}
+
+
+        namelegend.addTo(this);
+
+    }
+    else if (eventLayer.name.substring(0, 9) === 'Dog Color' ){ // Or switch to the Population Change legend...
+   	
+try{ this.removeControl(namelegend); } catch( err ){}
+try{ this.removeControl(noiselegend); } catch( err ){}
+try{ this.removeControl(breedlegend); } catch( err ){}
+try{ this.removeControl(complainlegend); } catch( err ){}
+try{ this.removeControl(colorlegend); } catch( err ){}
+try{ this.removeControl(legend); } catch( err ){}
+
+
+        colorlegend.addTo(this);
+
+    }
+
+else{
+   	
+try{ this.removeControl(namelegend); } catch( err ){}
+try{ this.removeControl(noiselegend); } catch( err ){}
+try{ this.removeControl(breedlegend); } catch( err ){}
+try{ this.removeControl(complainlegend); } catch( err ){}
+try{ this.removeControl(colorlegend); } catch( err ){}
+try{ this.removeControl(legend); } catch( err ){}
+
+
+        breedlegend.addTo(this);
+
+
+}
+
+});
+
+
+
+
+});
+
+
+
+function resetmap(name_dict, name_location , num_dict, rect_dict, names, rects, numbers){
+			d3.selectAll("div.infoo").select("svg").select("text.infoti").transition().text("All");
+
+ current_name = name_dict['all'];
+    current_num = num_dict['all'];
+    current_rect = rect_dict['all'];
+
+names.data(current_name).transition().attr("x", function(d ,i){ return 0;
+				//console.log(i);
+				// if(i==3 || i==4 || i == 5){
+				// 	return 228;
+				// }
+				// else{return 80;}
+			})
+			.attr("y", function(d, i){ 
+		return  name_location[i]; })
+			.text(function(d, i){ //console.log(i);
+			return d.name;})
+		.attr("text-anchor", 
+			function(d, i) {
+//if(i==3 || i==4 || i == 5){
+//					return 'middle';
+//				}
+				//else{
+					return 'start';
+					//}
+
+			}).attr("class", "infotext");
+
+rects.data(current_rect).transition().attr("width", function(d, i){
+                            	return d.number*100}).style("fill", function(d, i){
+ if (i == 0||i == 1||i ==2 ||i ==3)
+ {return '#969696'}
+ else{return current_name[i+2].name}
+//return '#969696'
+;
+                           });
+
+
+numbers.data(current_num).text(function(d, i){ 
+
+if (i==14 ||i==15 ||i==16 ||i == 17)
+{return Math.round(d.number*10)/10 + "/week"}
+else if (i==13 ||i==12 ||i==11 || i == 10|| i==9 ||i == 8)
+{return Math.round(d.number*100)+ "%"}
+else if (i==5 ||i==6 ||i==7 )
+{return Math.round(d.number*1000)+ '‰'}
+else if (i==1 ||i==2 ||i==3 || i ==4 )
+{return Math.round(d.number*100)+ '%'}
+
+else{			return (Math.round(d.number)).toLocaleString();}});
+
+
+
+}
+
+
+
+	</script>
+
+
+</body></html>

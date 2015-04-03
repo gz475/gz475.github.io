@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)http://leafletjs.com/examples/choropleth-example.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>New York City Restaurants and Nightlife Spots Map</title>
+	<meta charset="utf-8">
+
+<!--	<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+
+
+<script src='../files/mapbox.js'></script>
+<link href='../files/mapbox.css' rel='stylesheet' />
+
+	<style>
+		body {
+    padding: 0;
+    margin: 0;
+}
+html, body, #map {
+    height: 100%;
+}
+
+		.info {
+			padding: 6px 8px;
+			font: 14px/16px proxima-nova, sans-serif;
+			background: white;
+			background: rgba(255,255,255,0.8);
+			box-shadow: 0 0 15px rgba(0,0,0,0.2);
+			border-radius: 5px;
+		}
+		.info h4 {
+			margin: 0 0 5px;
+			color: #777;
+		}
+		.legend {
+			font:  proxima-nova, sans-serif;
+			text-align: left;
+			line-height: 18px;
+			color: #555;
+		}
+		.legend i {
+			font: proxima-nova, sans-serif;
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+		}
+
+.custom-popup .leaflet-popup-content-wrapper {
+  font: 14px/16px proxima-nova, sans-serif;
+  background:rgba(255,255,255,0.8);
+  color:black;
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  }
+.custom-popup .leaflet-popup-content-wrapper a {
+  color:rgba(255,255,255,0.8);
+  }
+
+
+.custom-popup .leaflet-popup-tip {
+  
+  border-top:10px solid rgba(255,255,255,0.8);
+  }
+  
+	</style>
+</head>
+<body>
+<style>
+.filter-ui {
+  position:absolute;
+  top:10px;
+  bottom:10px;
+  left:10px;
+  z-index:100;
+  display: block;
+
+padding: 6px 8px;
+      font: 14px/16px proxima-nova, sans-serif;
+      background: white;
+      background: rgba(255,255,255,0.8);
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      border-radius: 5px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+  }
+
+
+</style>
+
+<nav id='filters' class='filter-ui'></nav>
+
+
+	<div class="custom-popup" id="map"></div>
+
+	<script type="text/javascript" src="nyc.js"></script>
+	<script type="text/javascript" src="yelpdata.json"></script>
+	<script type="text/javascript">
+
+
+
+
+
+	L.mapbox.accessToken = 'pk.eyJ1IjoieGN6aGFvIiwiYSI6Ik41U2ptc2MifQ.ebOrer0bcIeHd3FB9jfUUQ';
+
+var map = L.map('map', {zoomControl: false})
+    .setView([40.7, -73.9], 11);
+var layer = L.mapbox.tileLayer('xczhao.l3034l31', {maxZoom: 20,  minZoom: 10}).addTo(map);
+
+
+
+ navigator.geolocation.getCurrentPosition(function(pos){
+    console.log(pos);
+    var coords = [pos.coords.longitude, pos.coords.latitude]
+
+var geojsonPoint = {
+    "type": "Feature",
+    "properties": {
+        "marker-color":  "#ef8a62",
+        "marker-size": "medium",
+        "marker-symbol": "circle"
+
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": coords
+    }
+};
+
+
+L.geoJson(geojsonPoint, {
+ pointToLayer: L.mapbox.marker.style,
+    style: function(feature) { return feature.properties; }
+
+}).addTo(map);
+
+if (coords[0] > -74.3  && coords[0] < -73.65 && coords[1] < 40.95 && coords[1] >40.45 ) {
+	map.panTo(new L.LatLng(coords[1], coords[0]));}
+  }); 
+
+		var info = L.control({position: 'topright'});
+
+		info.onAdd = function (map) {
+			this._div = L.DomUtil.create('div', 'info');
+			this.update();
+			return this._div;
+		};
+
+		info.update = function (props) {
+			this._div.innerHTML =  '<h4>New York City Neighborhood</h4>' + (props ?
+				'<b>' + props.NTANAME + '</b><br><b>' + props.RCOUNT + ' Restaurants</b><br><b>' + props.NCOUNT + ' Nightlife Spots</b>'
+				//+ '</b><br />' + props.NTAName
+				: 'Hover over or click a neighborhood');
+		};
+
+	
+		var infooo = L.control({position: 'topright'});
+
+		infooo.onAdd = function (map) {
+			this._div = L.DomUtil.create('div', 'info');
+			this.update();
+			return this._div;
+		};
+
+		infooo.update = function (props) {
+			this._div.innerHTML =  '<h4>Venue in Neighborhood</h4>' + (props ?
+				'<b>' + props.NAME + '</b><br><b>Category: ' + props.SUBCATEGOR.replace("_","-") + '</b><br><b>Rating: ' + props.RATING
+				 //+  '</b><br><b>Review Number: ' + props.REVIEWNUM 
+				 + '</b><br><b>Phone: ' + props.PHONE
+				//+ '</b><br />' + props.NTAName
+				: 'Hover over a venue');
+		};
+
+		infooo.addTo(map);
+
+
+		// get color depending on population density value
+		function getColor(d) {
+			return d > 1000 ? '#084594' :
+			       d > 500  ? '#2171b5' :
+			       d > 200  ? '#4292c6' :
+			       d > 100  ? '#6baed6' :
+			       d > 50   ? '#9ecae1' :
+			       d > 20   ? '#c6dbef' :
+			       d > 10   ? '#deebf7' :
+			                  '#f7fbff';
+		}
+
+		function style(feature) {
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				//dashArray: '3',
+				fillOpacity: 0.7,
+				//fillColor: '#f7f7f7'
+				fillColor: getColor(feature.properties.RCOUNT + feature.properties.NCOUNT)
+			};
+		}
+
+		function lightFeature(e) {
+			var layer = e.target;
+
+			layer.setStyle({
+				weight: 2.5,
+				color: '#666',
+			});
+
+			if (!L.Browser.ie && !L.Browser.opera) {
+				layer.bringToFront();
+			}
+
+			info.update(layer.feature.properties);
+		}
+
+		var geojson;
+
+		function setHighlight(e) {
+			geojson.resetStyle(e.target);
+			info.update();
+		}
+
+		function zmToFeature(e) {
+			map.fitBounds(e.target.getBounds());
+		}
+
+		function EachFeature(feature, layer) {
+			layer.on({
+				mouseover: lightFeature,
+				mouseout: setHighlight,
+				click: zmToFeature
+			});
+		}
+
+		geojson = L.geoJson(manhattan, {
+			style: style,
+			onEachFeature: EachFeature
+		}).addTo(map);
+
+
+
+
+var colors = ["#fdbf6f", "#fb9a99", "#b15928", "#33a02c", "#1f78b4", "#e31a1c", "#ff7f00","#b2df8a",  "#cab2d6" ,"#6a3d9a" ,"#ffff99" , "#a6cee3"];
+
+
+var category = [];
+
+for (var i in yelpdata["features"]){
+    var term = yelpdata["features"][i].properties.SUBCATEGOR;
+    if (category.indexOf(yelpdata["features"][i].properties.SUBCATEGOR) > -1 ){
+      continue;
+    }
+    else{
+      category.push(yelpdata["features"][i].properties.SUBCATEGOR);
+    }
+}
+category = category.sort();
+var match = {};
+for (var i in category){
+  match[category[i]] = colors[i%12];
+}
+
+
+
+var featureLayer = L.mapbox.featureLayer(yelpdata, {
+
+})
+
+    .setFilter(function() { return false; })
+    .addTo(map);
+
+
+// Find and store a variable reference to the list of filters.
+var filters = document.getElementById('filters');
+
+
+  var typesObj = {}, types = [];
+  var features = featureLayer.getGeoJSON().features;
+  //var geoj = map.featureLayer.getGeoJSON();
+
+
+
+  for (var i = 0; i < features.length; i++) {
+    if (features[i].properties['SUBCATEGOR'] !=  null)
+    {typesObj[features[i].properties['SUBCATEGOR']] = true;}
+  }
+
+      var item = filters.appendChild(document.createElement('div'));
+   // var checkbox = item.appendChild(document.createElement('input'));
+    var label = item.appendChild(document.createElement('label'));
+   // checkbox.type = 'text';
+        label.innerHTML = '<strong>Select Categories</strong>';
+
+
+  for (var k in typesObj) types.push(k);
+
+  var checkboxes = [];
+    types = types.sort();
+  // Create a filter interface.
+  for (var i = 0; i < types.length; i++) {
+   // if (typeof types[i] == "null" || typeof types[i] == "undefined" || types[i] == null) {
+    //  continue;
+    //}
+
+    // Create an an input checkbox and label inside.
+    var item = filters.appendChild(document.createElement('div'));
+    var checkbox = item.appendChild(document.createElement('input'));
+    var label = item.appendChild(document.createElement('label'));
+    checkbox.type = 'checkbox';
+    checkbox.id = types[i];
+    checkbox.checked = false;
+    // create a label to the right of the checkbox with explanatory text
+    label.innerHTML = types[i].replace(/_/g, "-");
+    label.setAttribute('for', types[i]);
+    // Whenever a person clicks on this checkbox, call the update().
+    checkbox.addEventListener('change', update);
+    checkboxes.push(checkbox);
+  }
+
+  // This function is called whenever someone clicks on a checkbox and changes
+  // the selection of markers to be displayed.
+  function update() {
+    var enabled = {};
+    // Run through each checkbox and record whether it is checked. If it is,
+    // add it to the object of types to display, otherwise do not.
+    for (var i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
+    }
+  //  var num = Math.floor((Math.random()*13)+1)-1
+    featureLayer.setFilter(function(feature) {
+      return (feature.properties['SUBCATEGOR'] in enabled);
+    })
+            .eachLayer(function(marker) { 
+               var a = types.indexOf(marker.toGeoJSON().properties['SUBCATEGOR']);
+              // console.log(a, colors[a%12]);
+
+         marker.bindPopup('<strong>' + marker.toGeoJSON().properties['NAME'].replace(/<br>/g, "") + '<br \/>' + 'Rating: '+ marker.toGeoJSON().properties['RATING'] + '<br \/>' + 'Review No.: '+ marker.toGeoJSON().properties['REVIEWNUM'] +'<br \/>' + 'Tel: '+ marker.toGeoJSON().properties['PHONE'] + '</strong>');
+              marker.setIcon(L.mapbox.marker.icon({
+              //var a = types.indexOf(marker.toGeoJSON().properties['SUBCATEGOR']);
+
+              'marker-color': colors[a%12],
+                'marker-size': 'medium'
+            }));
+            
+            
+          });
+      featureLayer.on('mouseover', function(e) {
+    e.layer.openPopup();
+});
+featureLayer.on('mouseout', function(e) {
+    e.layer.closePopup();
+});
+
+ 
+  }
+//});
+
+
+    function lightFeat(e) {
+      var layer = e.target;
+
+      layer.setStyle({
+        weight: 2.5,
+        color: '#666',
+        //dashArray: '',
+        //fillOpacity: 0.7,
+        //fillColor: '#f7f7f7'
+      });
+
+      if (!L.Browser.ie && !L.Browser.opera) {
+        layer.bringToFront();
+      }
+
+ //     info.update(layer.feature.properties);
+    }
+
+  //  var geojson;
+
+    function setHigh(e) {
+      geojson.resetStyle(e.target);
+  //    info.update();
+    }
+
+    function zmToFeat(e) {
+      map.fitBounds(e.target.getBounds());
+    }
+
+
+
+    function highlightFeature(e) {
+      var layer = e.target;
+
+      layer.setStyle({
+        stroke: true,
+        weight: 1,
+        color: '#666',
+        //dashArray: '',
+        //fillOpacity: 0.7,
+        //fillColor: '#f7f7f7'
+      });
+
+      if (!L.Browser.ie && !L.Browser.opera) {
+        layer.bringToFront();
+      }
+	infooo.update(layer.feature.properties);
+    //  this.openPopup();
+    }
+
+
+    function resetHighlight(e) {
+      geojsonLayer.resetStyle(e.target);
+   infooo.update();
+   //   this.closePopup();
+    }
+
+    function onEachFeature(feature, layer) {
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight
+      });
+     // layer.bindPopup(feature.properties.NAME+ '<br>' + feature.properties.RATING);
+    }
+
+
+		map.attributionControl.addAttribution('Data &copy; <a href="http://www.compass.com/">Compass</a>, <a href="http://www.yelp.com/">Yelp</a>, <a href="http://www.nyc.gov/html/dcp/html/bytes/applbyte.shtml">NYCPLANNING</a>');
+
+		var legend = L.control({position: 'bottomright'});
+
+		legend.onAdd = function (map) {
+
+			var div = L.DomUtil.create('div', 'info legend'),
+				grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+				labels = ['<strong>Venues Count</strong>'],
+				from, to;
+
+			for (var i = 0; i < grades.length; i++) {
+				from = grades[i];
+				to = grades[i + 1];
+
+				labels.push(
+					'<i style="background:' + getColor(from + 1) + '"></i> ' +
+					from + (to ? '&ndash;' + to : '+'));
+			}
+
+			div.innerHTML = labels.join('<br>');
+			return div;
+		};
+
+	
+   legend.addTo(map);
+    info.addTo(map);
+    // infoo.addTo(map);	
+ //map.removeLayer(geojson);
+     map.removeLayer(featureLayer);
+     infooo.removeFrom(map);  
+
+      filters.style.display = 'none';
+map.on('zoomend', function () {
+if (map.getZoom() >= 13 && map.hasLayer(geojson)) {
+    map.removeLayer(geojson);
+    map.addLayer(featureLayer);
+    legend.removeFrom(map);
+    info.removeFrom(map);
+       // infooo.addTo(map);
+   //             infoooo.addTo(map);
+//infoo.removeFrom(map);
+ filters.style.display = 'block';
+
+}
+if (map.getZoom() < 13 && map.hasLayer(featureLayer))
+{
+
+    map.removeLayer(featureLayer);
+     map.addLayer(geojson);
+    legend.addTo(map);
+    info.addTo(map);
+   //  infoo.addTo(map);
+   //  infooo.removeFrom(map);   
+      filters.style.display = 'none';
+ //      infoooo.removeFrom(map);   
+}   
+}); 
+
+
+
+	</script>
+
+
+</body></html>

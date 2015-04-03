@@ -1,0 +1,141 @@
+<html>
+  <head>
+    <title>Blocks</title>
+    <style>
+
+html {
+  min-width: 1040px;
+}
+
+body {
+  font-family:  proxima-nova, sans-serif;
+  margin: 1em auto 4em auto;
+  position: relative;
+  tab-size: 2;
+  width: 960px;
+}
+
+
+h1 {
+  font-size: 64px;
+  font-weight: 300;
+  letter-spacing: -2px;
+  margin: .5em 0em 0.1em;
+  color: #555;
+}
+
+footer {
+  margin-top: 3em;
+  font-size: small;
+}
+
+header {
+  font-size: small;
+}
+
+a {
+  color: steelblue;
+}
+
+a:not(:hover) {
+  text-decoration: none;
+}
+
+a.gist {
+  background-position: 50% 0%;
+  border: solid 1px #eee;
+  border-bottom: solid 1px #ccc;
+  box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  display: inline-block;
+  float: left;
+  height: 80px;
+  line-height: normal;
+  margin: 0 10px 10px 0;
+  position: relative;
+  text-shadow: 1px 1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, -1px -1px 0 #fff;
+  transition: ease 750ms background-position;
+  -webkit-transition: ease 750ms background-position;
+  -moz-transition: ease 750ms background-position;
+  -ms-transition: ease 750ms background-position;
+  -o-transition: ease 750ms background-position;
+  width: 230px;
+}
+
+a.gist:nth-child(4n) {
+  margin-right: 0;
+}
+
+a.gist:hover,
+a.gist:focus {
+
+  background-position: 50% 100%;
+  text-decoration: none;
+}
+
+a.gist .description,
+a.gist .date {
+  position: absolute;
+  padding: 10px;
+  z-index: 2;
+}
+
+a.gist .description {
+  top: 0;
+  color: #000;
+}
+
+a.gist .date {
+  display: none;
+}
+
+a.gist:hover .description {
+  text-decoration: underline;
+}
+
+  </style>
+  </head>
+
+<header>
+  style &copy <a href="http://bl.ocks.org/">bl.ocks.org</a>
+</header>
+<h1>blocks</h1>
+<div class="gists">
+  <br clear="both">
+</div>
+<footer>
+   All rights reserved.
+</footer>
+  <body>
+  	<script src="files/d3.v3.min.js"></script>
+    <script>
+
+ var gists = [
+{id:"3dmodel", description:"Isle of Manhattan - 3D Interactive Model"},
+{id:"migration", description:"Migration Flows Between Top 50 MSAs 2008-2012"},
+{id:"dog", description:"New York City Dog Map"},
+{id:"yelp", description:"New York City Restaurants and Nightlife Spots Map"},
+{id:"case", description:"US 20-City Housing Market Indicators 2000-2014"},
+{id:"permit", description:"New York City Development Permit Map"},
+{id:"newdev", description:"New York City New Development Map"},
+{id:"pluto", description:"New York City Building Built Year Map"},
+ ]; 
+
+
+ var gistEnter = d3.select(".gists").selectAll(".gist")
+      .data(gists, function(d) { return d.id; })
+    .enter().insert("a", "br")
+      .attr("class", "gist")
+      .attr("href", function(d) { return "/" + d.id; })
+      .style("background-image", function(d) { return "url(/" + d.id + "/thumbnail.png)"; });
+
+  gistEnter.append("span")
+      .attr("class", "description")
+      .text(function(d) { return d.description || d.id; });
+
+  	</script>
+  </body>
+</html>

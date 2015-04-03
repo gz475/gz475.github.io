@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<title>US 20-City Housing Market Indicators 2000-2014</title>
+<meta charset="utf-8">
+<style> /* set the CSS */
+
+body { font: 12px proxima-nova, sans-serif;;}
+
+path { 
+    stroke-width: 2;
+    fill: none;
+}
+
+
+ #citymenu {
+          left: 170px;
+          position: absolute;
+          top: 10px;
+          font-size: 12px;
+        }
+
+ #indexmenu {
+          left: 40px;
+          position: absolute;
+          top: 10px;
+          font-size: 12px;
+        }
+
+
+.y.axis path {
+  display: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+
+</style>
+<body>
+
+
+<!-- load the d3.js library -->    
+ <select id = "citymenu"></select>
+ <select id = "indexmenu"></select>
+<script src="../files/d3.v3.min.js"></script>
+
+<script>
+
+
+d3.selection.prototype.moveToFront = function() {
+  return this.each(function(){
+    this.parentNode.appendChild(this);
+  });
+};
+
+function setSelectedIndex(s, valsearch)
+{
+// Loop through all the items in drop down list
+for (i = 0; i< s.options.length; i++)
+{ 
+if (s.options[i].value == valsearch)
+{
+// Item is found. Set its property and exit
+s.options[i].selected = true;
+break;
+}
+}
+return;
+}
+
+// Set the dimensions of the canvas / graph
+var margin = {top:25, right: 5, bottom: 20, left: 30},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+// Parse the date / time
+var parseDate = d3.time.format("%b , %Y").parse;
+var formatTime = d3.time.format("%b %Y");
+// Set the ranges
+var x = d3.time.scale().range([0, width]);
+var y = d3.scale.linear().range([height, 0]);
+
+var colors = ["#66c2a5", "#e78ac3", "#8da0cb", "#fc8d62"];
+// Define the axes
+var xAxis = d3.svg.axis().scale(x)
+    .orient("bottom").ticks(10);
+
+var yAxis = d3.svg.axis().scale(y)
+    .orient("left").ticks(5);
+
+// Define the line
+var valueline = d3.svg.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.csindex); })
+  //  .attr("opacity", 0);
+
+// Define the div for the tooltip
+// var notations = [
+// {date:"09/17/2005", notext:"Federal Reserve Board Chairman Alan Greenspan admits to their being “a little froth” observed in the housing market"},
+// {date:"09/15/2008", notext:"Lehman Brothers files for bankruptcy protection"},
+// {date:"10/03/2008", notext:"The Emergency Economic Stabilization Act is passed bailing out the US financial system"},
+// {date:"03/09/2009", notext:"Dow Jones hits lowest point in twelve years"},
+// {date:"06/01/2009", notext:"The US Bureau of Economic Research announces that the Great Recession is over"},
+// {date:"11/21/2012", notext:" Average US interest rate for 30-Yr FRM drops to 3.31% - the lowest point ever"},
+// {date:"10/29/2014", notext:"Fed announces the end of qualitative easing measures in US"}
+// ];
+// var no_parse = d3.time.format("%m/%d/%Y").parse;
+// var no_format = d3.time.format("%b %Y");
+
+// notations.forEach(function(d, i){
+// d.date = no_parse(d.date);
+
+// });
+
+
+var div = d3.select("body").append("div")   
+    .attr("class", "tooltip")               
+    .style("opacity", 0);
+// Adds the svg canvas
+var svg = d3.select("body")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform", 
+              "translate(" + margin.left + "," + margin.top + ")");
+
+var indexoptions  = [
+{name: "Prices"},
+{name: "Prices to Rents"},
+{name: "Prices to Income"}
+]
+var indexmenu = d3.select("#indexmenu");
+    //.on("change", change);
+
+indexmenu.selectAll("option")
+    .data(indexoptions)
+  .enter().append("option")
+    .text(function(d) { return d.name; });
+
+// Get the data
+
+var indexterm = "Prices";
+
+var currrent_color = colors[2];
+
+d3.csv(indexterm+".csv",  function(error, data) {
+
+ names = []
+ data.forEach(function(d) {
+ // console.log(d, term);
+        d.date = parseDate(d.date);
+      //  term = +d.Atlanta;
+        d.csindex = +Math.round(d.csindex*100)/100;
+        if (names.indexOf(d.city) == -1)
+{        names.push(d.city);}
+        //console.log(d.date);
+
+    });
+names.pop();
+color = d3.scale.category20b().domain(names);
+//console.log(color.range());
+
+var cityoptions = [];
+var dict = {'name': 'Select City'}
+cityoptions.push(dict);
+//cityoptions.push();
+for (var i =0; i<names.length; i++){
+
+var dict = {};
+dict["name"] = names[i];
+
+cityoptions.push(dict);
+}
+
+
+var menu = d3.select("#citymenu");
+    //.on("change", change);
+
+menu.selectAll("option")
+    .data(cityoptions)
+  .enter().append("option").transition()
+    .text(function(d) { return d.name; });
+
+    x.domain(d3.extent(data, function(d) { return d.date; }));
+     y.domain([d3.min(data, function(d) { return d.csindex; }) - 60, d3.max(data, function(d) { return d.csindex; }) + 60]);
+
+
+    var dataNest = d3.nest()
+        .key(function(d) {return d.city.replace(/ /g, "");})
+        .entries(data);
+
+    dataNest.forEach(function(d,i) { 
+
+        svg.append("path")
+            .attr("class", function(){ return "line " + d.key;})
+
+            .attr("id", function(){
+                return  'line' + d.key;
+            })
+            .attr("d", valueline(d.values))
+            .style("opacity", function(){
+              if(d.key == 'US') {return 1;} else {return 0;}
+            })
+            .attr("stroke", function(){
+                if (d.key == 'US') {return colors[2];} else{
+                  return colors[3];}
+            });
+
+});
+
+var data_dict = {};
+
+dataNest.forEach(function(d,i) { 
+data_dict[d.key] = [];
+var xterm = d.key;
+var data_list = [];
+d.values.forEach(function(d, i){
+data_list.push(d);
+data_dict[xterm] = data_list.slice(0);
+});
+});
+
+
+
+var y_max = 0;
+for (ix in data_dict){
+   var max = data_dict[ix][data_dict[ix].length - 1];
+    if (max.csindex > y_max){
+      y_max = max.csindex;
+    }
+}
+
+var yty_dict = {},
+mtm_dict = {},
+high_dict = {},
+low_dict = {};
+
+var max_yty = 0,
+max_mtm = 0,
+max_high = 0,
+max_low = 100,
+distance = 0;
+
+for (ix in data_dict){
+
+ yty_dict[ix] = [];
+ mtm_dict[ix] = [];
+ low_dict[ix] = 0;
+ high_dict[ix] = 0;
+ 
+    var current_high = 0,
+    current_low = 100,
+    current_yty = 0,
+    current_mtm = 0;
+
+    for  (var i =0; i< data_dict[ix].length ; i++){
+        if (i == 0 ){
+      mtm_dict[ix].push(0);
+
+        } else{
+          var diff = data_dict[ix][i].csindex- data_dict[ix][i-1].csindex;
+      mtm_dict[ix].push(   Math.round((diff/data_dict[ix][i-1].csindex*100)*10)/10);
+        }
+      if (i < 12){
+ yty_dict[ix].push(0);
+
+        } else{
+ var diff = data_dict[ix][i].csindex- data_dict[ix][i-12].csindex;
+      yty_dict[ix].push(   Math.round((diff/data_dict[ix][i-12].csindex*100)*10)/10);
+
+        }
+
+
+        if ( data_dict[ix][i].csindex> current_high){ current_high = data_dict[ix][i].csindex;}
+        if (data_dict[ix][i].csindex< current_low){ current_low = data_dict[ix][i].csindex;}
+
+    }
+
+  current_yty = Math.max(Math.max.apply(Math, yty_dict[ix]), -Math.min.apply(Math, yty_dict[ix]));
+    current_mtm = Math.max(Math.max.apply(Math, mtm_dict[ix]), -Math.min.apply(Math, mtm_dict[ix]));
+
+
+low_dict[ix] = current_low;
+ high_dict[ix] = current_high;
+current_distance = current_high - current_low;
+
+if (current_yty > max_yty) {max_yty = current_yty;}
+if (current_mtm > max_mtm) {max_mtm = current_mtm;}
+if (current_high> max_high){ max_high = current_high;}
+if (current_low< max_low){ max_low = current_low;}
+if (current_distance> distance){ distance = current_distance;}
+}
+
+
+current_data = data_dict["US"].slice(0);
+current_term = "US";
+
+// var line_ylocations = [];
+// var line_xlocations = [];
+
+// current_data.forEach(function(d, i){
+// for (var  i = 0; i < notations.length; i++){
+ 
+// if (d.date.getFullYear() === notations[i].date.getFullYear() && d.date.getMonth() === notations[i].date.getMonth())
+// { line_ylocations.push(y(d.csindex));
+// line_xlocations.push(x(d.date));
+// }
+// }
+// });
+
+// var newnotation = notations.slice(0, 7);
+// var ylocations = [80, 440, 50, 470, 20, 180, 500];
+// var xlocations = [];
+// var xadjust = [340 ,160 , 300 , 20, 140 ,190 , 190];
+// var yadjust = [ 20, 10 ,20 , -5, 40 , 20, 15];
+
+// svg.selectAll("notations")
+// //.transition()    
+//         .data(newnotation)   
+//     //    .transition()      
+//     .enter().append("foreignObject")
+//    // .style("opacity", 0.5)
+//     .attr("id", "notations")
+//  .attr("x", function(d, i){ 
+// xlocations.push(x(d.date));
+//   return x(d.date) - xadjust[i];})
+// .attr("y", function(d, i) { 
+//   return ylocations[i]})
+
+// .attr("width", 180).attr("height", 200).append("xhtml:span")
+// .style("font-weight", "lighter")
+// //.attr("text-anchor", "middle")
+// .html(function(d){ return "<font color = '#bdbdbd'>"+d.notext+"</font>"});
+
+// var numbers = [0, 1, 2, 4, 5, 6];
+// var shortadjust = [160, 20, 140, 0, 20,20];
+// var xshortlines = [];
+// var yshortlines = [];
+// for (var i = 0; i< numbers.length; i++){
+
+// svg.append("line")
+//      .attr("id", "notationlines")
+//          .style("stroke", "#969696")
+//          .style("stroke-width", 1)
+//          .style("opacity", 0.5)
+//          .attr("x1", line_xlocations[numbers[i]])
+//          .attr("x2", line_xlocations[numbers[i]] - shortadjust[i])
+//          .attr("y1", ylocations[numbers[i]] + yadjust[numbers[i]])
+//          .attr("y2", ylocations[numbers[i]] + yadjust[numbers[i]]);
+
+// }
+
+
+// for (var i = 0; i< notations.length; i++){
+
+// svg.append("line")
+//     .attr("id", "notationlines")
+//         .style("stroke", "#969696")
+//         .style("stroke-width", 1)
+//         .style("opacity", 0.5)
+//         .attr("x1", line_xlocations[i])
+//         .attr("x2", line_xlocations[i])
+//         .attr("y1", ylocations[i] + yadjust[i])
+//         .attr("y2", line_ylocations[i]);
+// }
+
+// d3.selectAll("#notations").moveToFront();
+
+ var focus = svg.append("g")
+ .style("display", "none");
+
+
+  var bisectDate = d3.bisector(function(d) { return d.date; }).left; // **
+
+ focus.append("line")
+        .attr("class", "x")
+        .style("stroke", currrent_color)
+        .style("stroke-width", 2)
+        .style("stroke-dasharray", "5,5")
+        .style("opacity", 1)
+        .attr("y1", 0)
+        .attr("y2", 130);
+
+  focus.append("text")
+            .attr("class", "a")
+            .style("font-size", 16)
+            .attr("fill", colors[2])
+            .style("stroke", colors[2])
+            .style("stroke-width", 1)
+            .attr("x", x(current_data[current_data.length - 1].date))
+            .attr("y", y(y_max)-10)
+            .style("text-anchor", "end")
+            .attr("opacity", 1);
+
+  focus.append("text")
+            .attr("class", "b")
+            .style("font-size", 16)
+            .attr("fill", colors[2])
+            .style("stroke", colors[2])
+            .style("stroke-width", 1)
+            .attr("x", x(current_data[current_data.length - 1].date))
+            .attr("y", y(y_max)-30)
+            .style("text-anchor", "end")
+            .attr("opacity", 1)
+            .text(current_term);
+
+svg.append("text")
+            .attr("class", "c")
+            .style("font-size", 16)
+            .attr("fill",  colors[3])
+            .style("stroke",  colors[3])
+            .style("stroke-width", 1)
+     .attr("x", x(current_data[current_data.length - 1].date))
+            .attr("y", y(y_max)-10)
+            .style("text-anchor", "end")
+            .attr("opacity", 0);
+
+svg.append("text")
+            .attr("class", "d")
+            .style("font-size", 16)
+            .attr("fill",  colors[3])
+           .style("stroke", colors[3])
+            .style("stroke-width", 1)
+                        .attr("x", x(current_data[current_data.length - 1].date))
+            .attr("y", y(y_max)-30)
+
+            .style("text-anchor", "end")
+            .attr("opacity", 0);
+
+var rectlabel = ["YoY", "MoM", "&#x0394 High", "&#x0394 Low"];
+rectlabel = rectlabel.reverse().slice(0);
+for(var i = 0; i < rectlabel.length; i++){
+svg.append("text")
+          //  .attr("class", "e")
+            .attr("x", x(current_data[current_data.length - 1].date)  )
+            .attr("y", y(y_max)-70 - 30*i)
+           // .style("fill", colors[3])
+            .style("text-anchor", "end")
+            .html(rectlabel[i]);
+
+
+svg.append("rect")
+      .attr("class", "bar b" + i)
+      .attr("fill", colors[1])
+      .attr("x", x(current_data[170].date) )
+      .attr("width", 0)//total 180
+      .attr("y", y(y_max) - 85 - i* 30)
+      .attr("height", 20);
+
+
+svg.append("text")
+      .attr("class", "bartext lb" + i)
+      .attr("fill", colors[1])
+      .style("font-size", 16)
+       .style("stroke", colors[1])
+           .style("stroke-width", 1)
+      .style("text-anchor", "end")
+      .attr("x", x(current_data[170].date) )
+      .attr("y",y(y_max)-70 - 30*i)
+      .text("");
+
+}
+svg.selectAll(".bar").filter(".b1").transition().attr("fill",colors[0]);
+svg.selectAll(".bartext").filter(".lb1").transition().attr("fill",colors[0]).style("stroke", colors[0]);
+
+fix_xlocation = x(current_data[170].date);
+
+   svg.append("rect")      
+        .attr("width", width)                              // **********
+        .attr("height", height)    
+        .style("fill", "none")                             // **********
+        .style("pointer-events", "all")                    // **********
+        .on("mouseover", function() { focus.style("display", null); })
+        .on("mouseout", function() { focus.style("display", "none"); 
+
+
+svg.selectAll(".bar").transition().attr("x", fix_xlocation).attr("width", 0);
+
+svg.selectAll(".bartext").transition().attr("x", fix_xlocation).style("text-anchor", "end").text();
+
+
+      })
+        .on("mousemove", mousemove);                       // **********
+
+    function mousemove() {        
+                             // **********
+        var x0 = x.invert(d3.mouse(this)[0]),              // **********
+            i = bisectDate(current_data, x0, 1),                   // **********
+            d0 = data[i - 1],                              // **********
+            d1 = data[i],                                  // **********
+            d = x0 - d0.date > d1.date - x0 ? d1 : d0;     // **********
+      //  console.log(current_data[i], i);
+
+
+
+        focus.select("line.x")                           // **********
+            .attr("transform",                             // **********
+                  "translate(" + x(current_data[i].date) + "," +         // **********
+                                 y(current_data[i].csindex) + ")")
+                                 .attr("y2", height - y(current_data[i].csindex));      
+
+focus.select("text.a")
+        .text(function(){
+          return formatTime(current_data[i].date);
+        });
+
+
+
+focus.select("text.b").transition()
+        .text(
+          function(){
+          return current_data[i].city;
+        });
+focus.select("text.a").transition()
+        .text(
+          function(){
+          return formatTime(current_data[i].date);
+        });
+
+
+
+
+
+svg.selectAll(".bar").filter(".b0").transition().attr("width", ( current_data[i].csindex-low_dict[current_data[i].city.replace(/ /g, "")])/distance*150).attr("x", fix_xlocation - ( current_data[i].csindex-low_dict[current_data[i].city.replace(/ /g, "")])/distance*150);
+
+svg.selectAll(".bartext").filter(".lb0").transition().text("+" + Math.round((current_data[i].csindex-low_dict[current_data[i].city.replace(/ /g, "")])/low_dict[current_data[i].city.replace(/ /g, "")]*100*1) /1 + "%").attr("x",fix_xlocation - ( current_data[i].csindex-low_dict[current_data[i].city.replace(/ /g, "")])/distance*150);
+
+svg.selectAll(".bar").filter(".b1").transition().attr("width", ( high_dict[current_data[i].city.replace(/ /g, "")] - current_data[i].csindex)/distance*150).attr("x", fix_xlocation - ( high_dict[current_data[i].city.replace(/ /g, "")] - current_data[i].csindex)/distance*150);
+
+ svg.selectAll(".bartext").filter(".lb1").transition().text("-" + Math.round((high_dict[current_data[i].city.replace(/ /g, "")] - current_data[i].csindex)/high_dict[current_data[i].city.replace(/ /g, "")]*100*1) /1 +"%" ).attr("x", fix_xlocation - ( high_dict[current_data[i].city.replace(/ /g, "")] - current_data[i].csindex)/distance*150);
+
+ var new_index = data_dict[current_data[i].city.replace(/ /g, "")].indexOf(current_data[i]);
+
+
+if (mtm_dict[current_data[i].city.replace(/ /g, "")][new_index] >= 0 ){
+  svg.selectAll(".bar").filter(".b2").transition().attr("fill",colors[1]).attr("width", (mtm_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation-  (mtm_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150);
+svg.selectAll(".bartext").filter(".lb2").transition().attr("fill",colors[1]).style("stroke", colors[1]).text("+" + mtm_dict[current_data[i].city.replace(/ /g, "")][new_index] + "%").attr("x", fix_xlocation-  (mtm_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150);
+} 
+else { 
+  svg.selectAll(".bar").filter(".b2").transition().attr("fill", colors[0]).attr("width", -(mtm_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation + (mtm_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150 );
+svg.selectAll(".bartext").filter(".lb2").transition().attr("fill",colors[0]).style("stroke",colors[0]).text( mtm_dict[current_data[i].city.replace(/ /g, "")][new_index] + "%").attr("x", fix_xlocation + (mtm_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150 );
+}
+
+
+ if (yty_dict[current_data[i].city.replace(/ /g, "")][new_index] >= 0 ){
+ svg.selectAll(".bar").filter(".b3").transition().attr("fill",colors[1]).attr("width", (yty_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation -  (yty_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150);
+svg.selectAll(".bartext").filter(".lb3").transition().attr("fill",colors[1]).style("stroke",colors[1]).text("+" + yty_dict[current_data[i].city.replace(/ /g, "")][new_index] + "%").attr("x",  fix_xlocation -  (yty_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150);
+} 
+else { 
+  svg.selectAll(".bar").filter(".b3").transition().attr("fill",colors[0]).attr("width", -(yty_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation + (yty_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150 );
+ svg.selectAll(".bartext").filter(".lb3").transition().attr("fill",colors[0]).style("stroke",colors[0]).text( yty_dict[current_data[i].city.replace(/ /g, "")][new_index] + "%").attr("x", fix_xlocation + (yty_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150  );
+  }
+
+                                   // **********
+    }           
+
+
+alldot = svg.selectAll("dot")
+//.transition()    
+        .data(data)   
+    //    .transition()      
+    .enter().append("circle")        
+ //   。transition()                       
+        .attr("r", 2.5)     
+        .style("cursor", "pointer")
+        .attr("class", function(d, i){return 'dot ' +d.city.replace(/ /g, "")
+            //else{  return   }
+                ;})
+       .attr("id", function(d, i) { return 'dot' +d.city.replace(/ /g, "");})  
+        .attr("cx", function(d) { return x(d.date); })       
+        .attr("cy", function(d) { return y(d.csindex); })    
+        .attr("fill", function(d, i){
+            if (d.city == 'US')
+            {return colors[2] } else 
+            { return '#ccc'}})
+        .on("mouseover", function(d) {    
+
+             d3.select(this).transition().attr("stroke", colors[3]).attr("fill", colors[3]);
+
+svg.select("text.d").transition()
+.attr("opacity", 1)
+        .text(
+          function(){
+          return d.city;
+        });
+svg.select("text.c").transition()
+.attr("opacity", 1)
+        .text(
+          function(){
+          return formatTime(d.date);
+        });
+
+
+svg.selectAll(".bar").filter(".b0").transition().attr("width", ( d.csindex-low_dict[d.city.replace(/ /g, "")])/distance*150).attr("x", fix_xlocation - ( d.csindex-low_dict[d.city.replace(/ /g, "")])/distance*150);
+
+svg.selectAll(".bartext").filter(".lb0").transition().text("+" + Math.round((d.csindex-low_dict[d.city.replace(/ /g, "")])/low_dict[d.city.replace(/ /g, "")]*100*1) /1 + "%").attr("x",fix_xlocation - ( d.csindex-low_dict[d.city.replace(/ /g, "")])/distance*150);
+
+svg.selectAll(".bar").filter(".b1").transition().attr("width", ( high_dict[d.city.replace(/ /g, "")] - d.csindex)/distance*150).attr("x", fix_xlocation - ( high_dict[d.city.replace(/ /g, "")] - d.csindex)/distance*150);
+
+ svg.selectAll(".bartext").filter(".lb1").transition().text("-" + Math.round((high_dict[d.city.replace(/ /g, "")] - d.csindex)/high_dict[d.city.replace(/ /g, "")]*100*1) /1 +"%" ).attr("x", fix_xlocation - ( high_dict[d.city.replace(/ /g, "")] - d.csindex)/distance*150);
+
+ var new_index = data_dict[d.city.replace(/ /g, "")].indexOf(d);
+
+
+if (mtm_dict[d.city.replace(/ /g, "")][new_index] >= 0 ){
+  svg.selectAll(".bar").filter(".b2").transition().attr("fill",colors[1]).attr("width", (mtm_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation-  (mtm_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150);
+svg.selectAll(".bartext").filter(".lb2").transition().attr("fill",colors[1]).style("stroke", colors[1]).text("+" + mtm_dict[d.city.replace(/ /g, "")][new_index] + "%").attr("x", fix_xlocation-  (mtm_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150);
+} 
+else { 
+  svg.selectAll(".bar").filter(".b2").transition().attr("fill", colors[0]).attr("width", -(mtm_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation + (mtm_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150 );
+svg.selectAll(".bartext").filter(".lb2").transition().attr("fill",colors[0]).style("stroke",colors[0]).text( mtm_dict[d.city.replace(/ /g, "")][new_index] + "%").attr("x", fix_xlocation + (mtm_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150 );
+}
+
+
+ if (yty_dict[d.city.replace(/ /g, "")][new_index] >= 0 ){
+ svg.selectAll(".bar").filter(".b3").transition().attr("fill",colors[1]).attr("width", (yty_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation -  (yty_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150);
+svg.selectAll(".bartext").filter(".lb3").transition().attr("fill",colors[1]).style("stroke",colors[1]).text("+" + yty_dict[d.city.replace(/ /g, "")][new_index] + "%").attr("x",  fix_xlocation -  (yty_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150);
+} 
+else { 
+  svg.selectAll(".bar").filter(".b3").transition().attr("fill",colors[0]).attr("width", -(yty_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation + (yty_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150 );
+ svg.selectAll(".bartext").filter(".lb3").transition().attr("fill",colors[0]).style("stroke",colors[0]).text( yty_dict[d.city.replace(/ /g, "")][new_index] + "%").attr("x", fix_xlocation + (yty_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150  );
+  }
+
+
+            })                  
+        .on("mouseout", function(d) {       
+
+
+svg.selectAll(".bar").transition().attr("x", x(current_data[170].date)).attr("width", 0);
+
+svg.selectAll(".bartext").transition().attr("x",x(current_data[170].date)).style("text-anchor", "end").text();
+
+svg.select("text.d").transition().attr("opacity", 0);
+ svg.select("text.c").transition().attr("opacity", 0);
+
+if  (d.city == 'US'){
+d3.select(this).transition().attr("stroke", "none").attr("fill", colors[2]);
+
+}
+else
+{
+if (d3.selectAll("#line"+ d.city.replace(/ /g, "")).style("opacity") == 1 ){
+d3.select(this).transition().attr("stroke", "none").attr("fill", colors[3]);
+
+}
+else{
+d3.select(this).transition().attr("stroke", "none").attr("fill", "#ccc");}
+
+}
+
+        })
+
+
+       .on("click", function(d){  
+
+if (d.city != 'US'){
+        if (d3.select("#line"+ d.city.replace(/ /g, "")).style("opacity") == 0)
+        {
+
+
+
+
+  d3.selectAll(".line").transition().style("opacity", 0);
+   //term = d3.select(this).attr("id") ;
+   d3.selectAll(".dot").transition().attr("fill", '#ccc');
+ d3.selectAll("#lineUS").transition().style("opacity", 1);
+ d3.selectAll("#dotUS").transition().attr("fill", colors[2]);
+d3.selectAll("#lineUS").moveToFront();
+d3.selectAll("#dotUS").moveToFront();
+
+d3.selectAll("#legend").transition().style("opacity", 1);
+d3.selectAll("#legend").style("fill", colors[3]).attr("stroke",colors[3] );
+
+var co = d3.select("#line"+ d.city.replace(/ /g, "")).style("stroke"); 
+
+   d3.selectAll("#line"+ d.city.replace(/ /g, "")).transition().style("opacity", 1);
+   //term = d3.select(this).attr("id") ;
+   d3.selectAll("#dot"+d.city.replace(/ /g, "")).transition().attr("fill", colors[3]);
+
+d3.select("line.x").transition().style( "stroke",colors[3]);
+d3.select("text.a").transition().style( "stroke",colors[3]).style("fill", colors[3]);
+d3.select("text.b").transition().style( "stroke",colors[3]).style("fill", colors[3]).text(d.city);
+
+
+current_data = data_dict[d.city.replace(/ /g, "")].slice(0);
+current_term = d.city;
+setSelectedIndex(document.getElementById("citymenu"), d.city);
+
+var sel = d3.selectAll("#line"+ d.city.replace(/ /g, ""));
+  sel.moveToFront();
+var sel = d3.selectAll("#dot"+d.city.replace(/ /g, ""));
+  sel.moveToFront();
+
+}
+
+   }
+        });
+
+
+ d3.selectAll("#lineUS").moveToFront();
+d3.selectAll("#dotUS").moveToFront();
+
+    // Add the X Axis
+    svg.append("g")
+   // .transition()
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    //Add the Y Axis
+    svg.append("g")
+   // .transition()
+        .attr("class", "y axis")
+        .call(yAxis);
+
+
+
+document.getElementById("citymenu").onchange = function() {
+
+var term = (this.value).replace(/ /g, "");
+//console.log(term);
+try{
+ if (d3.select("#line"+ term).style("opacity") == 0)
+        {
+
+  d3.selectAll(".line").transition().style("opacity", 0);
+   //term = d3.select(this).attr("id") ;
+   d3.selectAll(".dot").transition().attr("fill", '#ccc');
+   d3.selectAll("#lineUS").transition().style("opacity", 1);
+ d3.selectAll("#dotUS").transition().attr("fill", colors[2]);
+
+d3.selectAll("#legend").transition().style("opacity", 1);
+d3.selectAll("#legend").style("fill", colors[3]).attr("stroke",colors[3] );
+
+var sel = d3.selectAll("#US");
+  sel.moveToFront();
+var sel = d3.selectAll("#dotUS");
+  sel.moveToFront();
+
+   d3.selectAll("#line"+ term).transition().style("opacity", 1);
+   //term = d3.select(this).attr("id") ;
+   d3.selectAll("#dot"+term).transition().attr("fill", colors[3]);
+
+d3.select("line.x").transition().style( "stroke",colors[3]);
+d3.select("text.a").transition().style( "stroke",colors[3]).style("fill", colors[3]);
+d3.select("text.b").transition().style( "stroke",colors[3]).style("fill", colors[3]).text(this.value);
+
+current_data = data_dict[this.value.replace(/ /g, "")].slice(0);
+current_term = this.value;
+var sel = d3.selectAll("#line"+ term);
+  sel.moveToFront();
+var sel = d3.selectAll("#dot"+term);
+  sel.moveToFront();
+
+
+
+}}
+catch(err){
+
+if (term == 'SelectCity'){
+   // console.log(term);
+
+ d3.selectAll(".line").transition().style("opacity", 0);
+   //term = d3.select(this).attr("id") ;
+   d3.selectAll(".dot").transition().attr("fill", '#ccc');
+d3.selectAll("#lineUS").transition().style("opacity", 1);
+ d3.selectAll("#dotUS").transition().attr("fill", colors[2]);
+d3.selectAll("#legend").transition().style("opacity", 0);
+
+d3.select("line.x").transition().style( "stroke",colors[2]);
+d3.select("text.a").transition().style( "stroke",colors[2]).style("fill", colors[2]);
+d3.select("text.b").transition().style( "stroke",colors[2]).style("fill", colors[2]).text("US");
+
+current_data = data_dict["US"].slice(0);
+current_term = "US";
+var sel = d3.selectAll("#US");
+  sel.moveToFront();
+var sel = d3.selectAll("#dotUS");
+  sel.moveToFront();
+
+}}
+
+}
+
+svg.append("text")
+//.transition()
+    .attr("class", "xlabel")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height - 6)
+    .text("Year");
+
+});
+
+
+document.getElementById("indexmenu").onchange = function() {
+
+
+d3.selectAll("#notations").remove();
+d3.selectAll("#notationlines").remove();
+d3.selectAll("#legend").transition().style("opacity", 0);
+d3.selectAll(".line").remove();
+d3.selectAll("line.x").remove();
+d3.selectAll(".dot").remove();
+d3.selectAll(".axis").remove();
+setSelectedIndex(document.getElementById("citymenu"), "Select City");
+svg.select("text.b").remove();
+svg.select("text.a").remove();
+svg.select("text.d").remove();
+svg.select("text.c").remove();
+svg.select("text.ylabel").remove();
+svg.select("text.xlabel").remove();
+var indexterm = this.value;
+update(indexterm);
+
+}
+
+
+function update(indexterm){
+
+svg.selectAll(".bar").transition().attr("width", 0);
+svg.selectAll(".bartext").transition().text();
+
+svg.select("text.d").transition().attr("opacity", 0);
+svg.select("text.c").transition().attr("opacity", 0);
+
+d3.csv(indexterm+".csv",  function(error, data) {
+
+ data.forEach(function(d) {
+ // console.log(d, term);
+        d.date = parseDate(d.date);
+      //  term = +d.Atlanta;
+        d.csindex = +Math.round(d.csindex*100)/100;
+
+    });
+
+var cityoptions = [];
+var dict = {'name': 'Select City'}
+cityoptions.push(dict);
+//cityoptions.push();
+for (var i =0; i<names.length; i++){
+
+var dict = {};
+dict["name"] = names[i];
+
+cityoptions.push(dict);
+}
+
+
+var menu = d3.select("#citymenu");
+    //.on("change", change);
+
+menu.selectAll("option")
+    .data(cityoptions)
+  .enter().append("option").transition()
+    .text(function(d) { return d.name; });
+
+    x.domain(d3.extent(data, function(d) { return d.date; }));
+
+    if (indexterm === "Prices"){
+    y.domain([d3.min(data, function(d) { return d.csindex; }) - 60, d3.max(data, function(d) { return d.csindex; }) + 60]);
+}
+if (indexterm === "Prices to Rents"){
+ y.domain([d3.min(data, function(d) { return d.csindex; }) - 45, d3.max(data, function(d) { return d.csindex; }) + 45]);
+}
+  if (indexterm === "Prices to Income"){
+ y.domain([d3.min(data, function(d) { return d.csindex; }) - 50, d3.max(data, function(d) { return d.csindex; }) + 60]);
+  }
+
+    svg.append("g")
+    .transition()
+    .duration(300)
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    // Add the Y Axis
+    svg.append("g")
+    .transition()
+    .duration(300)
+        .attr("class", "y axis")
+        .call(yAxis);
+
+svg.append("text")
+.transition()
+.duration(300)
+    .attr("class", "xlabel")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height - 6)
+    .text("Year");
+
+    var dataNest = d3.nest()
+        .key(function(d) {return d.city.replace(/ /g, "");})
+        .entries(data);
+
+    dataNest.forEach(function(d,i) { 
+
+        svg.append("path")
+            .attr("class", function(){ return "line " + d.key;})
+            .attr("id", function(){
+                return  'line' + d.key;
+            //  }
+            })
+            .attr("d", valueline(d.values))
+            .style("opacity", function(){
+              if(d.key == 'US') {return 1;} else {return 0;}
+            })
+            .attr("stroke", function(){
+                if (d.key == 'US') {return colors[2];} else{
+//console.log(colors[3], i);
+                  return colors[3];}
+            });
+
+});
+
+var data_dict = {};
+
+dataNest.forEach(function(d,i) { 
+data_dict[d.key] = [];
+var xterm = d.key;
+var data_list = [];
+d.values.forEach(function(d, i){
+data_list.push(d);
+data_dict[xterm] = data_list.slice(0);
+});
+});
+
+
+
+var y_max = 0;
+for (ix in data_dict){
+   var max = data_dict[ix][data_dict[ix].length - 1];
+    if (max.csindex > y_max){
+      //console.log(data_dict[ix][ix.length - 1].csindex );
+      y_max = max.csindex;
+    }
+}
+
+// calculate var ranges
+var yty_dict = {},
+mtm_dict = {},
+high_dict = {},
+low_dict = {};
+
+var max_yty = 0,
+max_mtm = 0,
+max_high = 0,
+max_low = 100,
+distance = 0;
+
+for (ix in data_dict){
+
+ yty_dict[ix] = [];
+ mtm_dict[ix] = [];
+ low_dict[ix] = 0;
+ high_dict[ix] = 0;
+ 
+    var current_high = 0,
+    current_low = 100,
+    current_yty = 0,
+    current_mtm = 0;
+
+    for  (var i =0; i< data_dict[ix].length ; i++){
+        if (i == 0 ){
+      mtm_dict[ix].push(0);
+
+        } else{
+          var diff = data_dict[ix][i].csindex- data_dict[ix][i-1].csindex;
+             mtm_dict[ix].push(   Math.round((diff/data_dict[ix][i-1].csindex*100)*10)/10);
+        }
+      if (i < 12){
+ yty_dict[ix].push(0);
+
+        } else{
+ var diff = data_dict[ix][i].csindex- data_dict[ix][i-12].csindex;
+      yty_dict[ix].push(   Math.round((diff/data_dict[ix][i-12].csindex*100)*10)/10);
+
+        }
+
+
+        if ( data_dict[ix][i].csindex> current_high){ current_high = data_dict[ix][i].csindex;}
+        if (data_dict[ix][i].csindex< current_low){ current_low = data_dict[ix][i].csindex;}
+
+    }
+
+  current_yty = Math.max(Math.max.apply(Math, yty_dict[ix]), -Math.min.apply(Math, yty_dict[ix]));
+    current_mtm = Math.max(Math.max.apply(Math, mtm_dict[ix]), -Math.min.apply(Math, mtm_dict[ix]));
+
+
+low_dict[ix] = current_low;
+ high_dict[ix] = current_high;
+current_distance = current_high - current_low;
+
+if (current_yty > max_yty) {max_yty = current_yty;}
+if (current_mtm > max_mtm) {max_mtm = current_mtm;}
+if (current_high> max_high){ max_high = current_high;}
+if (current_low< max_low){ max_low = current_low;}
+if (current_distance> distance){ distance = current_distance;}
+}
+
+
+current_data = data_dict["US"].slice(0);
+current_term = "US";
+// add notations
+
+// var line_ylocations = [];
+// var line_xlocations = [];
+
+// current_data.forEach(function(d, i){
+// for (var  i = 0; i < notations.length; i++){
+//   //console.log(d.date);
+// if (d.date.getFullYear() === notations[i].date.getFullYear() && d.date.getMonth() === notations[i].date.getMonth())
+// { line_ylocations.push(y(d.csindex));
+// line_xlocations.push(x(d.date));
+// }
+// }
+// });
+
+// //console.log(line_ylocations);
+// //
+// var ylocations = [80, 440, 50, 470, 20, 180, 500];
+// var xlocations = [];
+// var xadjust = [340 ,160 , 300 , 20, 140 ,190 , 190];
+// var yadjust = [ 20, 10 ,20 , -5, 40 , 20, 15];
+
+
+// var newnotation = notations.slice(0, 7);
+// if (indexterm == "Prices to Income"){ 
+//  //console.log(indexterm);
+//    newnotation = notations.slice(0, 6);
+//    ylocations = [80, 440, 50, 470, 20, 180, 500];}
+
+// svg.selectAll("notations")
+// //.transition()    
+//         .data(newnotation)   
+//     //    .transition()      
+//     .enter().append("foreignObject")
+//    // .style("opacity", 0.5)
+//     .attr("id", "notations")
+//  .attr("x", function(d, i){ 
+// xlocations.push(x(d.date));
+//   return x(d.date) - xadjust[i];})
+// .attr("y", function(d, i) { 
+//   return ylocations[i]})
+
+// .attr("width", 180).attr("height", 200).append("xhtml:span")
+
+// .style("font-weight", "lighter")
+// //.attr("text-anchor", "middle")
+// .html(function(d){ return "<font color = '#bdbdbd'>"+d.notext+"</font>"});
+
+// var numbers = [0, 1, 2, 4, 5, 6];
+// var shortadjust = [160, 20, 140, 0, 20,20];
+// var xshortlines = [];
+// var yshortlines = [];
+// if (indexterm == "Prices to Income"){ 
+//  //console.log(indexterm);
+//    numbers = numbers.slice(0, 6);}
+
+// for (var i = 0; i< numbers.length; i++){
+
+// svg.append("line")
+//      .attr("id", "notationlines")
+//          .style("stroke", "#969696")
+//          .style("stroke-width", 1)
+//          .style("opacity", 0.5)
+//          .attr("x1", line_xlocations[numbers[i]])
+//          .attr("x2", line_xlocations[numbers[i]] - shortadjust[i])
+//          .attr("y1", ylocations[numbers[i]] + yadjust[numbers[i]])
+//          .attr("y2", ylocations[numbers[i]] + yadjust[numbers[i]]);
+
+// }
+
+
+// for (var i = 0; i< newnotation.length; i++){
+
+// svg.append("line")
+//     .attr("id", "notationlines")
+//         .style("stroke", "#969696")
+//         .style("stroke-width", 1)
+//         .style("opacity", 0.5)
+//         .attr("x1", line_xlocations[i])
+//         .attr("x2", line_xlocations[i])
+//         .attr("y1", ylocations[i] + yadjust[i])
+//         .attr("y2", line_ylocations[i]);
+// }
+
+
+// d3.selectAll("#notations").moveToFront();
+
+ var focus = svg.append("g")
+ .style("display", "none");
+
+
+  var bisectDate = d3.bisector(function(d) { return d.date; }).left; // **
+
+ focus.append("line")
+        .attr("class", "x")
+        .style("stroke", currrent_color)
+        .style("stroke-width", 2)
+        .style("stroke-dasharray", "5,5")
+        .style("opacity", 1)
+        .attr("y1", 0)
+        .attr("y2", 130);
+
+  focus.append("text")
+            .attr("class", "a")
+            .style("font-size", 16)
+            .attr("fill", colors[2])
+            .style("stroke", colors[2])
+            .style("stroke-width", 1)
+            .attr("x", x(current_data[current_data.length - 1].date))
+            .attr("y", y(y_max)-10)
+            .style("text-anchor", "end")
+            .attr("opacity", 1);
+
+  focus.append("text")
+            .attr("class", "b")
+            .style("font-size", 16)
+            .attr("fill", colors[2])
+            .style("stroke", colors[2])
+            .style("stroke-width", 1)
+            .attr("x", x(current_data[current_data.length - 1].date))
+            .attr("y", y(y_max)-30)
+            .style("text-anchor", "end")
+            .attr("opacity", 1)
+            .text(current_term);
+
+
+svg.append("text")
+            .attr("class", "e")
+            .style("font-size", 16)
+            .attr("fill", colors[2])
+            .style("stroke", colors[2])
+            .style("stroke-width", 1)
+            .attr("x", x(current_data[current_data.length - 1].date))
+            .attr("y", y(y_max)-10)
+            .style("text-anchor", "end")
+            .attr("opacity", 0);
+
+   svg.append("rect")      
+       // .data(current_data)                               // **********
+        .attr("width", width)                              // **********
+        .attr("height", height)    
+      //  .attr("id", function(d, i){console.log(d, i);})                        // **********
+        .style("fill", "none")                             // **********
+        .style("pointer-events", "all")                    // **********
+        .on("mouseover", function() { focus.style("display", null); })
+        .on("mouseout", function() { focus.style("display", "none"); 
+
+
+svg.selectAll(".bar").transition().attr("x", fix_xlocation).attr("width", 0);
+
+svg.selectAll(".bartext").transition().attr("x", fix_xlocation).style("text-anchor", "end").text();
+
+
+      })
+        .on("mousemove", mousemove);                       // **********
+
+    function mousemove() {        
+                             // **********
+        var x0 = x.invert(d3.mouse(this)[0]),              // **********
+            i = bisectDate(current_data, x0, 1),                   // **********
+            d0 = data[i - 1],                              // **********
+            d1 = data[i],                                  // **********
+            d = x0 - d0.date > d1.date - x0 ? d1 : d0;     // **********
+      //  console.log(current_data[i], i);
+
+
+
+        focus.select("line.x")                           // **********
+            .attr("transform",                             // **********
+                  "translate(" + x(current_data[i].date) + "," +         // **********
+                                 y(current_data[i].csindex) + ")")
+                                 .attr("y2", height - y(current_data[i].csindex));      
+
+focus.select("text.a")
+        .text(function(){
+          return formatTime(current_data[i].date);
+        });
+
+
+
+focus.select("text.b").transition()
+        .text(
+          function(){
+          return current_data[i].city;
+        });
+focus.select("text.a").transition()
+
+        .text(
+          function(){
+          return formatTime(current_data[i].date);
+        });
+
+
+svg.selectAll(".bar").filter(".b0").transition().attr("width", ( current_data[i].csindex-low_dict[current_data[i].city.replace(/ /g, "")])/distance*150).attr("x", fix_xlocation - ( current_data[i].csindex-low_dict[current_data[i].city.replace(/ /g, "")])/distance*150);
+
+svg.selectAll(".bartext").filter(".lb0").transition().text("+" + Math.round((current_data[i].csindex-low_dict[current_data[i].city.replace(/ /g, "")])/low_dict[current_data[i].city.replace(/ /g, "")]*100*1) /1 + "%").attr("x",fix_xlocation - ( current_data[i].csindex-low_dict[current_data[i].city.replace(/ /g, "")])/distance*150);
+
+svg.selectAll(".bar").filter(".b1").transition().attr("width", ( high_dict[current_data[i].city.replace(/ /g, "")] - current_data[i].csindex)/distance*150).attr("x", fix_xlocation - ( high_dict[current_data[i].city.replace(/ /g, "")] - current_data[i].csindex)/distance*150);
+
+ svg.selectAll(".bartext").filter(".lb1").transition().text("-" + Math.round((high_dict[current_data[i].city.replace(/ /g, "")] - current_data[i].csindex)/high_dict[current_data[i].city.replace(/ /g, "")]*100*1) /1 +"%" ).attr("x", fix_xlocation - ( high_dict[current_data[i].city.replace(/ /g, "")] - current_data[i].csindex)/distance*150);
+
+ var new_index = data_dict[current_data[i].city.replace(/ /g, "")].indexOf(current_data[i]);
+
+
+if (mtm_dict[current_data[i].city.replace(/ /g, "")][new_index] >= 0 ){
+  svg.selectAll(".bar").filter(".b2").transition().attr("fill",colors[1]).attr("width", (mtm_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation-  (mtm_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150);
+svg.selectAll(".bartext").filter(".lb2").transition().attr("fill",colors[1]).style("stroke", colors[1]).text("+" + mtm_dict[current_data[i].city.replace(/ /g, "")][new_index] + "%").attr("x", fix_xlocation-  (mtm_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150);
+} 
+else { 
+  svg.selectAll(".bar").filter(".b2").transition().attr("fill", colors[0]).attr("width", -(mtm_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation + (mtm_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150 );
+svg.selectAll(".bartext").filter(".lb2").transition().attr("fill",colors[0]).style("stroke",colors[0]).text( mtm_dict[current_data[i].city.replace(/ /g, "")][new_index] + "%").attr("x", fix_xlocation + (mtm_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150 );
+}
+
+
+ if (yty_dict[current_data[i].city.replace(/ /g, "")][new_index] >= 0 ){
+ svg.selectAll(".bar").filter(".b3").transition().attr("fill",colors[1]).attr("width", (yty_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation -  (yty_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150);
+svg.selectAll(".bartext").filter(".lb3").transition().attr("fill",colors[1]).style("stroke",colors[1]).text("+" + yty_dict[current_data[i].city.replace(/ /g, "")][new_index] + "%").attr("x",  fix_xlocation -  (yty_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150);
+} 
+else { 
+  svg.selectAll(".bar").filter(".b3").transition().attr("fill",colors[0]).attr("width", -(yty_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation + (yty_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150 );
+ svg.selectAll(".bartext").filter(".lb3").transition().attr("fill",colors[0]).style("stroke",colors[0]).text( yty_dict[current_data[i].city.replace(/ /g, "")][new_index] + "%").attr("x", fix_xlocation + (yty_dict[current_data[i].city.replace(/ /g, "")][new_index])/max_yty*150  );
+  }
+    }           
+
+svg.append("text")
+            .attr("class", "c")
+            .style("font-size", 16)
+            .attr("fill",  colors[3])
+            .style("stroke",  colors[3])
+            .style("stroke-width", 1)
+     .attr("x", x(current_data[current_data.length - 1].date))
+            .attr("y", y(y_max)-10)
+            .style("text-anchor", "end")
+            .attr("opacity", 0);
+
+svg.append("text")
+            .attr("class", "d")
+            .style("font-size", 16)
+            .attr("fill",  colors[3])
+           .style("stroke", colors[3])
+            .style("stroke-width", 1)
+                        .attr("x", x(current_data[current_data.length - 1].date))
+            .attr("y", y(y_max)-30)
+
+            .style("text-anchor", "end")
+            .attr("opacity", 0);
+
+alldot = svg.selectAll("dot")
+//.transition()    
+        .data(data)   
+    //    .transition()      
+    .enter().append("circle")        
+ //   。transition()                       
+        .attr("r", 2.5)     
+        .style("cursor", "pointer")
+        .attr("class", function(d, i){return 'dot ' +d.city.replace(/ /g, "")
+            //else{  return   }
+                ;})
+       .attr("id", function(d, i) { return 'dot' +d.city.replace(/ /g, "");})  
+        .attr("cx", function(d) { return x(d.date); })       
+        .attr("cy", function(d) { return y(d.csindex); })    
+        .attr("fill", function(d, i){
+            if (d.city == 'US')
+            {return colors[2] } else 
+            { return '#ccc'}})
+        .on("mouseover", function(d) {       
+
+             d3.select(this).transition().attr("stroke", colors[3]).attr("fill", colors[3]);
+
+svg.select("text.d").transition()
+.attr("opacity", 1)
+        .text(
+          function(){
+          return d.city;
+        });
+svg.select("text.c").transition()
+.attr("opacity", 1)
+
+        .text(
+          function(){
+          return formatTime(d.date);
+        });
+
+svg.selectAll(".bar").filter(".b0").transition().attr("width", ( d.csindex-low_dict[d.city.replace(/ /g, "")])/distance*150).attr("x", fix_xlocation - ( d.csindex-low_dict[d.city.replace(/ /g, "")])/distance*150);
+
+svg.selectAll(".bartext").filter(".lb0").transition().text("+" + Math.round((d.csindex-low_dict[d.city.replace(/ /g, "")])/low_dict[d.city.replace(/ /g, "")]*100*1) /1 + "%").attr("x",fix_xlocation - ( d.csindex-low_dict[d.city.replace(/ /g, "")])/distance*150);
+
+svg.selectAll(".bar").filter(".b1").transition().attr("width", ( high_dict[d.city.replace(/ /g, "")] - d.csindex)/distance*150).attr("x", fix_xlocation - ( high_dict[d.city.replace(/ /g, "")] - d.csindex)/distance*150);
+
+ svg.selectAll(".bartext").filter(".lb1").transition().text("-" + Math.round((high_dict[d.city.replace(/ /g, "")] - d.csindex)/high_dict[d.city.replace(/ /g, "")]*100*1) /1 +"%" ).attr("x", fix_xlocation - ( high_dict[d.city.replace(/ /g, "")] - d.csindex)/distance*150);
+
+ var new_index = data_dict[d.city.replace(/ /g, "")].indexOf(d);
+
+
+if (mtm_dict[d.city.replace(/ /g, "")][new_index] >= 0 ){
+  svg.selectAll(".bar").filter(".b2").transition().attr("fill",colors[1]).attr("width", (mtm_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation-  (mtm_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150);
+svg.selectAll(".bartext").filter(".lb2").transition().attr("fill",colors[1]).style("stroke", colors[1]).text("+" + mtm_dict[d.city.replace(/ /g, "")][new_index] + "%").attr("x", fix_xlocation-  (mtm_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150);
+} 
+else { 
+  svg.selectAll(".bar").filter(".b2").transition().attr("fill", colors[0]).attr("width", -(mtm_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation + (mtm_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150 );
+svg.selectAll(".bartext").filter(".lb2").transition().attr("fill",colors[0]).style("stroke",colors[0]).text( mtm_dict[d.city.replace(/ /g, "")][new_index] + "%").attr("x", fix_xlocation + (mtm_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150 );
+}
+
+
+ if (yty_dict[d.city.replace(/ /g, "")][new_index] >= 0 ){
+ svg.selectAll(".bar").filter(".b3").transition().attr("fill",colors[1]).attr("width", (yty_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation -  (yty_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150);
+svg.selectAll(".bartext").filter(".lb3").transition().attr("fill",colors[1]).style("stroke",colors[1]).text("+" + yty_dict[d.city.replace(/ /g, "")][new_index] + "%").attr("x",  fix_xlocation -  (yty_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150);
+} 
+else { 
+  svg.selectAll(".bar").filter(".b3").transition().attr("fill",colors[0]).attr("width", -(yty_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150).attr("x", fix_xlocation + (yty_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150 );
+ svg.selectAll(".bartext").filter(".lb3").transition().attr("fill",colors[0]).style("stroke",colors[0]).text( yty_dict[d.city.replace(/ /g, "")][new_index] + "%").attr("x", fix_xlocation + (yty_dict[d.city.replace(/ /g, "")][new_index])/max_yty*150  );
+  }
+
+
+            })                  
+        .on("mouseout", function(d) {       
+
+svg.selectAll(".bar").transition().attr("x", fix_xlocation).attr("width", 0);
+
+svg.selectAll(".bartext").transition().attr("x",fix_xlocation).style("text-anchor", "end").text();
+
+svg.select("text.d").transition().attr("opacity", 0);
+ svg.select("text.c").transition().attr("opacity", 0);
+
+if  (d.city == 'US'){
+d3.select(this).transition().attr("stroke", "none").attr("fill", colors[2]);
+
+}
+else
+{
+if (d3.selectAll("#line"+ d.city.replace(/ /g, "")).style("opacity") == 1 ){
+d3.select(this).transition().attr("stroke", "none").attr("fill", colors[3]);
+
+}
+else{
+d3.select(this).transition().attr("stroke", "none").attr("fill", "#ccc");}
+
+}
+        })
+
+
+       .on("click", function(d){  
+
+
+if (d.city != 'US'){
+        if (d3.select("#line"+ d.city.replace(/ /g, "")).style("opacity") == 0)
+        {
+
+
+
+
+  d3.selectAll(".line").transition().style("opacity", 0);
+   //term = d3.select(this).attr("id") ;
+   d3.selectAll(".dot").transition().attr("fill", '#ccc');
+ d3.selectAll("#lineUS").transition().style("opacity", 1);
+ d3.selectAll("#dotUS").transition().attr("fill", colors[2]);
+d3.selectAll("#lineUS").moveToFront();
+d3.selectAll("#dotUS").moveToFront();
+
+d3.selectAll("#legend").transition().style("opacity", 1);
+d3.selectAll("#legend").style("fill", colors[3]).attr("stroke",colors[3] );
+
+var co = d3.select("#line"+ d.city.replace(/ /g, "")).style("stroke"); 
+
+   d3.selectAll("#line"+ d.city.replace(/ /g, "")).transition().style("opacity", 1);
+   //term = d3.select(this).attr("id") ;
+   d3.selectAll("#dot"+d.city.replace(/ /g, "")).transition().attr("fill", colors[3]);
+
+d3.select("line.x").transition().style( "stroke",colors[3]);
+d3.select("text.a").transition().style( "stroke",colors[3]).style("fill", colors[3]);
+d3.select("text.b").transition().style( "stroke",colors[3]).style("fill", colors[3]).text(d.city);
+
+
+current_data = data_dict[d.city.replace(/ /g, "")].slice(0);
+current_term = d.city;
+setSelectedIndex(document.getElementById("citymenu"), d.city);
+
+var sel = d3.selectAll("#line"+ d.city.replace(/ /g, ""));
+  sel.moveToFront();
+var sel = d3.selectAll("#dot"+d.city.replace(/ /g, ""));
+  sel.moveToFront();
+
+}
+   }
+        });
+
+
+ d3.selectAll("#lineUS").moveToFront();
+d3.selectAll("#dotUS").moveToFront();
+
+    // Add the X Axis
+    svg.append("g")
+   // .transition()
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+document.getElementById("citymenu").onchange = function() {
+
+var term = (this.value).replace(/ /g, "");
+//console.log(term);
+try{
+ if (d3.select("#line"+ term).style("opacity") == 0)
+        {
+
+  d3.selectAll(".line").transition().style("opacity", 0);
+   //term = d3.select(this).attr("id") ;
+   d3.selectAll(".dot").transition().attr("fill", '#ccc');
+   d3.selectAll("#lineUS").transition().style("opacity", 1);
+ d3.selectAll("#dotUS").transition().attr("fill", colors[2]);
+
+d3.selectAll("#legend").transition().style("opacity", 1);
+d3.selectAll("#legend").style("fill", colors[3]).attr("stroke",colors[3] );
+
+var sel = d3.selectAll("#US");
+  sel.moveToFront();
+var sel = d3.selectAll("#dotUS");
+  sel.moveToFront();
+
+   d3.selectAll("#line"+ term).transition().style("opacity", 1);
+   //term = d3.select(this).attr("id") ;
+   d3.selectAll("#dot"+term).transition().attr("fill", colors[3]);
+
+d3.select("line.x").transition().style( "stroke",colors[3]);
+d3.select("text.a").transition().style( "stroke",colors[3]).style("fill", colors[3]);
+d3.select("text.b").transition().style( "stroke",colors[3]).style("fill", colors[3]).text(this.value);
+
+current_data = data_dict[this.value.replace(/ /g, "")].slice(0);
+current_term = this.value;
+var sel = d3.selectAll("#line"+ term);
+  sel.moveToFront();
+var sel = d3.selectAll("#dot"+term);
+  sel.moveToFront();
+
+
+
+}}
+catch(err){
+
+if (term == 'SelectCity'){
+   // console.log(term);
+
+ d3.selectAll(".line").transition().style("opacity", 0);
+   //term = d3.select(this).attr("id") ;
+   d3.selectAll(".dot").transition().attr("fill", '#ccc');
+d3.selectAll("#lineUS").transition().style("opacity", 1);
+ d3.selectAll("#dotUS").transition().attr("fill", colors[2]);
+d3.selectAll("#legend").transition().style("opacity", 0);
+
+d3.select("line.x").transition().style( "stroke",colors[2]);
+d3.select("text.a").transition().style( "stroke",colors[2]).style("fill", colors[2]);
+d3.select("text.b").transition().style( "stroke",colors[2]).style("fill", colors[2]).text("US");
+
+current_data = data_dict["US"].slice(0);
+current_term = "US";
+var sel = d3.selectAll("#US");
+  sel.moveToFront();
+var sel = d3.selectAll("#dotUS");
+  sel.moveToFront();
+
+}}
+
+}
+
+
+});
+
+}
+
+</script>
+</body>

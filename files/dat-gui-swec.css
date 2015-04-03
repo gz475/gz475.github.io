@@ -1,0 +1,74 @@
+
+.dg {
+        
+       color: black;
+       font: 12px proxima-nova, sans-serif;
+
+} 
+.dg.main .close-button {
+      
+       background: none;
+     border-bottom: 1px solid black;
+     border-left: 1px solid black;
+     border-right: 1px solid black;
+
+       color: black;
+       height: 27px;
+       line-height: 27px;
+       text-align: center;
+       text-shadow: 0px 0 0 white;
+
+} 
+.dg.main .close-button:hover {
+      
+              background: none;
+                     color: darkblue;
+}
+.dg li.cr {
+       background: none;
+border: 0px solid black;
+
+       color: black;
+       height: 27px;
+       line-height: 27px;
+       text-align: left;
+       text-shadow: 0px 0 0 white;
+
+} 
+.dg li.cr:hover {
+       background: white;
+       color: darkblue;
+}
+
+
+.dg .cr.function:hover {
+       background: none;
+       
+} 
+
+
+.dg .c input[type=text] {
+       background: none;
+        color: black;
+
+} 
+
+.dg .c input[type=text]:hover {
+       background: none;
+
+} 
+
+.dg .c input[type=text]:active {
+       background: none;
+       color: black;
+       outline-color: lightblue;
+       outline-style: solid;
+       outline-width: 0px
+} 
+.dg .c input[type=text]:focus {
+       background: none;
+       color: black;
+       outline-color: lightblue;
+       outline-style: solid;
+       outline-width: 0px
+} 

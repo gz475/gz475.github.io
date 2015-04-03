@@ -1,0 +1,214 @@
+<html>
+  <head>
+    <title>New York City Restaurants and Nightlife Spots Map</title>
+    <style>
+html {
+  min-width: 1040px;
+}
+
+body {
+  font-family: proxima-nova, sans-serif;
+  margin: 1em auto 4em auto;
+  position: relative;
+  tab-size: 2;
+  width: 960px;
+}
+
+h1 {
+  font-size: 64px;
+  font-weight: 300;
+  letter-spacing: -2px;
+  margin: .3em 0 .1em 0;
+}
+
+h2 {
+  margin-top: 2em;
+}
+
+h1, h2 {
+  text-rendering: optimizeLegibility;
+}
+
+h2 a {
+  color: #ccc;
+  left: -20px;
+  position: absolute;
+  width: 740px;
+}
+
+.date {
+  color: #aaa;
+  margin-left: 1em;
+}
+
+footer {
+  margin-top: 3em;
+  /*margin-left: 0em;*/
+}
+
+aside {
+  font-size: small;
+  left: 780px;
+  position: absolute;
+  text-align: right;
+  width: 180px;
+}
+
+p {
+  line-height: 1.5em;
+  width: 720px;
+}
+
+blockquote {
+  width: 640px;
+}
+
+li {
+  width: 680px;
+}
+
+a {
+  color: steelblue;
+}
+
+a:not(:hover) {
+  text-decoration: none;
+}
+
+pre, code, textarea {
+  font-family: proxima-nova, sans-serif;
+  line-height: normal;
+}
+
+textarea {
+  font-size: 100%;
+}
+
+pre {
+  border-left: solid 2px #ccc;
+  padding-left: 18px;
+  margin: 2em 0 2em -20px;
+  width: 960px;
+  overflow-x: auto;
+}
+
+iframe {
+  width: 960px;
+  height: 500px;
+  border: 1px solid #DEDEDE;
+  margin-bottom: .5em;
+}
+
+
+.html .value,
+.javascript .string,
+.javascript .regexp {
+  color: #756bb1;
+}
+
+.html .tag,
+.css .tag,
+.javascript .keyword {
+  color: #3182bd;
+}
+
+aside,
+.comment {
+  color: #636363;
+}
+
+.html .doctype,
+.javascript .number {
+  color: #31a354;
+}
+
+.html .attribute,
+.css .attribute,
+.javascript .class,
+.javascript .special {
+  color: #e6550d;
+}
+
+
+header{
+margin-bottom: 2em;
+
+}
+
+footer {
+  color: #555;
+}
+
+a.gist {
+  color: #000;
+}
+
+
+  </style>
+  </head>
+
+<header>
+  <a href="../">blocks</a>
+</header>
+<h1>New York City Restaurants and Nightlife Spots Map</h1>
+<iframe src="newindex.html" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+<p><aside><a style="position:relative;top:6px;left:0px;" href="newindex.html" target="_blank">Open in a new window</a></aside>
+
+<div class="gist-readme"></div>
+<div class="gist-sources"></div>
+  <body>
+  	<script src="../files/d3.v3.min.js"></script>
+    <script src="../files/highlight.min.js"></script>
+    <script>
+
+
+
+var gist = {"files":{"README.md":{"language":"Markdown","type":"text/plain","filename":"README.md"},"index.html":{"language":"HTML","type":"text/html","filename":"index.html"}}};
+
+var files = d3.values(gist.files)
+    .sort(function(a, b) { return (b.filename === "index.html") - (a.filename === "index.html") || a.filename.localeCompare(b.filename); });
+
+var readme = d3.selectAll(".gist-readme")
+    .data(files.filter(function(d) { return /^readme\b/i.test(d.filename) && d.language === "Markdown"; }))
+    .each(function(d) {
+      var readme = d3.select(this);
+      d3.text( d.filename, function(error, content) {
+        readme.html(new Showdown.converter().makeHtml(content));
+        readme.selectAll("code").each(function() { hljs.highlightBlock(this); });
+      });
+    });
+
+
+// var source = d3.select(".gist-sources").selectAll(".gist-source")
+//     .data(files.filter(function(d) { return !/^readme\b/i.test(d.filename) && text(d.type) ; }))
+//   .enter().append("div")
+//     .attr("class", "gist-source");
+
+
+// source.append("h2")
+//     .text(function(d) { return d.filename; })
+//   .append("a")
+//     .attr("name", function(d) { return d.filename; })
+//     .attr("href", function(d) { return "#" + d.filename; })
+//     .text("#");
+
+// source.append("pre").append("code")
+//     .attr("class", function(d) { return d.language && (d.language === "JSON" ? "javascript" : d.language.toLowerCase()); })
+//     .each(function(d) {
+//       var code = d3.select(this);
+//       d3.text( (d.filename === "index.html" ? "" : d.filename), function(error, content) {
+//         code.text(content);
+//         hljs.highlightBlock(code.node());
+//       });
+//     });
+
+function text(type) {
+  return /(^text\/)|(^application\/(javascript|json)$)|(^image\/svg$)|(\+xml$)/.test(type);
+}
+
+  	</script>
+<footer>
+  <a href="../">blocks</a>
+</footer>
+  </body>
+</html>
