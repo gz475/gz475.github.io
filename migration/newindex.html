@@ -108,7 +108,7 @@ category = category.concat(occupation);
       }; 
 
 
-type = ["Type", "Number", "Rate"]
+type = ["Type", "Number"] //"Rate"]
       for (ix in type) {
         d3.select(".type.mg_dropdown").insert('option').text(type[ix]).attr('value', type[ix])
         //.attr("disabled", "disabled")
@@ -147,7 +147,7 @@ d3.json("us-states.json", function(collection) {
 
 d3.csv("airports.csv", function(airports) {
 
-d3.csv("flights-airport.csv", function(flights) {
+d3.csv("new-flights-airport.csv", function(flights) {
 
 
 // states.append('text')
@@ -493,7 +493,8 @@ if (current_type_index == 1){
 value_list.push(d[data_column]);
 }
 else{
-value_list.push(d[data_column]/d[population]);
+ // console.log(d[data_column]/d.population);
+value_list.push(d[data_column]/d.population);
 }
 id_list.push(d.iata);
 });
@@ -529,12 +530,18 @@ var airport_value = [], flight_value = [];
 
 airports.forEach(function(airport){
   //  console.log(airport[data_column]);
-airport_value.push(airport[data_column]);
+if (current_type_index == 1){
+airport_value.push(airport[data_column]);}
+else { airport_value.push(airport[data_column]/airport.population) }
 })
 
 flights.forEach(function(flight){
  // console.log(flight[column_name]);
-flight_value.push(flight[column_name]);
+ if (current_type_index == 1){
+flight_value.push(flight[column_name]);}
+else{
+  flight_value.push(flight[column_name]/flight.population)
+}
 })
 
 if (data_column.substring(3) === 'in'){ var column_name = data_column.substring(0, 3)+ 'dto';
@@ -596,7 +603,6 @@ bar_labels.transition().duration(500)
 //           return d[data_column]})
   // .attr("y", function(d, i) { 
   //        return (60 + bar_order(d.iata)); });
-
 
 bar_labels.on("click", function(d, i ){triggertransition(d, i, data_column, xlocation, range, color)});
 bar.on("click", function(d, i ){triggertransition(d, i, data_column, xlocation, range, color)});
@@ -855,9 +861,13 @@ flights.forEach(function(flight) {
   else if  (data_column.indexOf('out') > 0 ){
     links.push({source: flight.origin, target: flight.destination, flag: 'False'});}
   else if (data_column.indexOf('net') > 0 ){
-    console.log(data_column);
-    links.push({source: flight.origin, target: flight.destination, flag: 'False'});}
- // }
+    var netname = data_column.substring(0, 3)+ 'onet';
+    if (flight[netname] >= 0 )
+   { links.push({source: flight.origin, target: flight.destination, flag: 'True'});}
+ else{
+  links.push({source: flight.origin, target: flight.destination, flag: 'False'});
+ }
+  }
   });
 
 
