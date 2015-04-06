@@ -108,7 +108,7 @@ category = category.concat(occupation);
       }; 
 
 
-type = ["Type", "Number"] //"Rate"]
+type = ["Type", "Number", "Rate"]
       for (ix in type) {
         d3.select(".type.mg_dropdown").insert('option').text(type[ix]).attr('value', type[ix])
         //.attr("disabled", "disabled")
@@ -201,11 +201,12 @@ if ( (short_category[category_index] != "nothing" )&& (short_direction[direction
 }
 
 
-
   var current_type_index = 1,
       current_direction_index = 1,
       current_category_index = 1;
 
+
+var population_column = (current_type_index==1) ? 'numberpopulation' : 'ratepopulation';
 
   // var msa_list = [];
   //     airports.forEach(function(value,index,array) {msa_list.push(value.iata)});
@@ -224,7 +225,7 @@ var msa_names_list = [],
 
 airports.forEach(function(d, i){
 names_list.push(d.shortname);
-value_list.push(d[data_column]);
+value_list.push(d[data_column]/d[population_column]);
 id_list.push(d.iata);
 });
 
@@ -260,12 +261,12 @@ var airport_value = [], flight_value = [];
 
 airports.forEach(function(airport){
   //  console.log(airport[data_column]);
-airport_value.push(airport[data_column]);
+airport_value.push(airport[data_column]/airport[population_column]);
 })
 
 flights.forEach(function(flight){
  // console.log(flight[column_name]);
-flight_value.push(flight[column_name]);
+flight_value.push(flight[column_name]/flight[population_column]);
 })
 
 var range = Math.max.apply(Math, airport_value) ;
@@ -302,7 +303,7 @@ data_max = Math.max.apply(Math, msa_value_list);
         .text(function(d, i) { 
 //console.log(i);
           return names_list[i]})
-      .on("click", function(d, i ){triggertransition(d, i, data_column, xlocation, range, color)})
+      .on("click", function(d, i ){triggertransition(d, i, data_column, population_column, xlocation, range, color)})
         .style("cursor", "pointer");
 
 
@@ -325,7 +326,7 @@ var bar_numbers = states
            return (60 + bar_order(d.iata)); })
         .style("font-size", 10)
         .text("0")      
-        .on("click", function(d, i ){triggertransition(d, i, data_column, xlocation, range, color)})
+        .on("click", function(d, i ){triggertransition(d, i, data_column, population_column,xlocation, range, color)})
         .style("cursor", "pointer");
 
 
@@ -344,7 +345,7 @@ var bar = states
           return (52 + bar_order(d.iata)); })
       .attr("width", 0)
      .attr("height", 9)
-       .on("click", function(d, i ){triggertransition(d, i, data_column, xlocation, range, color)})
+       .on("click", function(d, i ){triggertransition(d, i, data_column, population_column,xlocation, range, color)})
         .style("cursor", "pointer");
 
 
@@ -372,7 +373,7 @@ var bar = states
 
 // d3.select(this).transition().style("stroke", "darkgray").style("stroke-width", 1);
 //         })
-        .on("click", function(d, i ){triggertransition(d, i, data_column, xlocation, range, color)});
+        .on("click", function(d, i ){triggertransition(d, i, data_column, population_column, xlocation, range, color)});
 
 
 
@@ -396,29 +397,30 @@ bar_numbers.transition()
 .duration(500)
         .attr("x", function(d,i){
 
-        return xlocation+ 5 + d[data_column]/range* length;})//1505
+        return xlocation+ 5 + (d[data_column]/d[population_column])/range* length;})//1505
         .text(function(d, i) { 
   //msa_value_list.push(d[data_column]);
-          return toCommas(d[data_column])})
+         // console.log(d[population_column], population_column);
+          return toCommas(d[data_column]/d[population_column])})
  .attr("y", function(d, i) { 
          return (60 + bar_order(d.iata)); });
 
 
 
 bar.transition().duration(500)
-    .attr("fill", function(d, i) { return color(d[data_column]);})
+    .attr("fill", function(d, i) { return color(d[data_column]/d[population_column]);})
      // .attr("x", function(d, i) { return xlocation + d[data_column]/range* 300; })
       .attr("y", function(d, i) { 
           return (52 + bar_order(d.iata)); })
       .attr("width", function(d, i) { 
-        return d[data_column]/range* length; });
+        return (d[data_column]/d[population_column])/range* length; });
     //  .attr("height", 11);
 
 
 
   circles.transition()
-        .attr("r", function(d){ return Math.sqrt(d[data_column])/18;})
-        .attr("fill", function(d){ return color(d[data_column]); });
+        .attr("r", function(d){ return Math.sqrt(d[data_column]/d[population_column])/18;})
+        .attr("fill", function(d){ return color(d[data_column]/d[population_column]); });
 
 
     // var arc = d3.geo.greatArc()
@@ -477,6 +479,7 @@ d3.selectAll(".arc").transition().attr("visibility", "hidden");
 
 
 var data_column = short_category[current_category_index] + short_direction[current_direction_index];
+var population_column = (current_type_index==1) ? 'numberpopulation' : 'ratepopulation';
 
 
 
@@ -489,13 +492,10 @@ var msa_names_list = [],
 
 airports.forEach(function(d, i){
 names_list.push(d.shortname);
-if (current_type_index == 1){
-value_list.push(d[data_column]);
-}
-else{
- // console.log(d[data_column]/d.population);
-value_list.push(d[data_column]/d.population);
-}
+
+value_list.push(d[data_column]/d[population_column]);
+
+
 id_list.push(d.iata);
 });
 
@@ -530,18 +530,14 @@ var airport_value = [], flight_value = [];
 
 airports.forEach(function(airport){
   //  console.log(airport[data_column]);
-if (current_type_index == 1){
-airport_value.push(airport[data_column]);}
-else { airport_value.push(airport[data_column]/airport.population) }
+
+airport_value.push(airport[data_column]/airport[population_column]);
 })
 
 flights.forEach(function(flight){
  // console.log(flight[column_name]);
- if (current_type_index == 1){
-flight_value.push(flight[column_name]);}
-else{
-  flight_value.push(flight[column_name]/flight.population)
-}
+flight_value.push(flight[column_name]/flight[population_column]);
+
 })
 
 if (data_column.substring(3) === 'in'){ var column_name = data_column.substring(0, 3)+ 'dto';
@@ -604,9 +600,9 @@ bar_labels.transition().duration(500)
   // .attr("y", function(d, i) { 
   //        return (60 + bar_order(d.iata)); });
 
-bar_labels.on("click", function(d, i ){triggertransition(d, i, data_column, xlocation, range, color)});
-bar.on("click", function(d, i ){triggertransition(d, i, data_column, xlocation, range, color)});
-bar_numbers.on("click", function(d, i ){triggertransition(d, i, data_column, xlocation, range, color)});
+bar_labels.on("click", function(d, i ){triggertransition(d, i, data_column, population_column, xlocation, range, color)});
+bar.on("click", function(d, i ){triggertransition(d, i, data_column, population_column, xlocation, range, color)});
+bar_numbers.on("click", function(d, i ){triggertransition(d, i, data_column, population_column, xlocation, range, color)});
 
 // bar.transition().duration(500)
 //     .attr("fill", function(d, i) { return color(d[data_column]);})
@@ -619,29 +615,30 @@ bar_numbers.on("click", function(d, i ){triggertransition(d, i, data_column, xlo
     //  .attr("height", 11);
 
 
-circles.on("click", function(d, i ){triggertransition(d, i, data_column, xlocation, range, color)});
+circles.on("click", function(d, i ){triggertransition(d, i, data_column, population_column, xlocation, range, color)});
 
   circles.transition()
-        .attr("r", function(d){ return Math.sqrt(Math.abs(d[data_column]))/18;})
-        .attr("fill", function(d){ return color(d[data_column]); });
+        .attr("r", function(d){ return (current_type_index == 2) ?  Math.sqrt(Math.abs(d[data_column]/d[population_column]))*2000/18: Math.sqrt(Math.abs(d[data_column]/d[population_column]))/18;})
+
+        .attr("fill", function(d){ return color(d[data_column]/d[population_column]); });
              //   .on("click", function(d, i ){triggertransition(d, i, data_column)});
 
 
 
 bar.transition().duration(500)
     .attr("fill", function(d, i) { 
-        return color(d[data_column]);
+        return color(d[data_column]/d[population_column]);
         //}
     })
       .attr("x", function(d, i) {
 if(  d[data_column]>= 0){
  return xlocation ; }
  else{
-  return xlocation - Math.abs(d[data_column])/range* length;
+  return xlocation - Math.abs(d[data_column]/d[population_column])/range* length;
  }
       })
      .attr("width", function(d, i) { 
-return Math.abs(d[data_column])/range* length;
+return Math.abs(d[data_column]/d[population_column])/range* length;
    //   }
       })       
      .attr("y", function(d, i) { 
@@ -653,14 +650,14 @@ bar_numbers.transition()
 .duration(500)
         .attr("x", function(d,i){
 if(d[data_column] >= 0){
-return xlocation+ 5 + d[data_column]/range* length;}
+return xlocation+ 5 + (d[data_column]/d[population_column])/range* length;}
 else{
-  return xlocation-5 + d[data_column]/range* length;
+  return xlocation-5 + (d[data_column]/d[population_column])/range* length;
 }
        // }
       })
         .text(function(d, i) { 
-        return   toCommas(d[data_column]) ;   
+        return(current_type_index == 2) ? Math.round((d[data_column]/d[population_column])*100000)/100+ '‰' : toCommas(d[data_column]/d[population_column]) ;  
 //}
       })
  .attr("text-anchor", 
@@ -692,12 +689,12 @@ setSelectedIndex(document.getElementById("category"), category[category_index]);
 
 
 
-function triggertransition(d, i, data_column, xlocation, range, color){
+function triggertransition(d, i, data_column, population_column, xlocation, range, color){
 
 
 //d3.select("text.header").transition().text("Number of Migrants Arrive " + d.name)
 var term = d.iata;
-current_value_dict = getvaluelist(flights, data_column, d.iata);
+current_value_dict = getvaluelist(flights, data_column, population_column, d.iata);
 var values = [];
 for (ix in current_value_dict){
   values.push(current_value_dict[ix]);
@@ -733,20 +730,20 @@ bar.transition().duration(500)
     //  console.log(d.iata, term);
       if (d.iata != term){
       return new_color(current_value_dict[d.iata]);}
-      else{ return color(d[data_column]);}
+      else{ return color(d[data_column]/d[population_column]);}
     })
      .attr("x", function(d, i) {
       if  (d.iata != term){
      return  (data_column.substring(3) !== 'net' || current_value_dict[d.iata]>=0) ? xlocation : xlocation + current_value_dict[d.iata]/range* length ;}
      else{
-return (data_column.substring(3) !== 'net' || d[data_column]>=0) ? xlocation : xlocation + d[data_column]/range* length; 
+return (data_column.substring(3) !== 'net' || d[data_column]>=0) ? xlocation : xlocation + (d[data_column]/d[population_column])/range* length; 
      }
        })
      .attr("width", function(d, i) { 
             if  (d.iata != term){ 
       return Math.abs(current_value_dict[d.iata])/range* length; }
       else{
-return Math.abs(d[data_column])/range* length;
+return Math.abs(d[data_column]/d[population_column])/range* length;
       }
       });
     // //  .attr("height", 11);
@@ -760,16 +757,16 @@ bar_numbers.transition()
 
         return  current_value_dict[d.iata]>0 ? xlocation + 5 + current_value_dict[d.iata]/range* length : xlocation - 5 + current_value_dict[d.iata]/range* length;}//1505}
         else{
-if (d[data_column]>0) {return xlocation+ 5 + d[data_column]/range* length;}
-else  {return xlocation - 5 + d[data_column]/range* length;}
+if (d[data_column]>0) {return xlocation+ 5 + (d[data_column]/d[population_column])/range* length;}
+else  {return xlocation - 5 + (d[data_column]/d[population_column])/range* length;}
         }
       })
         .text(function(d, i) { 
           if  (d.iata != term){ 
   //msa_value_list.push(d[data_column]);
-          return toCommas(Math.round(current_value_dict[d.iata]))}
+          return (current_type_index == 2) ?  Math.round(current_value_dict[d.iata]*100000)/100 + '‰': toCommas(current_value_dict[d.iata]);}
 else{
-        return   toCommas(d[data_column]) ;   
+          return(current_type_index == 2) ? Math.round((d[data_column]/d[population_column])*100000)/100+ '‰' : toCommas(d[data_column]/d[population_column]) ;  
 
 }      })
  .attr("text-anchor", 
@@ -794,11 +791,11 @@ if (d[data_column] >= 0){
 
 if  (d.iata != term){ 
 
-return Math.sqrt(Math.abs(current_value_dict[d.iata]))/18;
+return (current_type_index == 2) ? Math.sqrt(Math.abs(current_value_dict[d.iata]))*2000/18 : Math.sqrt(Math.abs(current_value_dict[d.iata]))/18 ;
 
 }
-else{
-          return Math.sqrt(Math.abs(d[data_column]))/18;}
+else{ 
+          return (current_type_index == 2) ?  Math.sqrt(Math.abs(d[data_column]/d[population_column]))*2000/18: Math.sqrt(Math.abs(d[data_column]/d[population_column]))/18;}
         })
         .attr("fill", function(d){ 
 if  (d.iata != term){ 
@@ -807,11 +804,11 @@ if  (d.iata != term){
   
 }
 else{
-          return color(d[data_column]);}
+          return color(d[data_column]/d[population_column]);}
            });
 
 
-buildArc(airports, flights, current_value_dict, new_color, term, d, data_column);
+buildArc(airports, flights, current_value_dict, new_color, term, d, data_column, population_column);
 
 //console.log("click");
 
@@ -821,7 +818,7 @@ buildArc(airports, flights, current_value_dict, new_color, term, d, data_column)
 
 
 
-function buildArc(airports, flights, current_value_dict, new_color, term, d, data_column){
+function buildArc(airports, flights, current_value_dict, new_color, term, d, data_column, population_column ){
 
 try{
 d3.selectAll(".arc").remove();
@@ -899,7 +896,7 @@ d3.selectAll("#arc" + d.iata)
 //.transition()
 .attr("stroke-width", function(d, i) { //console.log(d,i);
 
-return Math.sqrt(Math.abs(current_value_dict[d.target]))/9;
+return (current_type_index==2) ? Math.sqrt(Math.abs(current_value_dict[d.target]))*2000/9: Math.sqrt(Math.abs(current_value_dict[d.target]))/9;
 
 })
 .attr("stroke", function(d, i){
@@ -1002,7 +999,7 @@ function compareNumbers(a, b) {
 // }
 
 
-function getvaluelist(data, term, id){
+function getvaluelist(data, term, population_column, id){
 
 var dict = {};
 
@@ -1014,7 +1011,7 @@ else{ var column_name = term.substring(0, 3)+ 'onet';};
 for (ix in data){
 
 if ( data[ix].origin === id){
-dict[data[ix].destination] = data[ix][column_name];
+dict[data[ix].destination] = data[ix][column_name]/data[ix][population_column];
 
 }
 }
