@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<title>US 20-City Housing Market Indicators 2000-2014</title>
+<title>US 20 Cities Housing Market Indicators 2000-2014</title>
 <meta charset="utf-8">
 <style> /* set the CSS */
 
@@ -95,26 +95,26 @@ var yAxis = d3.svg.axis().scale(y)
 // Define the line
 var valueline = d3.svg.line()
     .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.csindex); })
+    .y(function(d) { return y(d.csindex); });
   //  .attr("opacity", 0);
 
 // Define the div for the tooltip
-// var notations = [
-// {date:"09/17/2005", notext:"Federal Reserve Board Chairman Alan Greenspan admits to their being “a little froth” observed in the housing market"},
-// {date:"09/15/2008", notext:"Lehman Brothers files for bankruptcy protection"},
-// {date:"10/03/2008", notext:"The Emergency Economic Stabilization Act is passed bailing out the US financial system"},
-// {date:"03/09/2009", notext:"Dow Jones hits lowest point in twelve years"},
-// {date:"06/01/2009", notext:"The US Bureau of Economic Research announces that the Great Recession is over"},
-// {date:"11/21/2012", notext:" Average US interest rate for 30-Yr FRM drops to 3.31% - the lowest point ever"},
-// {date:"10/29/2014", notext:"Fed announces the end of qualitative easing measures in US"}
-// ];
-// var no_parse = d3.time.format("%m/%d/%Y").parse;
-// var no_format = d3.time.format("%b %Y");
+var notations = [
+{date:"09/17/2005", notext:"Federal Reserve Board Chairman Alan Greenspan admits to their being “a little froth” observed in the housing market"},
+{date:"09/15/2008", notext:"Lehman Brothers files for bankruptcy protection"},
+{date:"10/03/2008", notext:"The Emergency Economic Stabilization Act is passed bailing out the US financial system"},
+{date:"03/09/2009", notext:"Dow Jones hits lowest point in twelve years"},
+{date:"06/01/2009", notext:"The US Bureau of Economic Research announces that the Great Recession is over"},
+{date:"11/21/2012", notext:" Average US interest rate for 30-Yr FRM drops to 3.31% - the lowest point ever"},
+{date:"10/29/2014", notext:"Fed announces the end of qualitative easing measures in US"}
+];
+var no_parse = d3.time.format("%m/%d/%Y").parse;
+var no_format = d3.time.format("%b %Y");
 
-// notations.forEach(function(d, i){
-// d.date = no_parse(d.date);
+notations.forEach(function(d, i){
+d.date = no_parse(d.date);
 
-// });
+});
 
 
 var div = d3.select("body").append("div")   
@@ -133,7 +133,7 @@ var indexoptions  = [
 {name: "Prices"},
 {name: "Prices to Rents"},
 {name: "Prices to Income"}
-]
+];
 var indexmenu = d3.select("#indexmenu");
     //.on("change", change);
 
@@ -150,7 +150,7 @@ var currrent_color = colors[2];
 
 d3.csv(indexterm+".csv",  function(error, data) {
 
- names = []
+ names = [];
  data.forEach(function(d) {
  // console.log(d, term);
         d.date = parseDate(d.date);
@@ -166,7 +166,7 @@ color = d3.scale.category20b().domain(names);
 //console.log(color.range());
 
 var cityoptions = [];
-var dict = {'name': 'Select City'}
+var dict = {'name': 'Select City'};
 cityoptions.push(dict);
 //cityoptions.push();
 for (var i =0; i<names.length; i++){
@@ -300,76 +300,76 @@ if (current_distance> distance){ distance = current_distance;}
 current_data = data_dict["US"].slice(0);
 current_term = "US";
 
-// var line_ylocations = [];
-// var line_xlocations = [];
+var line_ylocations = [];
+var line_xlocations = [];
 
-// current_data.forEach(function(d, i){
-// for (var  i = 0; i < notations.length; i++){
+current_data.forEach(function(d, i){
+for (var  i = 0; i < notations.length; i++){
  
-// if (d.date.getFullYear() === notations[i].date.getFullYear() && d.date.getMonth() === notations[i].date.getMonth())
-// { line_ylocations.push(y(d.csindex));
-// line_xlocations.push(x(d.date));
-// }
-// }
-// });
+if (d.date.getFullYear() === notations[i].date.getFullYear() && d.date.getMonth() === notations[i].date.getMonth())
+{ line_ylocations.push(y(d.csindex));
+line_xlocations.push(x(d.date));
+}
+}
+});
 
-// var newnotation = notations.slice(0, 7);
-// var ylocations = [80, 440, 50, 470, 20, 180, 500];
-// var xlocations = [];
-// var xadjust = [340 ,160 , 300 , 20, 140 ,190 , 190];
-// var yadjust = [ 20, 10 ,20 , -5, 40 , 20, 15];
+var newnotation = notations.slice(0, 7);
+var ylocations = [80, 350, 40, 390, 0, 150, 410];
+var xlocations = [];
+var xadjust = [340 ,160 , 300 , 20, 140 ,190 , 190];
+var yadjust = [ 20, 10 ,20 , -5, 40 , 20, 15];
 
-// svg.selectAll("notations")
-// //.transition()    
-//         .data(newnotation)   
-//     //    .transition()      
-//     .enter().append("foreignObject")
-//    // .style("opacity", 0.5)
-//     .attr("id", "notations")
-//  .attr("x", function(d, i){ 
-// xlocations.push(x(d.date));
-//   return x(d.date) - xadjust[i];})
-// .attr("y", function(d, i) { 
-//   return ylocations[i]})
+svg.selectAll("notations")
+//.transition()    
+        .data(newnotation)   
+    //    .transition()      
+    .enter().append("foreignObject")
+   // .style("opacity", 0.5)
+    .attr("id", "notations")
+ .attr("x", function(d, i){ 
+xlocations.push(x(d.date));
+  return x(d.date) - xadjust[i];})
+.attr("y", function(d, i) { 
+  return ylocations[i]})
 
-// .attr("width", 180).attr("height", 200).append("xhtml:span")
-// .style("font-weight", "lighter")
-// //.attr("text-anchor", "middle")
-// .html(function(d){ return "<font color = '#bdbdbd'>"+d.notext+"</font>"});
+.attr("width", 180).attr("height", 200).append("xhtml:span")
+.style("font-weight", "lighter")
+//.attr("text-anchor", "middle")
+.html(function(d){ return "<font color = '#bdbdbd'>"+d.notext+"</font>"});
 
-// var numbers = [0, 1, 2, 4, 5, 6];
-// var shortadjust = [160, 20, 140, 0, 20,20];
-// var xshortlines = [];
-// var yshortlines = [];
-// for (var i = 0; i< numbers.length; i++){
+var numbers = [0, 1, 2, 4, 5, 6];
+var shortadjust = [160, 20, 140, 0, 20,20];
+var xshortlines = [];
+var yshortlines = [];
+for (var i = 0; i< numbers.length; i++){
 
-// svg.append("line")
-//      .attr("id", "notationlines")
-//          .style("stroke", "#969696")
-//          .style("stroke-width", 1)
-//          .style("opacity", 0.5)
-//          .attr("x1", line_xlocations[numbers[i]])
-//          .attr("x2", line_xlocations[numbers[i]] - shortadjust[i])
-//          .attr("y1", ylocations[numbers[i]] + yadjust[numbers[i]])
-//          .attr("y2", ylocations[numbers[i]] + yadjust[numbers[i]]);
+svg.append("line")
+     .attr("id", "notationlines")
+         .style("stroke", "#969696")
+         .style("stroke-width", 1)
+         .style("opacity", 0.5)
+         .attr("x1", line_xlocations[numbers[i]])
+         .attr("x2", line_xlocations[numbers[i]] - shortadjust[i])
+         .attr("y1", ylocations[numbers[i]] + yadjust[numbers[i]])
+         .attr("y2", ylocations[numbers[i]] + yadjust[numbers[i]]);
 
-// }
+}
 
 
-// for (var i = 0; i< notations.length; i++){
+for (var i = 0; i< notations.length; i++){
 
-// svg.append("line")
-//     .attr("id", "notationlines")
-//         .style("stroke", "#969696")
-//         .style("stroke-width", 1)
-//         .style("opacity", 0.5)
-//         .attr("x1", line_xlocations[i])
-//         .attr("x2", line_xlocations[i])
-//         .attr("y1", ylocations[i] + yadjust[i])
-//         .attr("y2", line_ylocations[i]);
-// }
+svg.append("line")
+    .attr("id", "notationlines")
+        .style("stroke", "#969696")
+        .style("stroke-width", 1)
+        .style("opacity", 0.5)
+        .attr("x1", line_xlocations[i])
+        .attr("x2", line_xlocations[i])
+        .attr("y1", ylocations[i] + yadjust[i])
+        .attr("y2", line_ylocations[i]);
+}
 
-// d3.selectAll("#notations").moveToFront();
+d3.selectAll("#notations").moveToFront();
 
  var focus = svg.append("g")
  .style("display", "none");
@@ -1009,90 +1009,90 @@ current_data = data_dict["US"].slice(0);
 current_term = "US";
 // add notations
 
-// var line_ylocations = [];
-// var line_xlocations = [];
+var line_ylocations = [];
+var line_xlocations = [];
 
-// current_data.forEach(function(d, i){
-// for (var  i = 0; i < notations.length; i++){
-//   //console.log(d.date);
-// if (d.date.getFullYear() === notations[i].date.getFullYear() && d.date.getMonth() === notations[i].date.getMonth())
-// { line_ylocations.push(y(d.csindex));
-// line_xlocations.push(x(d.date));
-// }
-// }
-// });
+current_data.forEach(function(d, i){
+for (var  i = 0; i < notations.length; i++){
+  //console.log(d.date);
+if (d.date.getFullYear() === notations[i].date.getFullYear() && d.date.getMonth() === notations[i].date.getMonth())
+{ line_ylocations.push(y(d.csindex));
+line_xlocations.push(x(d.date));
+}
+}
+});
 
-// //console.log(line_ylocations);
-// //
-// var ylocations = [80, 440, 50, 470, 20, 180, 500];
-// var xlocations = [];
-// var xadjust = [340 ,160 , 300 , 20, 140 ,190 , 190];
-// var yadjust = [ 20, 10 ,20 , -5, 40 , 20, 15];
-
-
-// var newnotation = notations.slice(0, 7);
-// if (indexterm == "Prices to Income"){ 
-//  //console.log(indexterm);
-//    newnotation = notations.slice(0, 6);
-//    ylocations = [80, 440, 50, 470, 20, 180, 500];}
-
-// svg.selectAll("notations")
-// //.transition()    
-//         .data(newnotation)   
-//     //    .transition()      
-//     .enter().append("foreignObject")
-//    // .style("opacity", 0.5)
-//     .attr("id", "notations")
-//  .attr("x", function(d, i){ 
-// xlocations.push(x(d.date));
-//   return x(d.date) - xadjust[i];})
-// .attr("y", function(d, i) { 
-//   return ylocations[i]})
-
-// .attr("width", 180).attr("height", 200).append("xhtml:span")
-
-// .style("font-weight", "lighter")
-// //.attr("text-anchor", "middle")
-// .html(function(d){ return "<font color = '#bdbdbd'>"+d.notext+"</font>"});
-
-// var numbers = [0, 1, 2, 4, 5, 6];
-// var shortadjust = [160, 20, 140, 0, 20,20];
-// var xshortlines = [];
-// var yshortlines = [];
-// if (indexterm == "Prices to Income"){ 
-//  //console.log(indexterm);
-//    numbers = numbers.slice(0, 6);}
-
-// for (var i = 0; i< numbers.length; i++){
-
-// svg.append("line")
-//      .attr("id", "notationlines")
-//          .style("stroke", "#969696")
-//          .style("stroke-width", 1)
-//          .style("opacity", 0.5)
-//          .attr("x1", line_xlocations[numbers[i]])
-//          .attr("x2", line_xlocations[numbers[i]] - shortadjust[i])
-//          .attr("y1", ylocations[numbers[i]] + yadjust[numbers[i]])
-//          .attr("y2", ylocations[numbers[i]] + yadjust[numbers[i]]);
-
-// }
+//console.log(line_ylocations);
+//
+var ylocations = [80, 350, 40, 390, 0, 150, 410];
+var xlocations = [];
+var xadjust = [340 ,160 , 300 , 20, 140 ,190 , 190];
+var yadjust = [ 20, 10 ,20 , -5, 40 , 20, 15];
 
 
-// for (var i = 0; i< newnotation.length; i++){
+var newnotation = notations.slice(0, 7);
+if (indexterm == "Prices to Income"){ 
+ //console.log(indexterm);
+   newnotation = notations.slice(0, 6);
+   ylocations =  [80, 380, 40, 410, 0, 150];}
 
-// svg.append("line")
-//     .attr("id", "notationlines")
-//         .style("stroke", "#969696")
-//         .style("stroke-width", 1)
-//         .style("opacity", 0.5)
-//         .attr("x1", line_xlocations[i])
-//         .attr("x2", line_xlocations[i])
-//         .attr("y1", ylocations[i] + yadjust[i])
-//         .attr("y2", line_ylocations[i]);
-// }
+svg.selectAll("notations")
+//.transition()    
+        .data(newnotation)   
+    //    .transition()      
+    .enter().append("foreignObject")
+   // .style("opacity", 0.5)
+    .attr("id", "notations")
+ .attr("x", function(d, i){ 
+xlocations.push(x(d.date));
+  return x(d.date) - xadjust[i];})
+.attr("y", function(d, i) { 
+  return ylocations[i]})
+
+.attr("width", 180).attr("height", 200).append("xhtml:span")
+
+.style("font-weight", "lighter")
+//.attr("text-anchor", "middle")
+.html(function(d){ return "<font color = '#bdbdbd'>"+d.notext+"</font>"});
+
+var numbers = [0, 1, 2, 4, 5, 6];
+var shortadjust = [160, 20, 140, 0, 20,20];
+var xshortlines = [];
+var yshortlines = [];
+if (indexterm == "Prices to Income"){ 
+ //console.log(indexterm);
+   numbers = numbers.slice(0, 6);}
+
+for (var i = 0; i< numbers.length; i++){
+
+svg.append("line")
+     .attr("id", "notationlines")
+         .style("stroke", "#969696")
+         .style("stroke-width", 1)
+         .style("opacity", 0.5)
+         .attr("x1", line_xlocations[numbers[i]])
+         .attr("x2", line_xlocations[numbers[i]] - shortadjust[i])
+         .attr("y1", ylocations[numbers[i]] + yadjust[numbers[i]])
+         .attr("y2", ylocations[numbers[i]] + yadjust[numbers[i]]);
+
+}
 
 
-// d3.selectAll("#notations").moveToFront();
+for (var i = 0; i< newnotation.length; i++){
+
+svg.append("line")
+    .attr("id", "notationlines")
+        .style("stroke", "#969696")
+        .style("stroke-width", 1)
+        .style("opacity", 0.5)
+        .attr("x1", line_xlocations[i])
+        .attr("x2", line_xlocations[i])
+        .attr("y1", ylocations[i] + yadjust[i])
+        .attr("y2", line_ylocations[i]);
+}
+
+
+d3.selectAll("#notations").moveToFront();
 
  var focus = svg.append("g")
  .style("display", "none");
