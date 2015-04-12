@@ -430,8 +430,7 @@ changeYear(Math.floor(value));
 //button
 d3.select("#example98 button").on("click", function() {
   
-if (d3.select("#example98 button").text() === 'Play'){
-  d3.select("#example98 button").text('Reset');
+
 
 slider
     .call(brush.event)
@@ -447,18 +446,8 @@ slider
   .ease("linear")
     .duration(10000)
     .call(brush.extent([2015, 2015]))
-    .call(brush.event);}
+    .call(brush.event);
 
-else {
-
-
-slider
-    .call(brush.event)
-  .transition() // gratuitous intro!
-  .duration(0);
-  d3.select("#example98 button").text('Play');
-
-}
 // slider.select('text').transition.ease("linear")
 //     .duration(10000).attr("x", 480);
 
@@ -466,7 +455,9 @@ slider
 
 
 
-
+ // for (i = 0 ; i < countries.length ; i++) {
+ //   scene.remove(toAdd[i]);
+ // }
 
 
 // //CONTROL OBJECT
