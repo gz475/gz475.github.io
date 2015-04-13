@@ -19,9 +19,9 @@
 
      position: absolute;
     right: 38px;
-    bottom: 26px;
+    bottom: 17px;
     width: 150px;
-    height: 26px;
+    height: 10px;
     border : 1px solid #000;
      background: -moz-linear-gradient( top ,
         rgba(255, 0, 0, 1) 100%,
@@ -38,22 +38,22 @@
 
 #Start{
 
- font-size:12px;
+ font-size:10px;
         font-weight: normal;
      position: absolute;
     right: 175px;
-    bottom: 10px;
+    bottom: 6px;
     text-align: center;
 
 }
 
 #End{
 
- font-size:12px;     
+ font-size:10px;     
         font-weight: normal;
      position: absolute;
     right: 11px;
-    bottom: 10px;
+    bottom: 6px;
     text-align: center;
 
 }
@@ -331,13 +331,13 @@ d3.json( 'h' + file_names[current_boundary_index] + ".json", function(data) {
 var endElement = document.getElementById("Endvalue");
  endNode = document.createTextNode("");
 endElement.appendChild(endNode);
-endNode.nodeValue = max.toFixed(0);
+endNode.nodeValue = toCommas(max.toFixed(0));
 
 
 var startElement = document.getElementById("Startvalue");
 startNode = document.createTextNode("");
 startElement.appendChild(startNode);
-startNode.nodeValue = min;
+startNode.nodeValue = toCommas(min);
 
 var startdiv = document.getElementById("Start");
 var titlediv = document.getElementById("Title");
@@ -641,7 +641,7 @@ function update()
                       else{         
 
                         //console.log(min);
-                        valueNode.nodeValue  = Math.pow((INTERSECTED.scale.z)/k -1 + Math.sqrt(min), 2).toFixed(0);
+                        valueNode.nodeValue  = toCommas(Math.pow((INTERSECTED.scale.z)/k -1 + Math.sqrt(min), 2).toFixed(0));
 
                       }
 
@@ -759,6 +759,10 @@ setColorHeight(toAdd[i], countries[i].data, max, term, k, min);
 
 }
 
+
+function toCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 
     </script>
   </body>
