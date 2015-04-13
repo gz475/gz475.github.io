@@ -241,12 +241,12 @@ projector = new THREE.Projector();
 
 //LEGEND
 currentvalue = 0;
-
+current_term = 'block';
 
 var valueElement = document.getElementById("Currentvalue");
  valueNode = document.createTextNode("");
 valueElement.appendChild(valueNode);
-valueNode.nodeValue = "Hover over a block";
+valueNode.nodeValue = "Hover over a " + current_term;
 
 
 currenttitle = "Housing Prices";
@@ -257,9 +257,10 @@ valuetitle.appendChild(titleNode);
 
 var indexoptions  = [
 {name: "Block"},
-{name: "Block Group"},
+//{name: "Block Group"},
 {name: "Census Tract"},
-{name: "Neighborhood"}
+{name: "Neighborhood"},
+{name: "Major Market"}
 ];
 
 var indexmenu = d3.select("#indexmenu");
@@ -281,15 +282,22 @@ var projection = d3.geo.equirectangular()
 var path = d3.geo.path()
     .projection(projection);
 
-var rate = [ 0.017, 0.000002, 0.000002, 0.000002,  0.000002];
-var file_names = ['block', 'blockgroup', 'censustrack', 'neighborhood', 'majormarket'];
+var kvalue = [ 0.017, 0.02, 0.03, 0.05,  0.05];
+var file_names = ['block', 'blockgroup', 'censustract', 'neighborhood', 'majormarket'];
+rate = {};
+for (var x =0; x<file_names.length; x++){
+  rate[file_names[x]] = kvalue[x];
+}
 
-var current_boundary_index = 0; 
-k = rate[current_boundary_index];
+
+k = rate['block'];
+
+
+
 var column_names =  ['COOPMP06', 'COOPMP07', 'COOPMP08', 'COOPMP09' ,'COOPMP10', 'COOPMP11' ,'COOPMP12' ,'COOPMP13' ,'COOPMP14', 'COOPMP15'];
 
 
-d3.json( 'h' + file_names[current_boundary_index] + ".json", function(data) {
+d3.json( 'hblock.json', function(data) {
 
         term = 'COOPMP06';
         countries = [];
@@ -370,7 +378,7 @@ var svg = d3.selectAll("div.info").append("svg").attr("height", 42).attr("width"
 
 var x = d3.scale.linear()
     .domain([2006, 2015])
-    .range([20, 350])
+    .range([20, 300])
     .clamp(true);
 var brush = d3.svg.brush()
     .x(x)
@@ -414,7 +422,7 @@ var handle = slider.append("circle")
 
 slider.append("text")
   .text(2006).style("font-size", 12).style("font-weight", "bold").attr("fill", "darkblue")
-      .attr("transform", "translate(380," + (24 ) + ")");
+      .attr("transform", "translate(330," + (24 ) + ")");
  // .attr("transform", "translate(6," + (42 / 2 -10) + ")");
 
 slider
@@ -477,148 +485,107 @@ slider
 });
 
 
-
- // for (i = 0 ; i < countries.length ; i++) {
- //   scene.remove(toAdd[i]);
- // }
+d3.select("#indexmenu")
+        .on('change', function() {
 
 
-// //CONTROL OBJECT
-// var obj = { 'Floor':function(){ 
-// term = 'FLOOR';
-// k = 1;
-// start = 0;
+ for (i = 0 ; i < countries.length ; i++) {
+   scene.remove(toAdd[i]);
+ }
 
-// var max = getMax(countries, term);
+          var dropdown_kind = d3.select(this)[0][0].value;
+          dropdown_kind = dropdown_kind.replace(/\s+/g, '').toLowerCase();
+       //   console.log(dropdown_kind);
 
-//  for (i = 0 ; i < countries.length ; i++) {
+ k = rate[dropdown_kind];
+//console.log(k);
+current_term = (d3.select(this)[0][0].value).toLowerCase();
+current_value =  x.invert(handle.attr("cx"));
 
-// setColorHeight(toAdd[i], countries[i].data, max, term, k, start);
+d3.json( 'h' + dropdown_kind + ".json", function(data) {
 
-//  }
+        term = 'COOPMP06';
+        countries = [];
+        var i, j;
+         toAdd = [];
 
-//  endNode.nodeValue = max.toFixed(0);
-// titleNode.nodeValue = 'Floor';
-// startNode.nodeValue = 0;
-// startdiv.style.right = '157px';
-// titlediv.style.right = '80px';
+      //  var rate = [ 0.000008, 0.0000015, 0.000006, 0.000005,  0.0000055, 0.000002,  0.0000015, 0.000008, 0.000004, 0.000006];
 
-//         }, 
+       
+        
+        // convert to threejs meshes
+        for (i = 0 ; i < data.features.length ; i++) {
+          var geoFeature = data.features[i];
+          var properties = geoFeature.properties;
+          var feature = path(geoFeature);
+          
+          // we only need to convert it to a three.js path
+          var mesh = transformSVGPathExposed(feature);
+          
+          // add to array
+          for (j = 0 ; j < mesh.length ; j++) {
+              countries.push({"data": properties, "mesh": mesh[j]});
+          }
+        }
+        
+        //find the max value
+        var values = getMaxMin(countries, column_names);
+        max = values[0];
+        min = values[1];
+       //  console.log(min);
+        // extrude paths and add color
+        for (i = 0 ; i < countries.length ; i++) {
+  
+          var material = new THREE.MeshLambertMaterial({
+            opacity:0.9
+          }); 
 
-// 'FAR':function(){ 
-
-// term = 'FAR';
-// k =2.5;
-// start = 0;
-// var max = getMax(countries, term);
-
-// //update mesh color and height
-//  for (i = 0 ; i < countries.length ; i++) {
-// setColorHeight(toAdd[i], countries[i].data, max, term, k, start);
-//  }
-
-// //change lengend
-//  endNode.nodeValue = max.toFixed(0);
-// titleNode.nodeValue = 'FAR';
-// startNode.nodeValue = 0;
-// startdiv.style.right = '157px';
-// titlediv.style.right = '80px';
-
-//         },
-
-// 'Built Year':function(){ 
-
-// term = 'BUILDYEAR';
-// k =0.5;
-// start = 1900;
-// var max = getMax(countries, term);
-
-//  for (i = 0 ; i < countries.length ; i++) {
-// setColorHeight(toAdd[i], countries[i].data, max, term, k, start);
-//  }
-
-//  endNode.nodeValue = max.toFixed(0);
-// titleNode.nodeValue = 'Built Year';
-// startNode.nodeValue = 1900;
-// startdiv.style.right = '140px';
-// titlediv.style.right = '60px';
-
-//         },
-
-// 'Alteration Year':function(){ 
-
-// term = 'ALTERYEAR';
-// k =1.5;
-// start = 1970;
-// var max = getMax(countries, term);
-
-//  for (i = 0 ; i < countries.length ; i++) {
-// setColorHeight(toAdd[i], countries[i].data, max, term, k, start);
-//  }
-
-//  endNode.nodeValue = max.toFixed(0);
-// titleNode.nodeValue = 'Alteration Year';
-// startNode.nodeValue = 1950;
-// startdiv.style.right = '140px';
-// titlediv.style.right = '50px';
-
-//         },
-
-// 'All Units':function(){ 
-
-// term = 'ALLUNITS';
-// k =0.01;
-// start = 0;
-// var max = getMax(countries, term);
-
-//  for (i = 0 ; i < countries.length ; i++) {
-// setColorHeight(toAdd[i], countries[i].data, max, term, k, start);
-//  }
-
-//  endNode.nodeValue = max.toFixed(0);
-// titleNode.nodeValue = 'All Units';
-// startNode.nodeValue = 0;
-// startdiv.style.right = '157px';
-// titlediv.style.right = '70px';
+          // extrude mesh
+          var shape3d = countries[i].mesh.extrude({
+            amount: 2, 
+            bevelEnabled: false
+          });
 
 
-//         },
+          // create a mesh based on material and extruded shape
+          toAdd[i] = new THREE.Mesh(shape3d, material);
+          
+          //set mesh color
+          setColorHeight(toAdd[i], countries[i].data, max, term, k, min);
+          
+          // rotate and position the elements
+          toAdd[i].rotation.x = Math.PI/2;
+          toAdd[i].translateX(-350);
+          toAdd[i].translateZ(50);
+          toAdd[i].translateY(-50);
 
-// 'Residential Units':function(){ 
+          // add to scene
+          scene.add(toAdd[i]);
+}
 
-// term = 'REUNITS';
-// k =0.01;
-// start = 0;
-// var max = getMax(countries, term);
 
-//  for (i = 0 ; i < countries.length ; i++) {
-// setColorHeight(toAdd[i], countries[i].data, max, term, k, start);
-//  }
+endNode.nodeValue = toCommas(max.toFixed(0));
+startNode.nodeValue = toCommas(min);
 
-//  endNode.nodeValue = max.toFixed(0);
-// titleNode.nodeValue = 'Residential Units';
-// startNode.nodeValue = 0;
-// startdiv.style.right = '157px';
-// titlediv.style.right = '50px';
 
-//         },
+slider
+    .call(brush.event)
+  .transition() // gratuitous intro!
+  .ease("linear")
+   // .duration(15000)
+    .call(brush.extent([current_value, current_value]))
+    .call(brush.event);
 
-//       };
 
-//  var gui = new dat.GUI({
-//   height: 26,
-// width: 250,
-//  });
+})
 
-//ADD ITEMS TO CONTROL
-    // gui.add(obj, 'Floor');
-    // gui.add(obj, 'FAR');
-    // gui.add(obj, 'Built Year');
-    // gui.add(obj, 'Alteration Year');
-    // gui.add(obj, 'All Units');
-    // gui.add(obj, 'Residential Units');
 
-    // gui.close();
+
+
+
+        });
+
+
 });
 
  }
@@ -677,7 +644,7 @@ function update()
                 {  
                     if (INTERSECTED)  
                         INTERSECTED.material.color.setHex(INTERSECTED.currentHex);  
-                      valueNode.nodeValue  = "Hover over a block";
+                      valueNode.nodeValue  = "Hover over a " + current_term;
                     INTERSECTED = null;  
                 }  
 
@@ -745,7 +712,7 @@ value_list.push(data[i].data[names[j]]);}
 
 function setColorHeight(object, data, max, term, k, start){
 
-if ((data[term] - start) > 0 ){
+if ((data[term] - start) >= 0 ){
 
 object.scale.z = (Math.sqrt(data[term])+1 - Math.sqrt(start)) * k ;
 var value = 0.5-((Math.sqrt(data[term])+1 - Math.sqrt(start))/(2*(Math.sqrt(max)+1-Math.sqrt(start))));
