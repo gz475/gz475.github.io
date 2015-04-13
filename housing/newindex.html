@@ -470,15 +470,13 @@ slider
     .call(brush.extent([2006, 2006]))
     .call(brush.event);
 
-for (var x = 0; x<10; x++){
 slider
     .call(brush.event)
   .transition() // gratuitous intro!
   .ease("linear")
-    .delay(1200 * x)
-    .call(brush.extent([2006+x, 2006+x]))
+    .duration(10000)
+    .call(brush.extent([2015, 2015]))
     .call(brush.event);
-  }
 
 // slider.select('text').transition.ease("linear")
 //     .duration(10000).attr("x", 480);
