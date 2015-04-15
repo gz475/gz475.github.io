@@ -442,7 +442,7 @@ function brushed() {
     brush.extent([value, value]);
   }
 
-  handle.attr("cx", x(value));
+  handle.attr("cx", x(Math.floor(value)));
   slider.select('text').text(Math.floor(value));
 
 // if(value == 2006)  slider.select('text').attr("x", 1); 
