@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Price Model of Manhattan</title>
+    <title>Manhattan Price Models</title>
     <style>
 html {
   min-width: 1040px;
@@ -150,11 +150,17 @@ a.gist {
 <header>
   <a href="../">blocks</a>
 </header>
-<h1>Price Model of Manhattan</h1>
-<iframe src="newindex.html" marginwidth="0" marginheight="0" scrolling="no"></iframe>
-<p><aside><a style="position:relative;top:6px;left:0px;" href="newindex.html" target="_blank">Open in a new window</a></aside>
+<h1>Manhattan Price Models</h1>
+<h2>Kriging Model</h2>
 
-<div class="gist-readme"></div>
+<iframe src="kriging.html" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+<p><aside><a style="position:relative;top:6px;left:0px;" href="kriging.html" target="_blank">Open in a new window</a></aside>
+<div class="gist-readme1"></div>
+<h2>Quadtree Model</h2>
+
+<iframe src="quadtree.html" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+<p><aside><a style="position:relative;top:6px;left:0px;" href="quadtree.html" target="_blank">Open in a new window</a></aside>
+<div class="gist-readme2"></div>
 <div class="gist-sources"></div>
   <body>
   	<script src="../files/d3.v3.min.js"></script>
@@ -163,13 +169,29 @@ a.gist {
 
 
 
-var gist = {"files":{"README.md":{"language":"Markdown","type":"text/plain","filename":"README.md"},"index.html":{"language":"HTML","type":"text/html","filename":"index.html"}}};
+var gist = {"files":{
+  "README1.md":{"language":"Markdown","type":"text/plain","filename":"README1.md"}, 
+  "README2.md":{"language":"Markdown","type":"text/plain","filename":"README2.md"}, 
+  "index.html":{"language":"HTML","type":"text/html","filename":"index.html"}
+}};
 
-var files = d3.values(gist.files)
-    .sort(function(a, b) { return (b.filename === "index.html") - (a.filename === "index.html") || a.filename.localeCompare(b.filename); });
+var files = d3.values(gist.files);
+    // .sort(function(a, b) { return (b.filename === "index.html") - (a.filename === "index.html") || a.filename.localeCompare(b.filename); });
 
-var readme = d3.selectAll(".gist-readme")
-    .data(files.filter(function(d) { return /^readme\b/i.test(d.filename) && d.language === "Markdown"; }))
+console.log(files);
+var readme1 = d3.selectAll(".gist-readme1")
+    .data(files.filter(function(d) { 
+      return /^readme1\b/i.test(d.filename) && d.language === "Markdown" ; }))
+    .each(function(d) {
+      var readme = d3.select(this);
+      d3.text( d.filename, function(error, content) {
+        readme.html(new Showdown.converter().makeHtml(content));
+        readme.selectAll("code").each(function() { hljs.highlightBlock(this); });
+      });
+    });
+
+var readme2 = d3.selectAll(".gist-readme2")
+    .data(files.filter(function(d) { return /^readme2\b/i.test(d.filename) && d.language === "Markdown"  ; }))
     .each(function(d) {
       var readme = d3.select(this);
       d3.text( d.filename, function(error, content) {
@@ -207,6 +229,9 @@ function text(type) {
 }
 
   	</script>
+<h2>Discussion</h2>
+<p>Compare the two models</p>
+
 <footer>
   <a href="../">blocks</a>
 </footer>

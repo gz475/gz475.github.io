@@ -1,7 +1,0 @@
-Introduction
-
-## Data
-
-## Method
-
-## Discussion

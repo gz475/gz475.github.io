@@ -3,31 +3,43 @@
     <title>Price Model of Manhattan</title>
     <style>
 
+ #indexmenu {
+          right: 10px;
+          position: absolute;
+          top: 10px;
+          font-size: 12px;
+        }
     </style>
   </head>
   <body>
 
-
 <script src="../files/Three.js"></script>
 <script src="../files/Detector.js"></script>
 <script src="../files/Stats.js"></script>
-<script src="../files/OrbitControls.js"></script>
+<script src="../files/TrackballControls.js"></script>
 <script src="../files/THREEx.KeyboardState.js"></script>
 <script src="../files/THREEx.FullScreen.js"></script>
 <script src="../files/THREEx.WindowResize.js"></script>
+<script src="../files/d3.v3.min.js"></script>
 <script src="../files/parser.js"></script>
 <script src="../3dsurface/rent_predication.js"></script>
 <script src="../3dsurface/sell_predication.js"></script>
-<div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div>
+<script src="../3dsurface/Quadtree_rent_predication.js"></script>
+<script src="../3dsurface/Quadtree_sell_predication.js"></script>
+<div id="ThreeJS" style="position: absolute; left:0px; top:0px">
+<select id = "indexmenu"></select>
+</div>
     <script>
 
 // MAIN
-var surface_data = {'Rent':rent_predication, 'Sell':sell_predication};
+//var surface_data = {'Rent':rent_predication, 'Sell':sell_predication};
+var surface_data = {'Rent':Quadtree_rent_predication, 'Sell':Quadtree_sell_predication};
+
 // standard global variables
 var container, scene, camera, renderer, controls, stats;
 var keyboard = new THREEx.KeyboardState();
 var clock = new THREE.Clock();
-var term = 'Sell';
+var term = 'Rent';
 
 var value_min = getMin(surface_data[term]);
 
@@ -35,13 +47,33 @@ var value_min = getMin(surface_data[term]);
 var a = 0.01, b = 0.01, c = 0.01, d = 0.01;
 
 var meshFunction;
-var segments = 195, 
-  xMin = -95, xMax = 100, xRange = xMax - xMin,
-  yMin = -95, yMax = 100, yRange = yMax - yMin;
+// var segments = 195, 
+//   xMin = -95, xMax = 100, xRange = xMax - xMin,
+//   yMin = -95, yMax = 100, yRange = yMax - yMin;
+
+var segments = 127, 
+  xMin = -64, xMax = 63, xRange = xMax - xMin,
+  yMin = -64, yMax = 63, yRange = yMax - yMin;
   
+
 var graphGeometry;
 var gridMaterial, wireMaterial, vertexColorMaterial;
 var graphMesh;
+
+
+var indexoptions  = [
+{name: "Rent"},
+{name: "Sell"},
+];
+
+var indexmenu = d3.select("#indexmenu");
+    //.on("change", change);
+
+indexmenu.selectAll("option")
+    .data(indexoptions)
+  .enter().append("option")
+    .text(function(d) { return d.name; });
+
 
 init();
 animate();
@@ -56,7 +88,7 @@ function init()
   var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
   camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
   scene.add(camera);
-  camera.position.set(1, -168, 198);
+  camera.position.set(0.7, -116, 136);
   camera.lookAt(scene.position);  
   // RENDERER
   if ( Detector.webgl )
@@ -70,8 +102,8 @@ function init()
   THREEx.WindowResize(renderer, camera);
   THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0) });
   // CONTROLS
-  controls = new THREE.OrbitControls( camera, renderer.domElement );
-
+  controls = new THREE.TrackballControls( camera, renderer.domElement );
+  controls.noZoom = true;
   // LIGHT
   var light = new THREE.PointLight(0xffffff);
   light.position.set(0,250,0);
@@ -88,11 +120,11 @@ function init()
 
   var vertexColorMaterial  = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
 
+   createGraph(value_min, surface_data[term]); 
 
-  preset01();
 }
 
-function createGraph()
+function createGraph(value_min, data)
 {
   xRange = xMax - xMin;
   yRange = yMax - yMin;
@@ -101,13 +133,13 @@ function createGraph()
   {
     x = xRange * x + xMin;
     y = yRange * y + yMin;
-    if ( surface_data[term][195 - Math.round(y)+yMin][Math.round(x)-xMin] > value_min){
+    if ( data[segments - Math.round(y)+yMin][Math.round(x)-xMin] > value_min){
 
-    var z = (surface_data[term][195 - Math.round(y)+yMin][Math.round(x)-xMin]-value_min)*20 + value_min; }
+    var z = (data[segments - Math.round(y)+yMin][Math.round(x)-xMin]-value_min)*20 + value_min; }
 
     else{
 
-    var z = surface_data[term][195 -Math.round(y)+yMin][Math.round(x)-xMin]; 
+    var z = data[segments -Math.round(y)+yMin][Math.round(x)-xMin]; 
 
     }
 
@@ -199,7 +231,7 @@ function update()
   }
   
   controls.update();
-// console.log(camera.position);
+//console.log(camera.position);
 }
 
 function render() 
@@ -225,6 +257,17 @@ var data_min = 10;
 return  Math.min.apply(Math, value_min_list);
 }
 
+
+d3.select("#indexmenu")
+  .on('change', function() {
+
+    var term = d3.select(this)[0][0].value;
+    var value_min = getMin(surface_data[term]);
+    scene.remove( graphMesh );
+    createGraph(value_min, surface_data[term]); 
+
+
+})
 
 
     </script>
