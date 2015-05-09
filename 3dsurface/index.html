@@ -201,36 +201,17 @@ var readme2 = d3.selectAll(".gist-readme2")
     });
 
 
-// var source = d3.select(".gist-sources").selectAll(".gist-source")
-//     .data(files.filter(function(d) { return !/^readme\b/i.test(d.filename) && text(d.type) ; }))
-//   .enter().append("div")
-//     .attr("class", "gist-source");
-
-
-// source.append("h2")
-//     .text(function(d) { return d.filename; })
-//   .append("a")
-//     .attr("name", function(d) { return d.filename; })
-//     .attr("href", function(d) { return "#" + d.filename; })
-//     .text("#");
-
-// source.append("pre").append("code")
-//     .attr("class", function(d) { return d.language && (d.language === "JSON" ? "javascript" : d.language.toLowerCase()); })
-//     .each(function(d) {
-//       var code = d3.select(this);
-//       d3.text( (d.filename === "index.html" ? "" : d.filename), function(error, content) {
-//         code.text(content);
-//         hljs.highlightBlock(code.node());
-//       });
-//     });
-
 function text(type) {
   return /(^text\/)|(^application\/(javascript|json)$)|(^image\/svg$)|(\+xml$)/.test(type);
 }
 
   	</script>
 <h2>Discussion</h2>
-<p>Compare the two models</p>
+<p>We can see that the predications of these two models are very similar, both of them managed to preserve the information of the hotspots, and there are also some differences  deserve further discussion:</p>
+
+<p>For <b>Kriging Model</b>, the predicted value of any longitude and latitude pair is different, so it's easy to build a 3D model with beautiful smooth surface; the complexity is quadratic, and we need a lot of mathematic computations to set up the model, thus it's may not fit for real-time data modeling; other attributes can be included in the predication model using Kriging with External Drift (KED).<p>
+
+<p>For <b>Quadtree Model</b>, the predicted values are calculated based on recursive regions, so it's impossible to build a 3D model having smooth surface without additional efforts; the complexity is O(nlogn), and after we transform the longitude/latitude to UTM projection, it's possible to build real-time model at the frontend; the method to bring in other variables with price predication is not that straightfoward.<p>
 
 <footer>
   <a href="../">blocks</a>

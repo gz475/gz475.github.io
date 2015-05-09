@@ -34,10 +34,24 @@ Finally, we can predict at any point using the weights:
 
 ###Rent Data
 
+The rent price distribution is highly-skewed, and a common transform is the logarithm. Use base-10 logarithms, and plot the histogram:
 
+<p align="center"><img align="center" src="renthistogram.png"></p>
 
+Plot the experimental variogram of the log rent concentrations, i.e. the average semi-variances of the point-pairs versus average distance (lag), with a bin width of 100m, to a maximum lag distance of 10000m. Choosing bin width and maximum lag distance is tricky, and there should be more than 30 pairs in each bin.
 
-Plot the experimental variogram of the log rent concentrations, i.e. the average semi-variances of the point-pairs versus average distance (lag), with a bin width of 100m, to a maximum lag distance of m.
+<p align="center"><img align="center" src="rentvariogram.png"></p>
 
+Fit a spherical variogram model to the experimental variogram of rent price, and then adjust it with automatic fit function.
+
+<p align="center"><img align="center" src="rentfit.png"></p>
+
+Predict the rent price at all grid points in Manhattan using Ordinary Kriging, and display the predicted values:
+
+<p align="center"><img align="center" src="rentkriging.png"></p>
 
 ###Sell Data
+
+Apply the same steps with sell price, and plot the final predicted values.
+
+<p align="center"><img align="center" src="sellkriging.png"></p>
