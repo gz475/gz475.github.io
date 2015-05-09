@@ -52,6 +52,18 @@ Predict the rent price at all grid points in Manhattan using Ordinary Kriging, a
 
 ###Sell Data
 
-Apply the same steps with sell price, and plot the final predicted values.
+Same story with sell price. The histogram:
+
+<p align="center"><img align="center" src="sellhistogram.png"></p>
+
+The experimental variogram:
+
+<p align="center"><img align="center" src="sellvariogram.png"></p>
+
+Fit a spherical variogram model to the experimental variogram of sell price:
+
+<p align="center"><img align="center" src="sellfit.png"></p>
+
+Predict the sell price at all grid points in Manhattan using Ordinary Kriging, and display the predicted values:
 
 <p align="center"><img align="center" src="sellkriging.png"></p>
