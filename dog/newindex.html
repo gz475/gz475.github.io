@@ -728,891 +728,891 @@ resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 	
 
 
-		var noisejson = L.geoJson(zipcode, {
+// 		var noisejson = L.geoJson(zipcode, {
 
-			style: function(feature){
+// 			style: function(feature){
 
-	var total = (zip_dict[feature.properties.ZIP].barking);
-		//	console.log(total);
-if ( zip_dict[feature.properties.ZIP].dognumber>0){
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				//dashArray: '3',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
+// 	var total = (zip_dict[feature.properties.ZIP].barking);
+// 		//	console.log(total);
+// if ( zip_dict[feature.properties.ZIP].dognumber>0){
+// 			return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'white',
+// 				//dashArray: '3',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
 			
-				fillColor: getnoiseColor(total)
-			};}
-else{
-	return {
-				weight: 2,
-				opacity: 1,
-				color: 'none',
-				//dashArray: '3',
-				fill: 'none',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
-			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
-			};
-}
+// 				fillColor: getnoiseColor(total)
+// 			};}
+// else{
+// 	return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'none',
+// 				//dashArray: '3',
+// 				fill: 'none',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
+// 			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+// 			};
+// }
 
-			},
+// 			},
 
-			onEachFeature: function(feature, layer){
+// 			onEachFeature: function(feature, layer){
 
-	layer.on({
-				mouseover: lightFeature,
-				mouseout: function(e){
+// 	layer.on({
+// 				mouseover: lightFeature,
+// 				mouseout: function(e){
 
-noisejson.resetStyle(e.target);
-			//info.update();
-resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
-
-
-
-				},
-				click: zmToFeature
-			});
-
-
-			}
-		})
-		//.addTo(map)
-		;
-
-	function getnoiseColor(d) {
-			return d > 600 ? '#4a1486' :
-			       d > 400  ? '#6a51a3' :
-			       d > 200  ? '#807dba' :
-			       d > 100  ? '#9e9ac8' :
-			       d > 50   ? '#bcbddc' :
-			       d > 20   ? '#dadaeb' :
-			       d > 10   ? '#efedf5' :
-			                  '#fcfbfd';
-		}
+// noisejson.resetStyle(e.target);
+// 			//info.update();
+// resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 
 
 
-	var noiselegend = L.control({position: 'bottomright'});
+// 				},
+// 				click: zmToFeature
+// 			});
 
-		noiselegend.onAdd = function (map) {
 
-			var div = L.DomUtil.create('div', 'innfo legend'),
-				grades = [0, 10, 20, 50, 100, 200, 400, 600],
-				labels = ['<strong>311 Count</strong>'],
-				from, to;
+// 			}
+// 		})
+// 		//.addTo(map)
+// 		;
 
-			for (var i = 0; i < grades.length; i++) {
-				from = grades[i];
-				to = grades[i + 1];
-
-				labels.push(
-					'<i style="background:' + getnoiseColor(from + 1) + '"></i> ' +
-					from + (to ? '&ndash;' + to : '+'));
-			}
-
-			div.innerHTML = labels.join('<br>');
-			return div;
-		};
-
+// 	function getnoiseColor(d) {
+// 			return d > 600 ? '#4a1486' :
+// 			       d > 400  ? '#6a51a3' :
+// 			       d > 200  ? '#807dba' :
+// 			       d > 100  ? '#9e9ac8' :
+// 			       d > 50   ? '#bcbddc' :
+// 			       d > 20   ? '#dadaeb' :
+// 			       d > 10   ? '#efedf5' :
+// 			                  '#fcfbfd';
+// 		}
 
 
 
-		var violationjson = L.geoJson(zipcode, {
+// 	var noiselegend = L.control({position: 'bottomright'});
 
-			style: function(feature){
+// 		noiselegend.onAdd = function (map) {
 
-	var total = (zip_dict[feature.properties.ZIP].violation);
-		//	console.log(total);
-if ( zip_dict[feature.properties.ZIP].dognumber>0){
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				//dashArray: '3',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
+// 			var div = L.DomUtil.create('div', 'innfo legend'),
+// 				grades = [0, 10, 20, 50, 100, 200, 400, 600],
+// 				labels = ['<strong>311 Count</strong>'],
+// 				from, to;
+
+// 			for (var i = 0; i < grades.length; i++) {
+// 				from = grades[i];
+// 				to = grades[i + 1];
+
+// 				labels.push(
+// 					'<i style="background:' + getnoiseColor(from + 1) + '"></i> ' +
+// 					from + (to ? '&ndash;' + to : '+'));
+// 			}
+
+// 			div.innerHTML = labels.join('<br>');
+// 			return div;
+// 		};
+
+
+
+
+// 		var violationjson = L.geoJson(zipcode, {
+
+// 			style: function(feature){
+
+// 	var total = (zip_dict[feature.properties.ZIP].violation);
+// 		//	console.log(total);
+// if ( zip_dict[feature.properties.ZIP].dognumber>0){
+// 			return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'white',
+// 				//dashArray: '3',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
 			
-				fillColor: getnoiseColor(total)
-			};}
-else{
-	return {
-				weight: 2,
-				opacity: 1,
-				color: 'none',
-				//dashArray: '3',
-				fill: 'none',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
-			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
-			};
-}
+// 				fillColor: getnoiseColor(total)
+// 			};}
+// else{
+// 	return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'none',
+// 				//dashArray: '3',
+// 				fill: 'none',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
+// 			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+// 			};
+// }
 
-			},
+// 			},
 
-			onEachFeature: function(feature, layer){
+// 			onEachFeature: function(feature, layer){
 
-	layer.on({
-				mouseover: lightFeature,
-				mouseout: function(e){
+// 	layer.on({
+// 				mouseover: lightFeature,
+// 				mouseout: function(e){
 
-violationjson.resetStyle(e.target);
-			//info.update();
-resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
-
-
-
-				},
-				click: zmToFeature
-			});
-
-
-			}
-		})
-	//	.addTo(map)
-		;
+// violationjson.resetStyle(e.target);
+// 			//info.update();
+// resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 
 
 
+// 				},
+// 				click: zmToFeature
+// 			});
 
-		var wastejson = L.geoJson(zipcode, {
 
-			style: function(feature){
+// 			}
+// 		})
+// 	//	.addTo(map)
+// 		;
 
-	var total = (zip_dict[feature.properties.ZIP].poop);
-		//	console.log(total);
-if ( zip_dict[feature.properties.ZIP].dognumber>0){
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				//dashArray: '3',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
+
+
+
+// 		var wastejson = L.geoJson(zipcode, {
+
+// 			style: function(feature){
+
+// 	var total = (zip_dict[feature.properties.ZIP].poop);
+// 		//	console.log(total);
+// if ( zip_dict[feature.properties.ZIP].dognumber>0){
+// 			return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'white',
+// 				//dashArray: '3',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
 			
-				fillColor: getnoiseColor(total)
-			};}
-else{
-	return {
-				weight: 2,
-				opacity: 1,
-				color: 'none',
-				//dashArray: '3',
-				fill: 'none',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
-			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
-			};
-}
+// 				fillColor: getnoiseColor(total)
+// 			};}
+// else{
+// 	return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'none',
+// 				//dashArray: '3',
+// 				fill: 'none',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
+// 			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+// 			};
+// }
 
-			},
+// 			},
 
-			onEachFeature: function(feature, layer){
+// 			onEachFeature: function(feature, layer){
 
-	layer.on({
-				mouseover: lightFeature,
-				mouseout: function(e){
+// 	layer.on({
+// 				mouseover: lightFeature,
+// 				mouseout: function(e){
 
-wastejson.resetStyle(e.target);
-			//info.update();
-resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
-
-
-
-				},
-				click: zmToFeature
-			});
-
-
-			}
-		})
-	//	.addTo(map)
-		;
+// wastejson.resetStyle(e.target);
+// 			//info.update();
+// resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 
 
 
-		var unleashedjson = L.geoJson(zipcode, {
+// 				},
+// 				click: zmToFeature
+// 			});
 
-			style: function(feature){
 
-	var total = (zip_dict[feature.properties.ZIP].unleashed);
-		//	console.log(total);
-if ( zip_dict[feature.properties.ZIP].dognumber>0){
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				//dashArray: '3',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
+// 			}
+// 		})
+// 	//	.addTo(map)
+// 		;
+
+
+
+// 		var unleashedjson = L.geoJson(zipcode, {
+
+// 			style: function(feature){
+
+// 	var total = (zip_dict[feature.properties.ZIP].unleashed);
+// 		//	console.log(total);
+// if ( zip_dict[feature.properties.ZIP].dognumber>0){
+// 			return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'white',
+// 				//dashArray: '3',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
 			
-				fillColor: getnoiseColor(total)
-			};}
-else{
-	return {
-				weight: 2,
-				opacity: 1,
-				color: 'none',
-				//dashArray: '3',
-				fill: 'none',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
-			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
-			};
-}
+// 				fillColor: getnoiseColor(total)
+// 			};}
+// else{
+// 	return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'none',
+// 				//dashArray: '3',
+// 				fill: 'none',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
+// 			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+// 			};
+// }
 
-			},
+// 			},
 
-			onEachFeature: function(feature, layer){
+// 			onEachFeature: function(feature, layer){
 
-	layer.on({
-				mouseover: lightFeature,
-				mouseout: function(e){
+// 	layer.on({
+// 				mouseover: lightFeature,
+// 				mouseout: function(e){
 
-unleashedjson.resetStyle(e.target);
-			//info.update();
-resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
-
-
-
-				},
-				click: zmToFeature
-			});
+// unleashedjson.resetStyle(e.target);
+// 			//info.update();
+// resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 
 
-			}
-		})
-		//.addTo(map)
-		;
+
+// 				},
+// 				click: zmToFeature
+// 			});
 
 
+// 			}
+// 		})
+// 		//.addTo(map)
+// 		;
 
 
 
 
-		var BELLAjson = L.geoJson(zipcode, {
 
-			style: function(feature){
 
-	var total = (zip_dict[feature.properties.ZIP].BELLA);
-		//	console.log(total);
-if ( zip_dict[feature.properties.ZIP].dognumber>0){
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				//dashArray: '3',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
+// 		var BELLAjson = L.geoJson(zipcode, {
+
+// 			style: function(feature){
+
+// 	var total = (zip_dict[feature.properties.ZIP].BELLA);
+// 		//	console.log(total);
+// if ( zip_dict[feature.properties.ZIP].dognumber>0){
+// 			return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'white',
+// 				//dashArray: '3',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
 			
-				fillColor: getBELLAColor(total)
-			};}
-else{
-	return {
-				weight: 2,
-				opacity: 1,
-				color: 'none',
-				//dashArray: '3',
-				fill: 'none',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
-			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
-			};
-}
+// 				fillColor: getBELLAColor(total)
+// 			};}
+// else{
+// 	return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'none',
+// 				//dashArray: '3',
+// 				fill: 'none',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
+// 			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+// 			};
+// }
 
-			},
+// 			},
 
-			onEachFeature: function(feature, layer){
+// 			onEachFeature: function(feature, layer){
 
-	layer.on({
-				mouseover: lightFeature,
-				mouseout: function(e){
+// 	layer.on({
+// 				mouseover: lightFeature,
+// 				mouseout: function(e){
 
-BELLAjson.resetStyle(e.target);
-			//info.update();
-resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
-
-
-
-				},
-				click: zmToFeature
-			});
-
-
-			}
-		})
-	//	.addTo(map)
-		;
-
-	function getBELLAColor(d) {
-return d > 35 ? '#005a32' :
-			       d > 30  ? '#238b45' :
-			       d > 25  ? '#41ab5d' :
-			       d > 20  ? '#74c476' :
-			       d > 15   ? '#a1d99b' :
-			       d > 10   ? '#c7e9c0' :
-			       d > 5   ? '#e5f5e0' :
-			                  '#f7fcf5';
-		}
-
-
-	var namelegend = L.control({position: 'bottomright'});
-
-		namelegend.onAdd = function (map) {
-
-			var div = L.DomUtil.create('div', 'innfo legend'),
-				grades = [0, 5, 10, 15, 20, 25, 30, 35],
-				labels = ['<strong>Dog Count</strong>'],
-				from, to;
-
-			for (var i = 0; i < grades.length; i++) {
-				from = grades[i];
-				to = grades[i + 1];
-
-				labels.push(
-					'<i style="background:' + getBELLAColor(from + 1) + '"></i> ' +
-					from + (to ? '&ndash;' + to : '+'));
-			}
-
-			div.innerHTML = labels.join('<br>');
-			return div;
-		};
-//NAMElegend.addTo(map);
+// BELLAjson.resetStyle(e.target);
+// 			//info.update();
+// resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 
 
 
+// 				},
+// 				click: zmToFeature
+// 			});
 
 
-		var MAXjson = L.geoJson(zipcode, {
+// 			}
+// 		})
+// 	//	.addTo(map)
+// 		;
 
-			style: function(feature){
+// 	function getBELLAColor(d) {
+// return d > 35 ? '#005a32' :
+// 			       d > 30  ? '#238b45' :
+// 			       d > 25  ? '#41ab5d' :
+// 			       d > 20  ? '#74c476' :
+// 			       d > 15   ? '#a1d99b' :
+// 			       d > 10   ? '#c7e9c0' :
+// 			       d > 5   ? '#e5f5e0' :
+// 			                  '#f7fcf5';
+// 		}
 
-	var total = (zip_dict[feature.properties.ZIP].MAX);
-		//	console.log(total);
-if ( zip_dict[feature.properties.ZIP].dognumber>0){
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				//dashArray: '3',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
+
+// 	var namelegend = L.control({position: 'bottomright'});
+
+// 		namelegend.onAdd = function (map) {
+
+// 			var div = L.DomUtil.create('div', 'innfo legend'),
+// 				grades = [0, 5, 10, 15, 20, 25, 30, 35],
+// 				labels = ['<strong>Dog Count</strong>'],
+// 				from, to;
+
+// 			for (var i = 0; i < grades.length; i++) {
+// 				from = grades[i];
+// 				to = grades[i + 1];
+
+// 				labels.push(
+// 					'<i style="background:' + getBELLAColor(from + 1) + '"></i> ' +
+// 					from + (to ? '&ndash;' + to : '+'));
+// 			}
+
+// 			div.innerHTML = labels.join('<br>');
+// 			return div;
+// 		};
+// //NAMElegend.addTo(map);
+
+
+
+
+
+// 		var MAXjson = L.geoJson(zipcode, {
+
+// 			style: function(feature){
+
+// 	var total = (zip_dict[feature.properties.ZIP].MAX);
+// 		//	console.log(total);
+// if ( zip_dict[feature.properties.ZIP].dognumber>0){
+// 			return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'white',
+// 				//dashArray: '3',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
 			
-				fillColor: getBELLAColor(total)
-			};}
-else{
-	return {
-				weight: 2,
-				opacity: 1,
-				color: 'none',
-				//dashArray: '3',
-				fill: 'none',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
-			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
-			};
-}
+// 				fillColor: getBELLAColor(total)
+// 			};}
+// else{
+// 	return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'none',
+// 				//dashArray: '3',
+// 				fill: 'none',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
+// 			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+// 			};
+// }
 
-			},
+// 			},
 
-			onEachFeature: function(feature, layer){
+// 			onEachFeature: function(feature, layer){
 
-	layer.on({
-				mouseover: lightFeature,
-				mouseout: function(e){
+// 	layer.on({
+// 				mouseover: lightFeature,
+// 				mouseout: function(e){
 
-MAXjson.resetStyle(e.target);
-			//info.update();
-resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
-
-
-
-				},
-				click: zmToFeature
-			});
+// MAXjson.resetStyle(e.target);
+// 			//info.update();
+// resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 
 
-			}
-		})
-		//.addTo(map)
-		;
+
+// 				},
+// 				click: zmToFeature
+// 			});
 
 
+// 			}
+// 		})
+// 		//.addTo(map)
+// 		;
 
 
 
 
 
-		var COCOjson = L.geoJson(zipcode, {
 
-			style: function(feature){
 
-	var total = (zip_dict[feature.properties.ZIP].COCO);
-		//	console.log(total);
-if ( zip_dict[feature.properties.ZIP].dognumber>0){
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				//dashArray: '3',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
+// 		var COCOjson = L.geoJson(zipcode, {
+
+// 			style: function(feature){
+
+// 	var total = (zip_dict[feature.properties.ZIP].COCO);
+// 		//	console.log(total);
+// if ( zip_dict[feature.properties.ZIP].dognumber>0){
+// 			return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'white',
+// 				//dashArray: '3',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
 			
-				fillColor: getBELLAColor(total)
-			};}
-else{
-	return {
-				weight: 2,
-				opacity: 1,
-				color: 'none',
-				//dashArray: '3',
-				fill: 'none',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
-			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
-			};
-}
+// 				fillColor: getBELLAColor(total)
+// 			};}
+// else{
+// 	return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'none',
+// 				//dashArray: '3',
+// 				fill: 'none',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
+// 			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+// 			};
+// }
 
-			},
+// 			},
 
-			onEachFeature: function(feature, layer){
+// 			onEachFeature: function(feature, layer){
 
-	layer.on({
-				mouseover: lightFeature,
-				mouseout: function(e){
+// 	layer.on({
+// 				mouseover: lightFeature,
+// 				mouseout: function(e){
 
-COCOjson.resetStyle(e.target);
-			//info.update();
-resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
-
-
-
-				},
-				click: zmToFeature
-			});
+// COCOjson.resetStyle(e.target);
+// 			//info.update();
+// resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 
 
-			}
-		})
-	//	.addTo(map)
-		;
+
+// 				},
+// 				click: zmToFeature
+// 			});
 
 
+// 			}
+// 		})
+// 	//	.addTo(map)
+// 		;
 
 
 
 
-		var shihjson = L.geoJson(zipcode, {
 
-			style: function(feature){
 
-	var total = (zip_dict[feature.properties.ZIP].SHIH);
-		//	console.log(total);
-if ( zip_dict[feature.properties.ZIP].dognumber>0){
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				//dashArray: '3',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
+// 		var shihjson = L.geoJson(zipcode, {
+
+// 			style: function(feature){
+
+// 	var total = (zip_dict[feature.properties.ZIP].SHIH);
+// 		//	console.log(total);
+// if ( zip_dict[feature.properties.ZIP].dognumber>0){
+// 			return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'white',
+// 				//dashArray: '3',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
 			
-				fillColor: getshihColor(total)
-			};}
-else{
-	return {
-				weight: 2,
-				opacity: 1,
-				color: 'none',
-				//dashArray: '3',
-				fill: 'none',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
-			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
-			};
-}
+// 				fillColor: getshihColor(total)
+// 			};}
+// else{
+// 	return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'none',
+// 				//dashArray: '3',
+// 				fill: 'none',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
+// 			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+// 			};
+// }
 
-			},
+// 			},
 
-			onEachFeature: function(feature, layer){
+// 			onEachFeature: function(feature, layer){
 
-	layer.on({
-				mouseover: lightFeature,
-				mouseout: function(e){
+// 	layer.on({
+// 				mouseover: lightFeature,
+// 				mouseout: function(e){
 
-shihjson.resetStyle(e.target);
-			//info.update();
-resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
-
-
-
-				},
-				click: zmToFeature
-			});
-
-
-			}
-		})
-	//	.addTo(map)
-		;
-
-	function getshihColor(d) {
-			return d > 100 ? '#084594' :
-			       d > 80  ? '#2171b5' :
-			       d > 60  ? '#4292c6' :
-			       d > 40  ? '#6baed6' :
-			       d > 20   ? '#9ecae1' :
-			       d > 10   ? '#c6dbef' :
-			       d > 5   ? '#deebf7' :
-			                  '#f7fbff';
-		}
+// shihjson.resetStyle(e.target);
+// 			//info.update();
+// resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 
 
 
-	var breedlegend = L.control({position: 'bottomright'});
+// 				},
+// 				click: zmToFeature
+// 			});
 
-		breedlegend.onAdd = function (map) {
 
-			var div = L.DomUtil.create('div', 'innfo legend'),
-				grades = [0, 5, 15, 20, 40, 60, 80, 100],
-				labels = ['<strong>Dog Count</strong>'],
-				from, to;
+// 			}
+// 		})
+// 	//	.addTo(map)
+// 		;
 
-			for (var i = 0; i < grades.length; i++) {
-				from = grades[i];
-				to = grades[i + 1];
-
-				labels.push(
-					'<i style="background:' + getshihColor(from + 1) + '"></i> ' +
-					from + (to ? '&ndash;' + to : '+'));
-			}
-
-			div.innerHTML = labels.join('<br>');
-			return div;
-		};
-//breedlegend.addTo(map);
+// 	function getshihColor(d) {
+// 			return d > 100 ? '#084594' :
+// 			       d > 80  ? '#2171b5' :
+// 			       d > 60  ? '#4292c6' :
+// 			       d > 40  ? '#6baed6' :
+// 			       d > 20   ? '#9ecae1' :
+// 			       d > 10   ? '#c6dbef' :
+// 			       d > 5   ? '#deebf7' :
+// 			                  '#f7fbff';
+// 		}
 
 
 
+// 	var breedlegend = L.control({position: 'bottomright'});
 
-		var yorkjson = L.geoJson(zipcode, {
+// 		breedlegend.onAdd = function (map) {
 
-			style: function(feature){
+// 			var div = L.DomUtil.create('div', 'innfo legend'),
+// 				grades = [0, 5, 15, 20, 40, 60, 80, 100],
+// 				labels = ['<strong>Dog Count</strong>'],
+// 				from, to;
 
-	var total = (zip_dict[feature.properties.ZIP].YORKSHIRE);
-		//	console.log(total);
-if ( zip_dict[feature.properties.ZIP].dognumber>0){
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				//dashArray: '3',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
+// 			for (var i = 0; i < grades.length; i++) {
+// 				from = grades[i];
+// 				to = grades[i + 1];
+
+// 				labels.push(
+// 					'<i style="background:' + getshihColor(from + 1) + '"></i> ' +
+// 					from + (to ? '&ndash;' + to : '+'));
+// 			}
+
+// 			div.innerHTML = labels.join('<br>');
+// 			return div;
+// 		};
+// //breedlegend.addTo(map);
+
+
+
+
+// 		var yorkjson = L.geoJson(zipcode, {
+
+// 			style: function(feature){
+
+// 	var total = (zip_dict[feature.properties.ZIP].YORKSHIRE);
+// 		//	console.log(total);
+// if ( zip_dict[feature.properties.ZIP].dognumber>0){
+// 			return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'white',
+// 				//dashArray: '3',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
 			
-				fillColor: getshihColor(total)
-			};}
-else{
-	return {
-				weight: 2,
-				opacity: 1,
-				color: 'none',
-				//dashArray: '3',
-				fill: 'none',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
-			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
-			};
-}
+// 				fillColor: getshihColor(total)
+// 			};}
+// else{
+// 	return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'none',
+// 				//dashArray: '3',
+// 				fill: 'none',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
+// 			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+// 			};
+// }
 
-			},
+// 			},
 
-			onEachFeature: function(feature, layer){
+// 			onEachFeature: function(feature, layer){
 
-	layer.on({
-				mouseover: lightFeature,
-				mouseout: function(e){
+// 	layer.on({
+// 				mouseover: lightFeature,
+// 				mouseout: function(e){
 
-yorkjson.resetStyle(e.target);
-			//info.update();
-resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
-
-
-
-				},
-				click: zmToFeature
-			});
-
-
-			}
-		})
-	//	.addTo(map)
-		;
+// yorkjson.resetStyle(e.target);
+// 			//info.update();
+// resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 
 
 
-		var chijson = L.geoJson(zipcode, {
+// 				},
+// 				click: zmToFeature
+// 			});
 
-			style: function(feature){
 
-	var total = (zip_dict[feature.properties.ZIP].CHIHUAHUA);
-		//	console.log(total);
-if ( zip_dict[feature.properties.ZIP].dognumber>0){
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				//dashArray: '3',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
+// 			}
+// 		})
+// 	//	.addTo(map)
+// 		;
+
+
+
+// 		var chijson = L.geoJson(zipcode, {
+
+// 			style: function(feature){
+
+// 	var total = (zip_dict[feature.properties.ZIP].CHIHUAHUA);
+// 		//	console.log(total);
+// if ( zip_dict[feature.properties.ZIP].dognumber>0){
+// 			return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'white',
+// 				//dashArray: '3',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
 			
-				fillColor: getshihColor(total)
-			};}
-else{
-	return {
-				weight: 2,
-				opacity: 1,
-				color: 'none',
-				//dashArray: '3',
-				fill: 'none',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
-			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
-			};
-}
+// 				fillColor: getshihColor(total)
+// 			};}
+// else{
+// 	return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'none',
+// 				//dashArray: '3',
+// 				fill: 'none',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
+// 			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+// 			};
+// }
 
-			},
+// 			},
 
-			onEachFeature: function(feature, layer){
+// 			onEachFeature: function(feature, layer){
 
-	layer.on({
-				mouseover: lightFeature,
-				mouseout: function(e){
+// 	layer.on({
+// 				mouseover: lightFeature,
+// 				mouseout: function(e){
 
-chijson.resetStyle(e.target);
-			//info.update();
-resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
-
-
-
-				},
-				click: zmToFeature
-			});
-
-
-			}
-		})
-	//	.addTo(map)
-		;
+// chijson.resetStyle(e.target);
+// 			//info.update();
+// resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 
 
 
+// 				},
+// 				click: zmToFeature
+// 			});
 
 
-		var blackjson = L.geoJson(zipcode, {
+// 			}
+// 		})
+// 	//	.addTo(map)
+// 		;
 
-			style: function(feature){
 
-	var total = (zip_dict[feature.properties.ZIP].BLACK);
-		//	console.log(total);
-if ( zip_dict[feature.properties.ZIP].dognumber>0){
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				//dashArray: '3',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
+
+
+
+// 		var blackjson = L.geoJson(zipcode, {
+
+// 			style: function(feature){
+
+// 	var total = (zip_dict[feature.properties.ZIP].BLACK);
+// 		//	console.log(total);
+// if ( zip_dict[feature.properties.ZIP].dognumber>0){
+// 			return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'white',
+// 				//dashArray: '3',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
 			
-				fillColor: getcolorColor(total)
-			};}
-else{
-	return {
-				weight: 2,
-				opacity: 1,
-				color: 'none',
-				//dashArray: '3',
-				fill: 'none',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
-			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
-			};
-}
+// 				fillColor: getcolorColor(total)
+// 			};}
+// else{
+// 	return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'none',
+// 				//dashArray: '3',
+// 				fill: 'none',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
+// 			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+// 			};
+// }
 
-			},
+// 			},
 
-			onEachFeature: function(feature, layer){
+// 			onEachFeature: function(feature, layer){
 
-	layer.on({
-				mouseover: lightFeature,
-				mouseout: function(e){
+// 	layer.on({
+// 				mouseover: lightFeature,
+// 				mouseout: function(e){
 
-blackjson.resetStyle(e.target);
-			//info.update();
-resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
-
-
-
-				},
-				click: zmToFeature
-			});
-
-
-			}
-		})
-	//	.addTo(map)
-		;
-
-	function getcolorColor(d) {
-			return d > 300 ? '#8c2d04' :
-			       d > 200  ? '#d94801' :
-			       d > 100  ? '#f16913' :
-			       d > 75  ? '#fd8d3c' :
-			       d > 50   ? '#fdae6b' :
-			       d > 25   ? '#fdd0a2' :
-			       d > 10  ? '#fee6ce' :
-			                  '#fff5eb';
-		}
+// blackjson.resetStyle(e.target);
+// 			//info.update();
+// resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 
 
 
-	var colorlegend = L.control({position: 'bottomright'});
+// 				},
+// 				click: zmToFeature
+// 			});
 
-		colorlegend.onAdd = function (map) {
 
-			var div = L.DomUtil.create('div', 'innfo legend'),
-				grades = [0, 10, 25, 50, 75, 100, 200, 300],
-				labels = ['<strong>Dog Count</strong>'],
-				from, to;
+// 			}
+// 		})
+// 	//	.addTo(map)
+// 		;
 
-			for (var i = 0; i < grades.length; i++) {
-				from = grades[i];
-				to = grades[i + 1];
-
-				labels.push(
-					'<i style="background:' + getcolorColor(from + 1) + '"></i> ' +
-					from + (to ? '&ndash;' + to : '+'));
-			}
-
-			div.innerHTML = labels.join('<br>');
-			return div;
-		};
-//colorlegend.addTo(map);
+// 	function getcolorColor(d) {
+// 			return d > 300 ? '#8c2d04' :
+// 			       d > 200  ? '#d94801' :
+// 			       d > 100  ? '#f16913' :
+// 			       d > 75  ? '#fd8d3c' :
+// 			       d > 50   ? '#fdae6b' :
+// 			       d > 25   ? '#fdd0a2' :
+// 			       d > 10  ? '#fee6ce' :
+// 			                  '#fff5eb';
+// 		}
 
 
 
+// 	var colorlegend = L.control({position: 'bottomright'});
 
-		var whitejson = L.geoJson(zipcode, {
+// 		colorlegend.onAdd = function (map) {
 
-			style: function(feature){
+// 			var div = L.DomUtil.create('div', 'innfo legend'),
+// 				grades = [0, 10, 25, 50, 75, 100, 200, 300],
+// 				labels = ['<strong>Dog Count</strong>'],
+// 				from, to;
 
-	var total = (zip_dict[feature.properties.ZIP].WHITE);
-		//	console.log(total);
-if ( zip_dict[feature.properties.ZIP].dognumber>0){
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				//dashArray: '3',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
+// 			for (var i = 0; i < grades.length; i++) {
+// 				from = grades[i];
+// 				to = grades[i + 1];
+
+// 				labels.push(
+// 					'<i style="background:' + getcolorColor(from + 1) + '"></i> ' +
+// 					from + (to ? '&ndash;' + to : '+'));
+// 			}
+
+// 			div.innerHTML = labels.join('<br>');
+// 			return div;
+// 		};
+// //colorlegend.addTo(map);
+
+
+
+
+// 		var whitejson = L.geoJson(zipcode, {
+
+// 			style: function(feature){
+
+// 	var total = (zip_dict[feature.properties.ZIP].WHITE);
+// 		//	console.log(total);
+// if ( zip_dict[feature.properties.ZIP].dognumber>0){
+// 			return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'white',
+// 				//dashArray: '3',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
 			
-				fillColor: getcolorColor(total)
-			};}
-else{
-	return {
-				weight: 2,
-				opacity: 1,
-				color: 'none',
-				//dashArray: '3',
-				fill: 'none',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
-			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
-			};
-}
+// 				fillColor: getcolorColor(total)
+// 			};}
+// else{
+// 	return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'none',
+// 				//dashArray: '3',
+// 				fill: 'none',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
+// 			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+// 			};
+// }
 
-			},
+// 			},
 
-			onEachFeature: function(feature, layer){
+// 			onEachFeature: function(feature, layer){
 
-	layer.on({
-				mouseover: lightFeature,
-				mouseout: function(e){
+// 	layer.on({
+// 				mouseover: lightFeature,
+// 				mouseout: function(e){
 
-whitejson.resetStyle(e.target);
-			//info.update();
-resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
-
-
-
-				},
-				click: zmToFeature
-			});
-
-
-			}
-		})
-		//.addTo(map)
-		;
+// whitejson.resetStyle(e.target);
+// 			//info.update();
+// resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 
 
 
-		var brownjson = L.geoJson(zipcode, {
+// 				},
+// 				click: zmToFeature
+// 			});
 
-			style: function(feature){
 
-	var total = (zip_dict[feature.properties.ZIP].BROWN);
-		//	console.log(total);
-if ( zip_dict[feature.properties.ZIP].dognumber>0){
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				//dashArray: '3',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
+// 			}
+// 		})
+// 		//.addTo(map)
+// 		;
+
+
+
+// 		var brownjson = L.geoJson(zipcode, {
+
+// 			style: function(feature){
+
+// 	var total = (zip_dict[feature.properties.ZIP].BROWN);
+// 		//	console.log(total);
+// if ( zip_dict[feature.properties.ZIP].dognumber>0){
+// 			return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'white',
+// 				//dashArray: '3',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
 			
-				fillColor: getcolorColor(total)
-			};}
-else{
-	return {
-				weight: 2,
-				opacity: 1,
-				color: 'none',
-				//dashArray: '3',
-				fill: 'none',
-				fillOpacity: 0.7,
-			//	fillColor: '#f7f7f7'
-			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
-			};
-}
+// 				fillColor: getcolorColor(total)
+// 			};}
+// else{
+// 	return {
+// 				weight: 2,
+// 				opacity: 1,
+// 				color: 'none',
+// 				//dashArray: '3',
+// 				fill: 'none',
+// 				fillOpacity: 0.7,
+// 			//	fillColor: '#f7f7f7'
+// 			//	fillColor: getColor(zip_dict[feature.properties.ZIP].dognumber)
+// 			};
+// }
 
-			},
+// 			},
 
-			onEachFeature: function(feature, layer){
+// 			onEachFeature: function(feature, layer){
 
-	layer.on({
-				mouseover: lightFeature,
-				mouseout: function(e){
+// 	layer.on({
+// 				mouseover: lightFeature,
+// 				mouseout: function(e){
 
-brownjson.resetStyle(e.target);
-			//info.update();
-resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
-
-
-
-				},
-				click: zmToFeature
-			});
+// brownjson.resetStyle(e.target);
+// 			//info.update();
+// resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 
 
-			}
-		})
-	//	.addTo(map)
-		;
+
+// 				},
+// 				click: zmToFeature
+// 			});
+
+
+// 			}
+// 		})
+// 	//	.addTo(map)
+// 		;
 
 
 
@@ -1620,7 +1620,11 @@ resetmap(name_dict, name_location, num_dict, rect_dict, names, rects, numbers);
 
  //'Dog Name - Max':MAXjson, 'Dog Name - Coco':COCOjson, 'All 311': complainjson,   '311 - Noise from Dog': noisejson, '311 - Canine Violation': violationjson,  '311 - Unleashed Dog': unleashedjson
 
-L.control.layers({'All Dogs': geojson,  'Dog Name - Bella':BELLAjson, 'Dog Name - Max':MAXjson, 'Dog Name - Coco':COCOjson,  'Dog Breed - Shih Tzu': shihjson, 'Dog Breed - Yorkshire Terrier':yorkjson, 'Dog Breed - Chihuahua': chijson, 'All 311': complainjson,    '311 - Noise from Dog': noisejson, '311 - Canine Violation': violationjson,  '311 - Unleashed Dog': unleashedjson , '311 - Dog Waste': wastejson ,'Dog Color - Black': blackjson, 'Dog Color - White': whitejson, 'Dog Color - Brown': brownjson,}).addTo(map);
+L.control.layers({'All Dogs': geojson,  
+	//'Dog Name - Bella':BELLAjson, 'Dog Name - Max':MAXjson, 'Dog Name - Coco':COCOjson,  'Dog Breed - Shih Tzu': shihjson, 'Dog Breed - Yorkshire Terrier':yorkjson, 'Dog Breed - Chihuahua': chijson, 
+	'All 311': complainjson,   
+	// '311 - Noise from Dog': noisejson, '311 - Canine Violation': violationjson,  '311 - Unleashed Dog': unleashedjson , '311 - Dog Waste': wastejson ,'Dog Color - Black': blackjson, 'Dog Color - White': whitejson, 'Dog Color - Brown': brownjson,
+	}).addTo(map);
 
 
 		map.attributionControl.addAttribution('Data &copy; <a href="http://www.compass.com/">Compass</a>, <a href="http://www.nyc.gov/html/doh/html/home/home.shtml">NYCDHMH</a>,  <a href="https://nycopendata.socrata.com/">NYCOpenData</a>, <a href="http://www.nyc.gov/html/doitt/html/home/home.shtml">DoITT</a>');
