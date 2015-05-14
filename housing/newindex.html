@@ -2,757 +2,213 @@
   <head>
     <title>Manhattan Median Housing Prices 2006-2015</title>
     <style>
-      body {
-
-        color: #000;
-        font-family:proxima-nova, sans-serif;
-        font-size:12px;
-        font-weight: bold;
-        background-color: #fff;
-        margin: 0px;
-        overflow: hidden;
-
-      }
-
-
-.legend{
-
-     position: absolute;
-    right: 38px;
-    bottom: 17px;
-    width: 150px;
-    height: 10px;
-    border : 1px solid #000;
-     background: -moz-linear-gradient( top ,
-        rgba(255, 0, 0, 1) 100%,
-        rgba(255, 255, 0, 1) 60%,
-        rgba(0, 255, 0, 1) 30%,
-        rgba(0, 255, 255, 1) 0%);
-    background: -webkit-gradient(linear,  left top,  right top, 
-        color-stop(100%, rgba(255, 0, 0, 1)), 
-        color-stop(60%, rgba(255, 255, 0, 1)),
-        color-stop(30%, rgba(0, 255, 0, 1)),
-        color-stop(0%, rgba(0, 255, 255, 1)));
-
+html {
+  min-width: 1040px;
 }
 
-#Start{
-
- font-size:10px;
-        font-weight: normal;
-     position: absolute;
-    right: 175px;
-    bottom: 6px;
-    text-align: center;
-
+body {
+  font-family: proxima-nova, sans-serif;
+  margin: 1em auto 4em auto;
+  position: relative;
+  tab-size: 2;
+  width: 960px;
 }
 
-#End{
-
- font-size:10px;     
-        font-weight: normal;
-     position: absolute;
-    right: 11px;
-    bottom: 6px;
-    text-align: center;
-
+h1 {
+  font-size: 64px;
+  font-weight: 300;
+  letter-spacing: -2px;
+  margin: .3em 0 .1em 0;
 }
 
-#Title{
-
- font-size:12px;     
-        font-weight: normal;
-     position: absolute;
-    right: 75px;
-    bottom: 60px;
-    text-align: center;
-
+h2 {
+  margin-top: 2em;
 }
 
-#Years{
-
-     position: absolute;
-    left: 195px;
-    bottom: -6px;
-    width: 300px;
-    height: 42px;
-
-}
-    .info {
-      background: none;
-      font-size:12px;     
-        font-weight: normal;
-    }
-
-#Current{
-
- font-size:12px;
-        color: darkblue;
-        font-weight: bold;
-     position: absolute;
-    right: 225px;
-    bottom: 10px;
-    opacity: 0.9;
-text-align: center;
-
+h1, h2 {
+  text-rendering: optimizeLegibility;
 }
 
+h2 a {
+  color: #ccc;
+  left: -20px;
+  position: absolute;
+  width: 740px;
+}
 
-.axis .halo {
-  fill: none;
-  stroke: #ddd;
-  stroke-width: 6px;
-  stroke-linecap: round;
+.date {
+  color: #aaa;
+  margin-left: 1em;
+}
+
+footer {
+  margin-top: 3em;
+  /*margin-left: 0em;*/
+}
+
+aside {
+  font-size: small;
+  left: 780px;
+  position: absolute;
+  text-align: right;
+  width: 180px;
+}
+
+p {
+  line-height: 1.5em;
+  width: 720px;
+}
+
+blockquote {
+  width: 640px;
+}
+
+li {
+  width: 680px;
+}
+
+a {
+  color: steelblue;
+}
+
+a:not(:hover) {
+  text-decoration: none;
+}
+
+pre, code, textarea {
+  font-family: proxima-nova, sans-serif;
+  line-height: normal;
+}
+
+textarea {
+  font-size: 100%;
+}
+
+pre {
+  border-left: solid 2px #ccc;
+  padding-left: 18px;
+  margin: 2em 0 2em -20px;
+  width: 960px;
+  overflow-x: auto;
+}
+
+iframe {
+  width: 960px;
+  height: 500px;
+  border: 1px solid #DEDEDE;
+  margin-bottom: .5em;
 }
 
 
-.slider .handle {
-  fill: #fff;
-  stroke: #000;
-  stroke-opacity: .5;
-  stroke-width: 1.25px;
-  cursor: crosshair;
+.html .value,
+.javascript .string,
+.javascript .regexp {
+  color: #756bb1;
 }
 
- #indexmenu {
-          left: 10px;
-          position: absolute;
-          bottom: 7px;
-          font-size: 12px;
-        }
-/*
-.slider .handle {
-  fill: #fff;
-  stroke: #000;
-  stroke-opacity: .5;
-  stroke-width: 1.25px;
-  cursor: crosshair;
-}*/
-.buttonee button {
-  font-size: 12px;
-          left: 125px;
-          position: absolute;
-          bottom: 6px;
-          width: 60px;
-          cursor: pointer;
-          text-align: center;
-        }
-
-.slider .handle path {
-  stroke: white;
-  stroke-width: 3px;
-  stroke-linecap: round;
-  pointer-events: none;
+.html .tag,
+.css .tag,
+.javascript .keyword {
+  color: #3182bd;
 }
 
-.slider .handle text {
-  fill: white;
-  text-align: center;
+aside,
+.comment {
+  color: #636363;
 }
-    </style>
+
+.html .doctype,
+.javascript .number {
+  color: #31a354;
+}
+
+.html .attribute,
+.css .attribute,
+.javascript .class,
+.javascript .special {
+  color: #e6550d;
+}
+
+
+header{
+margin-bottom: 2em;
+
+}
+
+footer {
+  color: #555;
+}
+
+a.gist {
+  color: #000;
+}
+
+
+  </style>
   </head>
+
+<header>
+  <a href="../">blocks</a>
+</header>
+<h1>Manhattan Median Housing Prices 2006-2015</h1>
+<iframe src="newindex.html" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+<p><aside><a style="position:relative;top:6px;left:0px;" href="newindex.html" target="_blank">Open in a new window</a></aside>
+
+<div class="gist-readme"></div>
+<div class="gist-sources"></div>
   <body>
-
-
-<script src="../files/Three.js"></script>
-<script src="../files/Detector.js"></script>
-<script src="../files/OrbitControls.js"></script>
-<script src="../files/THREEx.FullScreen.js"></script>
-<script src="../files/THREEx.WindowResize.js"></script>
-
-      <script src="../files/d3.v3.min.js"></script>
-       <script src="../files/Tween.js"></script>
-       <script src="../files/RequestAnimationFrame.js"></script>
-      <script src="../files/dat.gui.js"></script> 
-      <script src="../files/d3-threeD.js"></script>
-
-      <link type="text/css" rel="stylesheet" href="../files/dat-gui-swec.css"></link>
-
-<div id="ThreeJS" style="position: absolute; left:0px; top:0px">
-  
-  <div id = "Overlay" class = "legend"> </div>
-  <div id = "Years" class = "info"> </div>
- <div id = "Start"> <span id = "Startvalue"></span>  </div>
-  <div id = "Title"> <span id = "Currenttitle"></span> </div>
-  <div id = "Current"> <span id = "Currentvalue" style = "text-align:middle"></span></div>
- <div class = "buttonee" id="example98"> <button>Play</button> </div>
-  <div id = "End"> <span id = "Endvalue"></span></div>
-</div>
-<select id = "indexmenu"></select>
+  	<script src="../files/d3.v3.min.js"></script>
+    <script src="../files/highlight.min.js"></script>
     <script>
 
-// standard global variables
-var container, scene, camera, renderer, controls, stats;
-var raycaster;
-
-      var mouse = new THREE.Vector2(), INTERSECTED;
-      var radius = 100, theta = 0;
 
 
-var clock = new THREE.Clock();
+var gist = {"files":{"README.md":{"language":"Markdown","type":"text/plain","filename":"README.md"},"index.html":{"language":"HTML","type":"text/html","filename":"index.html"}}};
 
-// custom global variables
-var mesh, position;
+var files = d3.values(gist.files)
+    .sort(function(a, b) { return (b.filename === "index.html") - (a.filename === "index.html") || a.filename.localeCompare(b.filename); });
 
-init();
-animate();
-
-// FUNCTIONS    
-function init() 
-{
-  // SCENE
-  scene = new THREE.Scene();
-
-  // CAMERA
-  var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
-  var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 10000;
-  camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-  scene.add(camera);
-  camera.position.z = 396.845;
-  camera.position.y = 650.576;
-  camera.position.x = 103.37;
-  camera.lookAt({x:0, y:0, z:0});  
-
-  // RENDERER
-  if ( Detector.webgl )
-    renderer = new THREE.WebGLRenderer( {antialias:true} );
-  else
-    renderer = new THREE.CanvasRenderer(); 
-  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-  container = document.getElementById( 'ThreeJS' );
-  container.appendChild( renderer.domElement );
-
-  // EVENTS
-  THREEx.WindowResize(renderer, camera);
-  THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0) });
-
-  // CONTROLS
-  controls = new THREE.OrbitControls( camera, renderer.domElement );
-
-  // LIGHT 
-    var light = new THREE.DirectionalLight( 0xffffff , 1);
-   camera.add( light );
-
-//
-projector = new THREE.Projector();  
-
-        window.addEventListener( 'resize', onWindowResize, false );
-         document.addEventListener('mousemove', onDocumentMouseMove, false);  
-
-//LEGEND
-currentvalue = 0;
-current_term = 'block';
-
-var valueElement = document.getElementById("Currentvalue");
- valueNode = document.createTextNode("");
-valueElement.appendChild(valueNode);
-valueNode.nodeValue = "Hover over a " + current_term;
+// var readme = d3.selectAll(".gist-readme")
+//     .data(files.filter(function(d) { return /^readme\b/i.test(d.filename) && d.language === "Markdown"; }))
+//     .each(function(d) {
+//       var readme = d3.select(this);
+//       d3.text( d.filename, function(error, content) {
+//         readme.html(new Showdown.converter().makeHtml(content));
+//         readme.selectAll("code").each(function() { hljs.highlightBlock(this); });
+//       });
+//     });
 
 
-currenttitle = "Housing Prices";
-var valuetitle = document.getElementById("Currenttitle");
- titleNode = document.createTextNode("");
-valuetitle.appendChild(titleNode);
-//titleNode.nodeValue = currenttitle;
-
-var indexoptions  = [
-{name: "Block"},
-{name: "Block Group"},
-{name: "Census Tract"},
-{name: "Neighborhood"},
-{name: "Major Market"}
-];
-
-var indexmenu = d3.select("#indexmenu");
-    //.on("change", change);
-
-indexmenu.selectAll("option")
-    .data(indexoptions)
-  .enter().append("option")
-    .text(function(d) { return d.name; });
+// var source = d3.select(".gist-sources").selectAll(".gist-source")
+//     .data(files.filter(function(d) { return !/^readme\b/i.test(d.filename) && text(d.type) ; }))
+//   .enter().append("div")
+//     .attr("class", "gist-source");
 
 
+// source.append("h2")
+//     .text(function(d) { return d.filename; })
+//   .append("a")
+//     .attr("name", function(d) { return d.filename; })
+//     .attr("href", function(d) { return "#" + d.filename; })
+//     .text("#");
 
-//ADD COUNTRIES
-var projection = d3.geo.equirectangular()
-    .scale(250000)
-    .translate([720, 450])
-    .center([-73.89, 40.66]);
+// source.append("pre").append("code")
+//     .attr("class", function(d) { return d.language && (d.language === "JSON" ? "javascript" : d.language.toLowerCase()); })
+//     .each(function(d) {
+//       var code = d3.select(this);
+//       d3.text( (d.filename === "index.html" ? "" : d.filename), function(error, content) {
+//         code.text(content);
+//         hljs.highlightBlock(code.node());
+//       });
+//     });
 
-var path = d3.geo.path()
-    .projection(projection);
-
-var kvalue = [ 0.017, 0.016, 0.03, 0.05,  0.05];
-var file_names = ['block', 'blockgroup', 'censustract', 'neighborhood', 'majormarket'];
-rate = {};
-for (var x =0; x<file_names.length; x++){
-  rate[file_names[x]] = kvalue[x];
+function text(type) {
+  return /(^text\/)|(^application\/(javascript|json)$)|(^image\/svg$)|(\+xml$)/.test(type);
 }
 
-
-k = rate['block'];
-
-
-
-var column_names =  ['COOPMP06', 'COOPMP07', 'COOPMP08', 'COOPMP09' ,'COOPMP10', 'COOPMP11' ,'COOPMP12' ,'COOPMP13' ,'COOPMP14', 'COOPMP15'];
-
-
-d3.json( 'hblock.json', function(data) {
-
-        term = 'COOPMP06';
-        countries = [];
-        var i, j;
-         toAdd = [];
-
-      //  var rate = [ 0.000008, 0.0000015, 0.000006, 0.000005,  0.0000055, 0.000002,  0.0000015, 0.000008, 0.000004, 0.000006];
-
-       
-        
-        // convert to threejs meshes
-        for (i = 0 ; i < data.features.length ; i++) {
-          var geoFeature = data.features[i];
-          var properties = geoFeature.properties;
-          var feature = path(geoFeature);
-          
-          // we only need to convert it to a three.js path
-          var mesh = transformSVGPathExposed(feature);
-          
-          // add to array
-          for (j = 0 ; j < mesh.length ; j++) {
-              countries.push({"data": properties, "mesh": mesh[j]});
-          }
-        }
-        
-        //find the max value
-        var values = getMaxMin(countries, column_names);
-        max = values[0];
-        min = values[1];
-       //  console.log(min);
-        // extrude paths and add color
-        for (i = 0 ; i < countries.length ; i++) {
-  
-          var material = new THREE.MeshLambertMaterial({
-            opacity:0.9
-          }); 
-
-          // extrude mesh
-          var shape3d = countries[i].mesh.extrude({
-            amount: 2, 
-            bevelEnabled: false
-          });
-
-
-          // create a mesh based on material and extruded shape
-          toAdd[i] = new THREE.Mesh(shape3d, material);
-          
-          //set mesh color
-          setColorHeight(toAdd[i], countries[i].data, max, term, k, min);
-          
-          // rotate and position the elements
-          toAdd[i].rotation.x = Math.PI/2;
-          toAdd[i].translateX(-350);
-          toAdd[i].translateZ(50);
-          toAdd[i].translateY(-50);
-
-          // add to scene
-          scene.add(toAdd[i]);
-}
-
-
-var endElement = document.getElementById("Endvalue");
- endNode = document.createTextNode("");
-endElement.appendChild(endNode);
-endNode.nodeValue = toCommas(max.toFixed(0));
-
-
-var startElement = document.getElementById("Startvalue");
-startNode = document.createTextNode("");
-startElement.appendChild(startNode);
-startNode.nodeValue = toCommas(min);
-
-var startdiv = document.getElementById("Start");
-var titlediv = document.getElementById("Title");
-
-//Slider
-var svg = d3.selectAll("div.info").append("svg").attr("height", 42).attr("width", 550);
-
-var x = d3.scale.linear()
-    .domain([2006, 2015])
-    .range([20, 300])
-    .clamp(true);
-var brush = d3.svg.brush()
-    .x(x)
-    .extent([2006, 2006])
-    .on("brush", brushed);
-
-svg.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + 42 / 2 + ")")
-    .call(d3.svg.axis()
-      .scale(x)
-      .orient("bottom")
-      .tickFormat(function(d) { return d ; })
-      .tickSize(0)
-      .tickPadding(12)
-      .tickValues([]))
-  .select(".domain")
-  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-    .attr("class", "halo");
-
-
-var slider = svg.append("g")
-    .attr("class", "slider")
-    .call(brush);
-
-slider.selectAll(".extent,.resize")
-    .remove();
-
-slider.select(".background")
-    .attr("height", 42);
-
-var handle = slider.append("circle")
-    .attr("class", "handle")
-    .attr("transform", "translate(0," + 42 / 2 + ")")
-    .attr("r", 7);
-
-
-// handle.append("path")
-//     .attr("transform", "translate(0," + 42 / 2 + ")")
-//     .attr("d", "M 0 -20 V 20");
-
-slider.append("text")
-  .text(2006).style("font-size", 12).style("font-weight", "bold").attr("fill", "darkblue")
-      .attr("transform", "translate(330," + (24 ) + ")");
- // .attr("transform", "translate(6," + (42 / 2 -10) + ")");
-
-slider
-    .call(brush.event);
-  // .transition() // gratuitous intro!
-  // .ease("linear")
-  //   .duration(10000)
-  //   .call(brush.extent([2015, 2015]))
-  //   .call(brush.event);
-
-function brushed() {
-  var value = brush.extent()[0];
-
-  if (d3.event.sourceEvent) { // not a programmatic event
-//handle.select('text');
-    value = x.invert(d3.mouse(this)[0]);
-    brush.extent([value, value]);
-  }
-
-  handle.attr("cx", x(Math.floor(value)));
-  slider.select('text').text(Math.floor(value));
-
-// if(value == 2006)  slider.select('text').attr("x", 1); 
-// else if(value == 2015)  slider.select('text').attr("x", 461); 
-// else {try{slider.select('text').attr("x", d3.mouse(this)[0]-20)}
-//   catch(err){console.log('non');}
-//   }; 
-
-changeYear(Math.floor(value));
-
-//console.log(Math.round(value)); 
-
-
-}
-
-//button
-d3.select("#example98 button").on("click", function() {
-  
-
-slider
-    .call(brush.event)
-  .transition() // gratuitous intro!
-  .ease("linear")
-   // .duration(15000)
-    .call(brush.extent([2006, 2006]))
-    .call(brush.event);
-
-slider
-    .call(brush.event)
-  .transition() // gratuitous intro!
-  .ease("linear")
-    .duration(10000)
-    .call(brush.extent([2015, 2015]))
-    .call(brush.event);
-
-// slider.select('text').transition.ease("linear")
-//     .duration(10000).attr("x", 480);
-
-});
-
-
-d3.select("#indexmenu")
-        .on('change', function() {
-
-
- for (i = 0 ; i < countries.length ; i++) {
-   scene.remove(toAdd[i]);
- }
-
-          var dropdown_kind = d3.select(this)[0][0].value;
-          dropdown_kind = dropdown_kind.replace(/\s+/g, '').toLowerCase();
-       //   console.log(dropdown_kind);
-
- k = rate[dropdown_kind];
-//console.log(k);
-current_term = (d3.select(this)[0][0].value).toLowerCase();
-current_value =  x.invert(handle.attr("cx"));
-
-d3.json( 'h' + dropdown_kind + ".json", function(data) {
-
-        term = 'COOPMP06';
-        countries = [];
-        var i, j;
-         toAdd = [];
-
-      //  var rate = [ 0.000008, 0.0000015, 0.000006, 0.000005,  0.0000055, 0.000002,  0.0000015, 0.000008, 0.000004, 0.000006];
-
-       
-        
-        // convert to threejs meshes
-        for (i = 0 ; i < data.features.length ; i++) {
-          var geoFeature = data.features[i];
-          var properties = geoFeature.properties;
-          var feature = path(geoFeature);
-          
-          // we only need to convert it to a three.js path
-          var mesh = transformSVGPathExposed(feature);
-          
-          // add to array
-          for (j = 0 ; j < mesh.length ; j++) {
-              countries.push({"data": properties, "mesh": mesh[j]});
-          }
-        }
-        
-        //find the max value
-        var values = getMaxMin(countries, column_names);
-        max = values[0];
-        min = values[1];
-       //  console.log(min);
-        // extrude paths and add color
-        for (i = 0 ; i < countries.length ; i++) {
-  
-          var material = new THREE.MeshLambertMaterial({
-            opacity:0.9
-          }); 
-
-          // extrude mesh
-          var shape3d = countries[i].mesh.extrude({
-            amount: 2, 
-            bevelEnabled: false
-          });
-
-
-          // create a mesh based on material and extruded shape
-          toAdd[i] = new THREE.Mesh(shape3d, material);
-          
-          //set mesh color
-          setColorHeight(toAdd[i], countries[i].data, max, term, k, min);
-          
-          // rotate and position the elements
-          toAdd[i].rotation.x = Math.PI/2;
-          toAdd[i].translateX(-350);
-          toAdd[i].translateZ(50);
-          toAdd[i].translateY(-50);
-
-          // add to scene
-          scene.add(toAdd[i]);
-}
-
-
-endNode.nodeValue = toCommas(max.toFixed(0));
-startNode.nodeValue = toCommas(min);
-
-
-slider
-    .call(brush.event)
-  .transition() // gratuitous intro!
-  .ease("linear")
-   // .duration(15000)
-    .call(brush.extent([current_value, current_value]))
-    .call(brush.event);
-
-
-})
-
-
-
-
-
-        });
-
-
-});
-
- }
-
-
-function animate(time) 
-{
-    requestAnimationFrame( animate );
-    TWEEN.update(time);
-  render();   
-  update();
-}
-
-
-function update()
-{
-  //find intersection
-   var vector = new THREE.Vector3(mouse.x, mouse.y, 1);  
-                projector.unprojectVector(vector, camera);  
-                var ray = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());  
-  
-                  
-                var intersects = ray.intersectObjects(scene.children);  
-  
-                  
-                if (intersects.length > 0) {  
-                     
-                    if (intersects[0].object != INTERSECTED) {  
-                         
-                        if (INTERSECTED)  
-                            INTERSECTED.material.color.setHex(INTERSECTED.currentHex);  
-                         
-                        INTERSECTED = intersects[0].object;  
-
-                  // change legend value
-                       if (INTERSECTED.material.color.r == 1  && INTERSECTED.material.color.g == 1 &&  INTERSECTED.material.color.b == 1){
-                        //if (term == 'BUILDYEAR'){
-                        valueNode.nodeValue  = 'None';
-                    //     if (term == 'ALTERYEAR'){
-                    //    valueNode.nodeValue  = 'Before 1970 or None';}
-
-}
-                      else{         
-
-                        //console.log(min);
-                        valueNode.nodeValue  = toCommas(Math.pow((INTERSECTED.scale.z)/k -1 + Math.sqrt(min), 2).toFixed(0));
-
-                      }
-
-                        INTERSECTED.currentHex = INTERSECTED.material.color.getHex();  
-                        
-                        INTERSECTED.material.color.setHex(0x00008b);  
-                    }  
-                }  
-                else   
-                {  
-                    if (INTERSECTED)  
-                        INTERSECTED.material.color.setHex(INTERSECTED.currentHex);  
-                      valueNode.nodeValue  = "Hover over a " + current_term;
-                    INTERSECTED = null;  
-                }  
-
-  controls.update();
- // console.log(camera.position.x, camera.position.y, camera.position.z);
-}
-
-
- function onDocumentMouseMove(event) {  
-                
-                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;  
-                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;  
-                 
-            }  
-
-
-function render() 
-{
-  renderer.render( scene, camera );
-}
-
-
-function onWindowResize() {
-
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize( window.innerWidth, window.innerHeight );
-        render();
-
-      }
-
-
-function changePositionsmooth(value, element){
-
-var p0 = {y: element.position.y, element: element};
-
-var updateCallback = function() {
-            this.element.position.y = this.y;
-          }
-
-t0 = new TWEEN.Tween(p0).to({y: value}, 0) 
-.easing( TWEEN.Easing.Cubic.InOut)
-//.delay(Math.random() * 250)
-.delay(0)
-.onUpdate(updateCallback)
-.start();
-
-}
-
-
-function getMaxMin(data, names){
-
-var value_list = [];
-for (var j = 0; j < names.length; j++){
-for (var i = 0 ; i < data.length ; i++) {
-  if (data[i].data[names[j]]> 0){
-value_list.push(data[i].data[names[j]]);}
- }}
-
- return [Math.max.apply(Math, value_list) , Math.min.apply(Math, value_list)];
-
-}
-
-
-function setColorHeight(object, data, max, term, k, start){
-
-if ((data[term] - start) >= 0 ){
-
-object.scale.z = (Math.sqrt(data[term])+1 - Math.sqrt(start)) * k ;
-var value = 0.5-((Math.sqrt(data[term])+1 - Math.sqrt(start))/(2*(Math.sqrt(max)+1-Math.sqrt(start))));
-object.material.color.setHSL(value, 1.0, 0.5);
-changePositionsmooth((Math.sqrt(data[term])+1 -Math.sqrt(start))*2*k - 50, object);
-
-}
-
-else{
-
-object.scale.z = 1;
-object.material.color.setHSL(0, 0, 1);
-changePositionsmooth((1 )*2 - 50, object);
-
-}
-
-}
-
-function changeYear(value){
-
-term = 'COOPMP' + value.toString().substring(2);
-//var max = getMax(countries, term);
-
-//update mesh color and height
-
- for (i = 0 ; i < countries.length ; i++) {
-setColorHeight(toAdd[i], countries[i].data, max, term, k, min);
- }
-
-//change lengend
-//  endNode.nodeValue = max.toFixed(0);
-// startNode.nodeValue = start;
-
-
-}
-
-
-function toCommas(x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-
-    </script>
+  	</script>
+<footer>
+  <a href="../">blocks</a>
+</footer>
   </body>
 </html>
