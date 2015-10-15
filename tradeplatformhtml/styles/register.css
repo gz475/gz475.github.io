@@ -1,0 +1,159 @@
+/* Elements */
+body{font-family: arial, helvetica, sans-serif;}
+
+form{
+	/* Appearance styling */
+	background-color: #FFFFFF;
+	border: 1px solid #666666; 
+	border-radius: 5px;
+	padding: 20px 15px 20px 15px;
+	width: 300px;
+	position: absolute;
+	
+	/* Text styling */ 
+	font-family: arial, helvetica, sans-serif;
+	font-style: normal;
+	font-weight: 14;	
+}
+
+form.register{
+	height: 380px;
+		
+}
+
+form.login{
+    left: 30%;
+	position: relative;	
+}
+
+.inputfieldtext{
+	padding-left: 32px;	
+	font-family: arial, helvetica, sans-serif;
+	font-size: 13px;
+	width: 260px;
+	height: 25px;
+	font-weight: 500;
+	border: 1px solid #666666; 
+}
+
+p.checkboxtext{
+	font-size: 13px;
+	font-weight: 500;
+	color: #666666;	
+}
+input.checkboxlook{
+	background: #FFFFFF;
+    border-radius: 2px;
+}
+
+h1.sectionlabel{
+	font-family: arial, helvetica, sans-serif;
+	font-size: 100%;
+	color:#666666;
+	font-weight: 700;
+}
+
+/* Use the following style to center the input box*/
+div.input{
+	width: 28%;
+	margin: 70px auto auto auto;
+}
+
+.hyperlinktext{
+	color: #00aeef;		
+	text-decoration: none;
+}
+
+#regbutt{
+
+	right: 30px;
+	top: 380px;
+	position: absolute;	
+}
+
+#firstname, #lastname, #username{
+	background: url("../images/human_icon.jpg") no-repeat scroll 1% 65%;	
+}
+
+#mail{
+	background: url("../images/mail_icon.jpg") no-repeat scroll 1% 65%;	
+}
+
+#createpassword, #confirmpassword{
+	background: url("../images/lock_icon.jpg") no-repeat scroll 1% 65%;	
+}
+
+#Logo{
+	
+	content: url("../images/logo-TP.jpg");
+	height : 100px;
+}
+
+#Phone{
+	
+	content: url("../images/images.jpg");
+	height : 20px;
+	color: #00aeef;
+}
+
+#rightheadertop{
+
+	display: inline-block;
+	width: 200px;
+	right: 17px;
+	top: 30px;
+	position: absolute;	
+}
+
+#phonenum{
+
+	font-family: arial, helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color:#00aeef;
+}
+
+#rightheaderbottom{
+
+	right: 47px;
+	top: 65px;
+	position: absolute;	
+}
+
+
+.loginbutton{
+
+	background: #DCDCDC;
+	font-family: arial, helvetica, sans-serif;
+	border-radius: 10px;
+	height: 25px;
+	text-align: center;
+	font-size: 12px;	
+	color: #696969;
+	border: 1px solid #D3D3D3;
+	cursor: pointer;
+}
+
+.registerbutton{
+
+	font-family: arial, helvetica, sans-serif;
+	border-radius: 10px;
+	height: 25px;
+	text-align: center;
+	font-size: 12px;
+	border: 1px solid #D3D3D3;
+	cursor: pointer;
+	background-color: #00aeef;
+	color: white;
+}
+
+
+.loginbutton:hover { 
+    background-color: #00aeef;
+	color: white;
+}
+
+.footer-social {  margin-top:680px; margin-bottom:10px; height:30px; }
+.footer-social ul {float:left; padding:0; margin:0;}
+.footer-social li {float:left; list-style:none; margin-left:5px;}
+.footer-social span { float:right; }

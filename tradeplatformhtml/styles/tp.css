@@ -1,0 +1,308 @@
+
+body{font-family: arial, helvetica, sans-serif;}
+h2{font-family: Times New Roman, Georgia, Serif;}
+
+#TPLogo{
+	
+	background-image: url("../images/main.jpg");
+	height: 550px;
+	text-align: center;
+	color: white;
+	padding: 0px;
+}
+
+#Logo{
+	
+	content: url("../images/logo-TP.jpg");
+	height : 100px;
+}
+
+#Phone{
+	
+	content: url("../images/images.jpg");
+	height : 20px;
+	color: #00aeef;
+}
+
+#trading{
+	
+	content: url("../images/round-images1.png");
+	height : 200px;
+	width: 200px;
+	margin: 80px 40px 80px 40px;
+}
+
+#investment{
+	
+	content: url("../images/round-images3.png");
+	height : 200px;
+	width: 200px;
+	margin: 80px 40px 80px 40px;
+}
+
+#brokerage{
+	
+	content: url("../images/round-images2.png");
+	height : 200px;
+	width: 200px;
+	margin: 80px 40px 80px 40px;
+}
+
+#services{
+	
+	content: url("../images/round-images4.png");
+	height : 200px;
+	width: 200px;
+	margin: 80px 40px 80px 40px;
+}
+
+
+#rightheadertop{
+
+	display: inline-block;
+	width: 200px;
+	right: 0px;
+	top: 30px;
+	position: absolute;	
+}
+
+#Ontop{
+
+	background-color: #696969;
+	left: 8px;
+	top: 250px;
+	height: 360px;
+	width: 850px;
+	position: absolute;	
+	opacity: 0.3;
+}
+
+#Newontop1{
+
+	text-align: top;
+	color: white;
+	left: 8px;
+	top: 210px;
+	height: 310px;
+	width: 850px;
+	position: absolute;	
+	opacity: 1;
+}
+
+#Newontop2{
+
+	text-align: top;
+	color: white;
+	left: 8px;
+	top: 380px;
+	height: 250px;
+	width: 850px;
+	position: absolute;	
+	opacity: 1;
+}
+
+#Title1{
+
+	font-family: arial, helvetica, sans-serif;
+	top: 0px;
+	font-size: 80px;	
+	font-weight: bold;
+}
+
+#Title2{
+
+	font-family: arial, helvetica, sans-serif;
+	top: 0px;
+	font-size: 36px;	
+	font-weight: bold;
+}
+
+#rightheaderbottom{
+
+	right: 30px;
+	top: 65px;
+	position: absolute;	
+}
+
+#tlearn{
+
+	left: 520px;
+	top: 990px;
+	position: absolute;	
+}
+
+#ilearn{
+
+	right: 30px;
+	top: 990px;
+	position: absolute;	
+}
+
+#blearn{
+
+	left: 520px;
+	top: 1340px;
+	position: absolute;	
+}
+
+#slearn{
+
+	right: 30px;
+	top: 1340px;
+	position: absolute;	
+}
+
+#phonenum{
+
+	font-family: arial, helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color:#00aeef;
+}
+
+.sections{
+
+	display:inline-block;
+	width: 49.8%;
+	height: 360px;
+	border-bottom: solid #DCDCDC;
+}
+
+.content1{
+
+	top: 770px;
+	left: 300px;
+	width: 24%;
+	height: 250px;
+	color: #696969;
+	position: absolute;
+}
+
+.content3{
+
+	top: 1120px;
+	left: 300px;
+	width: 24%;
+	height: 250px;
+	color: #696969;
+	position: absolute;
+}
+
+.content2{
+
+	top: 770px;
+	right: 30px;
+	width: 24%;
+	height: 250px;
+	color: #696969;
+	position: absolute;
+}
+
+.content4{
+
+	top: 1120px;
+	right: 30px;
+	width: 24%;
+	height: 250px;
+	color: #696969;
+	position: absolute;
+}
+
+
+.registerbutton{
+
+	background: #DCDCDC;
+	font-family: arial, helvetica, sans-serif;
+	border-radius: 10px;
+	height: 25px;
+	text-align: center;
+	font-size: 12px;	
+	color: #696969;
+	border: 1px solid #D3D3D3;
+	cursor: pointer;
+}
+
+.loginbutton{
+
+	background-color: #DCDCDC;
+	font-family: arial, helvetica, sans-serif;
+	border-radius: 10px;
+	height: 25px;
+	text-align: center;
+	font-size: 12px;
+	color: #696969;
+	border: 1px solid #D3D3D3;
+	cursor: pointer;
+}
+
+.openbutton{
+
+	background-color: white;
+	font-family: arial, helvetica, sans-serif;
+	border-radius: 10px;
+	height: 45px;
+	text-align: center;
+	font-size: 20px;
+	border: 1px solid #D3D3D3;
+	cursor: pointer;
+	color: #00aeef;
+}
+
+#openbutt{
+
+	right: 30px;
+	font-weight: bold;
+	top: 170px;
+	position: absolute;	
+}
+
+.loginbutton:hover { 
+
+    background-color: #00aeef;
+	color: white;
+}
+
+.registerbutton:hover { 
+
+    background-color: #00aeef;
+	color: white;
+}
+
+.openbutton:hover { 
+
+    background-color: #00aeef;
+	color: white;
+}
+
+/* navigation bar : start */
+nav div	{width: 100%; margin-left: auto; margin-right: auto;}
+nav ul 	{list-style-type: none;
+		font-family: arial, helvetica, sans-serif;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		}
+nav li		{width: 16.666%; float: left;}
+nav a:link, 
+nav a:visited 	{
+				display: block;
+				width: 100%;
+				font-weight: normal;
+				font-size: 12px;
+				color: white;
+				background-color: #00aeef;
+				text-align: center;
+				padding: 4%;
+				text-decoration: none;
+				}
+nav a:hover, 
+nav a:active 	{
+				font-weight: bold;
+				}
+/* navigation bar : end */
+
+.footer-social {  margin-top:10px; margin-bottom:10px; height:30px; }
+.footer-social ul {float:left; padding:0; margin:0;}
+.footer-social li {float:left; list-style:none; margin-left:5px;}
+.footer-social span { float:right; }
+
