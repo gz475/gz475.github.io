@@ -21,7 +21,7 @@
 
 		<div class="input">
 			<h1 class="sectionlabel">Register</h1>
-			<form class="register">
+			<form class="register" id="bigform">
 				<input class="inputfieldtext" type="text" id="firstname" placeholder="First name" required><br><br>
 				<input class="inputfieldtext" type="text" id="lastname" placeholder="Last name" required> <br><br>
 				<input class="inputfieldtext" type="text" id="username" placeholder="Create a username" required> <br><br>
@@ -31,7 +31,7 @@
 				
 				<p class="checkboxtext"> <input class="checkboxlook" type="checkbox" value="confirm"> I accept TP's <a class="hyperlinktext" href="">terms and conditions</a></p>
 				<div id="regbutt">
-				<a href="TP.html"><input class="loginbutton" type="submit" value="Register"/>
+				<a href="TP.html"><input class="loginbutton" type="submit"  onclick="myFunction()" value="Register"/>
 				</a>
 				</div>
 			</form>
@@ -57,6 +57,21 @@
 		<span style="color:#696969; font-size: 12px;">&copy 2015 TP tradingplatform.com. All rights reserved.</span>
 	</div>
 	</footer>
-		
+	<p id="staff"></p>
 	</body>
+	<script>
+function myFunction() {
+    var x = document.getElementById("bigform");
+    var text = "User Registered: ";
+    var i;
+    for (i = 0; i < 6;i++) {
+        text += x.elements[i].value + " ";
+    }
+	if(x.elements[5].value !== "")
+		{   alert(text);};
+}
+
+</script>
+	
+	
 </html>

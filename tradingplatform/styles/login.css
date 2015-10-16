@@ -21,6 +21,8 @@ form.register{
 		
 }
 
+#logbu{}
+
 form.login{
 	height: 185px;    
 }
@@ -72,11 +74,15 @@ div.inputLogin{
 }
 
 
-#username{
+#firstname, #lastname, #username{
 	background: url("../images/human_icon.jpg") no-repeat scroll 1% 65%;	
 }
 
-#password{
+#mail{
+	background: url("../images/mail_icon.jpg") no-repeat scroll 1% 65%;	
+}
+
+#createpassword, #confirmpassword, #password{
 	background: url("../images/lock_icon.jpg") no-repeat scroll 1% 65%;	
 }
 
@@ -151,13 +157,17 @@ div.inputLogin{
 	color: white;
 }
 
+#staff{
+font-family: arial, helvetica, sans-serif;
+color: #00aeef;
+}
 
 .registerbutton:hover { 
     background-color: #00aeef;
 	color: white;
 }
 
-.footer-social {  margin-top:529px; margin-bottom:10px; height:30px; }
+.footer-social {  margin-top:520px; margin-bottom:10px; height:30px; }
 .footer-social ul {float:left; padding:0; margin:0;}
 .footer-social li {float:left; list-style:none; margin-left:5px;}
 .footer-social span { float:right; }

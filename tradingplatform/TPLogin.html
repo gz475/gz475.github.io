@@ -6,7 +6,6 @@
 	</head>
 
 	<body>
-
 		<div id="header">
 			<div id="leftheader">
 				<a href="index.html"><img id="Logo"/></a>		
@@ -25,18 +24,17 @@
 
 		<div class="inputLogin">
 			<h1 class="sectionlabel">Login</h1>
-			<form class="login">
-				<input class="inputfieldtext" type="text" placeholder="Username" id="username" > <br><br>
-				<input class="inputfieldtext" type="text" placeholder="Password" id="password" > <br><br>
+			<form class="login" id="bigform">
+				<input class="inputfieldtext" type="text" id="username" placeholder="Username" required> <br><br>
+				<input class="inputfieldtext" type="text" id="password" placeholder="Password" required> <br><br>
 				
 				<p class="checkboxtext"> <input class="checkboxlook" type="checkbox" value="confirm"> Remember me &nbsp&nbsp 
-				<div id="regbutt"><input class="registerbutton" type="submit" value="Login" id="loginbutton"/></div>
+				<div id="regbutt"><a href=""><input class="registerbutton" type="submit" value="Login" onclick="myFunction()" id="logbu"/></a></div>
 				</p>
 				<a class="hyperlinktext" href="">Lost your password? </a><br><br>
 				<a class="hyperlinktext" href="TPRegister.html">Register </a>
 			</form>
 		</div>
-		
 				<footer>
 	<div class="footer-social">
 		<li><a href="http://www.facebook.com">
@@ -57,32 +55,20 @@
 		<span style="color:#696969; font-size: 12px;">&copy 2015 TP tradingplatform.com. All rights reserved.</span>
 	</div>
 	</footer>
-	<script src="../files/d3.v3.min.js"></script>
-	<script src="../files/jquery-1.9.1.js"></script>	
-	<script>
-
-		var name, word;
-
-		d3.select("#loginbutton").on("click", function(d){
-
-			alert("new");
-
-			d3.select("#usernameee").on("input", function(){
-				name = this.value;
-			});
-
-			d3.select('#passworddd').on("input", function(){
-				word = this.value;
-			});
-
-			alert(name + " " + word);
-
-			if(typeof name !== 'undefined' && typeof word !== 'undefined'){
-				alert("User Login:   Username " + name + "  Password " + word);	
-			};
-
-		});
-	</script>
 	</body>
+	<script>
+function myFunction() {
+    var x = document.getElementById("bigform");
+    var text = "User Logined: ";
+    var i;
+    for (i = 0; i < 2;i++) {
+        text += x.elements[i].value + " ";
+    }
+	if(x.elements[1].value !== "")
+		{   alert(text);};
+}
+
+
+</script>
 
 </html>
