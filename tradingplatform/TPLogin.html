@@ -26,11 +26,11 @@
 		<div class="inputLogin">
 			<h1 class="sectionlabel">Login</h1>
 			<form class="login">
-				<input class="inputfieldtext" type="text" placeholder="Username" id="username" requried/> <br><br>
-				<input class="inputfieldtext" type="text" placeholder="Password" id="password" required/> <br><br>
+				<input class="inputfieldtext" type="text" placeholder="Username" id="username" > <br><br>
+				<input class="inputfieldtext" type="text" placeholder="Password" id="password" > <br><br>
 				
 				<p class="checkboxtext"> <input class="checkboxlook" type="checkbox" value="confirm"> Remember me &nbsp&nbsp 
-				<div id="regbutt"><input class="registerbutton" type="botton" value="Login" id="loginbutton"/></div>
+				<div id="regbutt"><input class="registerbutton" type="submit" value="Login" id="loginbutton"/></div>
 				</p>
 				<a class="hyperlinktext" href="">Lost your password? </a><br><br>
 				<a class="hyperlinktext" href="TPRegister.html">Register </a>
@@ -58,30 +58,29 @@
 	</div>
 	</footer>
 	<script src="../files/d3.v3.min.js"></script>
+	<script src="../files/jquery-1.9.1.js"></script>	
 	<script>
-
-
-
 
 		var name, word;
 
 		d3.select("#loginbutton").on("click", function(d){
 
-			d3.select("#username").on("input", function(){
+			alert("new");
+
+			d3.select("#usernameee").on("input", function(){
 				name = this.value;
 			});
 
-			d3.select('#password').on("input", function(){
+			d3.select('#passworddd').on("input", function(){
 				word = this.value;
 			});
 
+			alert(name + " " + word);
 
 			if(typeof name !== 'undefined' && typeof word !== 'undefined'){
-				alert("User Login:   Username " + name + "  Password " + password);	
+				alert("User Login:   Username " + name + "  Password " + word);	
 			};
 
-
-			
 		});
 	</script>
 	</body>

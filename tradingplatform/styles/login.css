@@ -72,15 +72,11 @@ div.inputLogin{
 }
 
 
-#firstname, #lastname, #username{
+#username{
 	background: url("../images/human_icon.jpg") no-repeat scroll 1% 65%;	
 }
 
-#mail{
-	background: url("../images/mail_icon.jpg") no-repeat scroll 1% 65%;	
-}
-
-#createpassword, #confirmpassword, #password{
+#password{
 	background: url("../images/lock_icon.jpg") no-repeat scroll 1% 65%;	
 }
 
