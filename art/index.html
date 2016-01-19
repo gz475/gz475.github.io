@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Art Genome Browser</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="jquery.modal.css">
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <div id="header">
+        <a id="two-n-icon" href="http://two-n.com" target="_blank"></a>
+        <div id="header-title"><span>Art Genome Browser</span></div>
+        <div class="view-types"></div>
+        <div id="right-container">
+            <a id="artsy-icon" href="http://artsy.net" target="_blank"></a>
+        </div>
+    </div>
+    <div id="chapter-select">
+        <div id="prev-container"></div>
+        <div id="circle-container"></div>
+        <div id="next-container"></div>
+    </div>
+    <div id="story">
+        <div id="chapters"></div>
+        <div id="i-mode">To Interactive Mode</div>
+    </div>
+    <div id="controls">
+        <div class="sidebar-close">✕</div>
+        <div id="artist-count"></div>
+        <div class="settings">
+            <div class="field filter_by_living_status">
+                <div class="label">Show</div>
+            </div>
+            <div class="field rankBy">
+                <div class="label">Rank by</div>
+            </div>
+            <div class="field sizeBy">
+                <div class="label">Size by</div>
+            </div>
+            <div class="field sizeByRank">
+                <div class="label">Size by</div>
+            </div>
+            <div class="field scatterX">
+                <div class="label">Scatter (&#8596;) by</div>
+            </div>
+            <div class="field scatterY">
+                <div class="label">Scatter (&#8597;) by</div>
+            </div>
+            <div class="field lineY">
+                <div class="label">Y-Axis</div>
+            </div>
+            <div class="field binBy">
+                <div class="label">Bin by</div>
+            </div>
+            <div class="field mapTo">
+                <div class="label">Map to</div>
+            </div>
+            <div class="field zoomTo">
+                <div class="label">Zoom to</div>
+            </div>
+            <div class="field genes">
+                <div class="label">Filter by genes</div>
+            </div>
+            <div class="field colorWithGenes">
+                <div class="label">Color by genes</div>
+            </div>
+        </div>
+        <div class="filters"></div>
+    </div>
+    <div id="spinner">
+        <div class="loading-spinner"></div>
+    </div>
+    <div id="details" class="modal">
+        <div class="heading"></div>
+        <div id="card-container"></div>
+        <div id="cycle-buttons"></div>
+    </div>
+    <div id="visualization">
+        <div id="overlay"></div>
+        <div id="artists"></div>
+        <div id="hometowns"></div>
+        <div id="chart-title"></div>
+        <div id="chapter-control">
+            <div class="button"></div>
+        </div>
+    </div>
+    <script data-main="../assets/main.js" src="../files/require.js"></script>
+</body>
+
+</html>
