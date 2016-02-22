@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body, html {
+  font-family: proxima-nova, sans-serif;
+  height: 100%;
+}
+
+p {
+  text-align: center;
+  font-size: 2.5vw;
+}
+
+span.city{
+  color: rgb(153, 153, 153) ;
+}
+
+span.a{
+  color: rgb(255, 102, 51);
+}
+
+span.r{
+  color: rgb(204, 204, 51);
+}
+
+span.t{
+  color: rgb(102, 102, 153);
+}
+
+span.s{
+  color: rgb(255, 204, 51);
+}
+
+path:hover {
+    fill:#08306b;
+}
+
+.country{
+}
+
+.svg-container {
+  width: 100%; 
+  height: 75%;
+  margin-top: 5%;
+}
+
+.svg-content-responsive {
+  display: inline-block;
+  position: absolute;
+  top: 15%;
+  left: 4%;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  font-size: 1vw;
+  padding: 0.8vw;
+  background: rgba(0, 0, 0, 0);
+  color: #fff;
+  border-radius: 0.1vw;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 1);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -0.5vw 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+</style>
+<body>
+<p><strong>
+  <span class="city">CITY</span><span class="a">a</span><span class="r">r</span><span class="t">t</span><span class="s">s</span>:Pieces For Peace
+</strong></p>
+<div id="chart" class="svg-container">
+<script type="text/javascript" src="../files/d3.v3.min.js"></script>
+<script type="text/javascript" src="../files/topojson.v1.min.js"></script>
+<script type="text/javascript" src="../files/index.js"></script>
+
+<script type="text/javascript">
+
+
+var width = 960,
+    height = 500;
+
+var svg = d3.select("div#chart").append("svg")
+   .attr("preserveAspectRatio", "xMinYMin meet")
+   .attr("viewBox", "0 0 1056 550")
+   .classed("svg-content-responsive", true); 
+
+var path = d3.geo.path()
+    .projection(cylindrical(width, height));
+
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    if ( d.properties.name in country_dict) {
+    return "<span style='color:black'>" + d.properties.name + ' '+ country_dict[d.properties.name] + ' pieces' + "</span>";}
+    else {
+          return "<span style='color:black'>" + d.properties.name + ' not participated'+ "</span>";
+    }
+  })
+
+svg.call(tip);
+
+var g = svg.append("g");
+var colors = ["#bdd7e7", "#08519c"];
+
+// load and display the World
+d3.json("countries.json", function(collection) {
+  d3.csv("cityarts.csv", function(cityarts) {
+
+    country_dict = {};
+    var country_value = [];
+
+    cityarts.forEach(function(d, i){
+      country_dict[d.country] = d.number;
+      country_value.push(d.number);
+    });
+
+     var color = d3.scale.sqrt().domain([Math.min.apply(Math, country_value), Math.max.apply(Math, country_value)]).range( [ colors[0], colors[1]]);
+
+
+    var countries = g.selectAll(".country")
+      .attr("class", "country")
+      .data(collection.features)
+    .enter()
+      .append("svg:path")
+      .attr("d", path)
+      .attr("stroke", "white")
+      .attr("fill", function(d){
+        if ( d.properties.name in country_dict ) 
+          {return color(country_dict[d.properties.name]);}
+        else 
+          {return "#eff3ff";}
+        })
+      .on("mouseover", tip.show)
+      .on("mouseout", tip.hide)
+      ;
+
+})
+});
+
+function cylindrical(width, height) {
+  return d3.geo.projection(function(λ, φ) { return [λ, φ * 2 / width * height]; })
+      .scale(width / 2 / Math.PI)
+      .translate([width / 2, height / 2]);
+}
+
+</script>
+</div>
+</body>
+</html>

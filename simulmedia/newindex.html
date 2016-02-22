@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     <title>Simulmedai Data Visualization</title>
+    <style type="text/css">
+
+body {
+font-family: proxima-nova, sans-serif;
+font: 9px sans-serif;
+}
+
+.text{
+  position: absolute;
+}
+.msa_names_column,
+
+  .mg_dropdown {
+    font-weight: 300;
+      color:black;
+      position: absolute;
+      margin: 0px;
+      padding: 0px;
+      font-size: 10px;
+    }
+  .nmg_dropdown {
+    font-weight: 300;
+      color:black;
+      position: absolute;
+      margin: 0px;
+      padding: 0px;
+      font-size: 10px;
+    }
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+rect.mg_bar {
+    }
+
+    
+    text.mg_bar {
+      font-size: 0.7em;
+    }
+    
+
+    </style>
+
+  </head>
+  <body>
+  
+    <div class = "map", id = 'div1'></div>
+
+  <select class="viewers nmg_dropdown" id="viewers"></select>
+  <select class="showaudience nmg_dropdown" id="showaudience"></select>
+  <select class="leadinaudience nmg_dropdown" id="leadinaudience"></select>
+  <select class="leadoutaudience nmg_dropdown" id="leadoutaudience"></select>
+
+  <select class="networkaudience mg_dropdown" id="networkaudience"></select>
+  <select class="timeshift mg_dropdown" id="timeshift"></select>
+  <select class="order mg_dropdown" id="order"></select>
+
+    <script type="text/javascript" src="../files/d3.v3.min.js"></script>
+    <script type="text/javascript" src="../files/d3.csv.js"></script>
+    <script type="text/javascript" src="newmain.js"></script>
+  </body>
+
+</html>
