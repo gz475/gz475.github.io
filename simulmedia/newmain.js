@@ -579,11 +579,11 @@ bar_order.rangeBands([10, height - 130],0.5,0);
 
 bar_order.domain(network_list);
 bar_labels.transition().duration(500).attr("y", function(d, i) { 
-          return (bar_order(d.network)); });
+          return bar_order(d.network) - 8; });
 leadinbar.transition().duration(500).attr("y", function(d, i) { 
-          return (bar_order(d.network)); });
+          return bar_order(d.network) - 8; });
 leadoutbar.transition().duration(500).attr("y", function(d, i) { 
-          return (bar_order(d.network)); });
+          return bar_order(d.network) - 8; });
 for (j = 0; j < 4; j++) { 
 	showbars[j].transition().duration(500).attr("y", function(d, i) { 
           return (bar_order(d.network)); });
