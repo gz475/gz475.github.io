@@ -83,6 +83,8 @@ var x = d3.time.scale()
 var xAxis = d3.svg.axis().scale(x)
     .orient("top").ticks(d3.time.hour).tickFormat(d3.time.format("%m-%d %I %p"));
 
+var xxAxis = d3.svg.axis().scale(x)
+    .orient("bottom").ticks(d3.time.hour).tickFormat(d3.time.format("%m-%d %I %p"));
 // svg.append("rect")
 //     .attr("width", "100%")
 //     .attr("height", "100%")
@@ -92,6 +94,10 @@ svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(250," + 50 + ")")
         .call(xAxis);
+svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(250," + 1520 + ")")
+        .call(xxAxis);
 
 //parse data
 d3.csv("data.csv", function(tvdata) {
