@@ -2,12 +2,12 @@
 
 //add dropdown buttons
 //d3.select('.viewers.nmg_dropdown').style({'left': 225 + 'px', 'top': 15 + 'px'});  
-d3.select('.leadinaudience.nmg_dropdown').style({'left': 330 + 'px', 'top': 15 + 'px'});
-d3.select('.leadoutaudience.nmg_dropdown').style({'left': 730 + 'px', 'top': 15 + 'px'});
-d3.select('.showaudience.nmg_dropdown').style({'left': 530 + 'px', 'top': 15 + 'px'});
-d3.select('.networkaudience.mg_dropdown').style({'left': 530 + 'px', 'bottom': 90 + 'px'});
-d3.select('.timeshift.mg_dropdown').style({'left': 455 + 'px', 'bottom': 90 + 'px'});
-d3.select('.order.mg_dropdown').style({'left': 730 + 'px', 'bottom': 90 + 'px'});
+d3.select('.leadinaudience.nmg_dropdown').style({'left': 370 + 'px', 'top': 35 + 'px'});
+d3.select('.leadoutaudience.nmg_dropdown').style({'left': 770 + 'px', 'top': 35 + 'px'});
+d3.select('.showaudience.nmg_dropdown').style({'left': 570 + 'px', 'top': 35 + 'px'});
+d3.select('.networkaudience.mg_dropdown').style({'left': 370 + 'px', 'top': 15 + 'px'});
+d3.select('.timeshift.mg_dropdown').style({'left': 570 + 'px', 'top': 15 + 'px'});
+d3.select('.order.mg_dropdown').style({'left': 250 + 'px', 'top': 15 + 'px'});
 
 viewers = ["Number Of", "Viewers", "Viewers Percent"];
       for (ix in viewers) {
@@ -65,7 +65,7 @@ var margin = {top: 50, right: 0, bottom: 0, left: 0},
     width = 1100 - margin.left - margin.right,
     height = 1600 - margin.top - margin.bottom;
 
-var bar_chart_width = 900,
+var bar_chart_width = 800,
     bar_order = d3.scale.ordinal();
 
 var svg = d3.select("#div1").append("svg")
@@ -76,18 +76,22 @@ var svg = d3.select("#div1").append("svg")
               "translate(" + margin.left + "," + margin.top + ")");
 
 // var x = d3.time.scale().range([0, bar_chart_width]);
+var x = d3.time.scale()
+    .domain([new Date(2015, 2, 1, 18, 0, 0), new Date(2015, 2, 2, 0, 45, 0)])
+    .range([0, bar_chart_width]);
 
-// var xAxis = d3.svg.axis().scale(x)
-//     .orient("top").ticks(10);
+var xAxis = d3.svg.axis().scale(x)
+    .orient("top").ticks(d3.time.hour).tickFormat(d3.time.format("%m-%d %I %p"));
 
 // svg.append("rect")
 //     .attr("width", "100%")
 //     .attr("height", "100%")
 //     .attr("fill", "pink");
 
-// svg.append("g")
-//         .attr("class", "x axis")
-//         .call(xAxis);
+svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(250," + 50 + ")")
+        .call(xAxis);
 
 //parse data
 d3.csv("data.csv", function(tvdata) {
@@ -152,10 +156,10 @@ for (var i = 0; i < all.length; i++) {
 }
 
 bar_order.domain(old_network_list);
-bar_order.rangeBands([10, height - 130],0.5,0);
+bar_order.rangeBands([70, height - 40],0.5,0);
 
 //var color = d3.scale.linear().domain([Math.min.apply(Math, msa_value_list), Math.max.apply(Math, msa_value_list)]).range( [ "#f7f7f7", colors[1]]);
-var network_xlocation = 105;
+var network_xlocation = 210;
 
 var bar_labels = svg
       .selectAll("bar_label")
@@ -172,20 +176,23 @@ var bar_labels = svg
         	d3.selectAll("text").style('font-weight', 'normal');
         	d3.selectAll("rect").style("stroke", "black").style("stroke-width", 0);
         	d3.select(this).style('font-weight', 'bold');
-        	d3.selectAll("text.program").transition().text("Program").attr('y', -23);
-        	d3.selectAll("text.episode").transition().text("Episode").attr('y', -23);
+        	d3.selectAll("text.program").transition().text("Program").attr('y', -3);
+        	d3.selectAll("text.episode").transition().text("Episode").attr('y', -3);
+          d3.selectAll("text.viewers").transition().text("Viewers").attr('y', -3);
+
         	d3.selectAll("rect." + d.network).style("stroke", "black").style("stroke-width", 1);
        
         	var scol = "s" + short_timeshift[timeshift_index] + short_network_au[network_index] + short_order[order_index];
         	var bcol = "b" + short_timeshift[timeshift_index] + short_network_au[network_index] + short_order[order_index];
-        	updatebars(d[scol], d[bcol]);
-        	network_text.transition().duration(500).text(d.network).style("font-weight", "bold");
+        	updateCompare(d3.select(this).attr("y"), d[scol], d[bcol]);
+          //updatebars(d[scol], d[bcol]);
+       // 	network_text.transition().duration(500).text(d.network).style("font-weight", "bold");
 
         })
         .style("cursor", "pointer");
 
-var bar_xlocation = 145,
-	totaltime = 400,
+var bar_xlocation = 250,
+	totaltime = 405,
 	starthour = 18,
 	startminute = 0;
 
@@ -210,19 +217,21 @@ var leadinbar = svg
        // .on("click", function(d, i ){triggertransition(d, i, data_column, population_column,xlocation, range, color)})
       .on('mouseover', function(d){
         	d3.selectAll("rect").style("stroke", "black").style("stroke-width", 0);
+                d3.selectAll("text").style('font-weight', 'normal');          
         	d3.select(this).style("stroke", "black").style("stroke-width", 1);
-			d3.selectAll("text").style('font-weight', 'normal');        	
+
 			var programcol = "in" + short_airtime[leadin_index] +"program";
         	var episodecol = "in" + short_airtime[leadin_index] +"episode";
         	d3.selectAll("text.program").transition().text(d[programcol]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
         	d3.selectAll("text.episode").transition().text(d[episodecol]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
-       
-       network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
+          d3.selectAll("text.viewers").transition().text(d[leadin_value_col]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
 
-simu_bar.transition().duration(500).attr("width", 0);
-base_bar.transition().duration(500).attr("width", 0);
-simu_text.transition().duration(500).attr("x", 0).text("");
-base_text.transition().duration(500).attr("x", 0).text(""); })
+     //  network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
+
+base.transition().duration(500).attr("y", -13);
+simu.transition().duration(500).attr("y", -3);
+simu_text.transition().duration(500).text("");
+base_text.transition().duration(500).text(""); })
         .style("cursor", "pointer");
 
 
@@ -252,12 +261,14 @@ var leadoutbar = svg
         	var episodecol = "out" + short_airtime[leadout_index] +"episode";
         	d3.selectAll("text.program").transition().text(d[programcol]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
         	d3.selectAll("text.episode").transition().text(d[episodecol]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
-network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
+          d3.selectAll("text.viewers").transition().text(d[leadout_value_col]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
 
-simu_bar.transition().duration(500).attr("width", 0);
-base_bar.transition().duration(500).attr("width", 0);
-simu_text.transition().duration(500).attr("x", 0).text("");
-base_text.transition().duration(500).attr("x", 0).text("");
+//network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
+
+base.transition().duration(500).attr("y", -13);
+simu.transition().duration(500).attr("y", -3);
+simu_text.transition().duration(500).text("");
+base_text.transition().duration(500).text("");
         })
         .style("cursor", "pointer");
 
@@ -301,13 +312,13 @@ showbars[0].on('mouseover', function(d){
         	var programcol = programs[0];
         	var episodecol = episodes[0];
         //	console.log(programcol, episodecol);
-        	        	network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
+        	        //	network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
+base.transition().duration(500).attr("y", -13);
+simu.transition().duration(500).attr("y", -3);
+simu_text.transition().duration(500).text("");
+base_text.transition().duration(500).text("");
 
-simu_bar.transition().duration(500).attr("width", 0);
-base_bar.transition().duration(500).attr("width", 0);
-simu_text.transition().duration(500).attr("x", 0).text("");
-base_text.transition().duration(500).attr("x", 0).text("");
-
+          d3.selectAll("text.viewers").transition().text(d[short_viewers[viewers_index] + short_audience[show_index] + "0"]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
         	d3.selectAll("text.program").transition().text(d[programcol]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
         	d3.selectAll("text.episode").transition().text(d[episodecol]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
         })
@@ -318,14 +329,14 @@ showbars[1].on('mouseover', function(d){
         	d3.selectAll("text").style('font-weight', 'normal');        	
         	var programcol = programs[1];
         	var episodecol = episodes[1];
-        	        	network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
+        	        //	network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
 
-simu_bar.transition().duration(500).attr("width", 0);
-base_bar.transition().duration(500).attr("width", 0);
-simu_text.transition().duration(500).attr("x", 0).text("");
-base_text.transition().duration(500).attr("x", 0).text("");
+base.transition().duration(500).attr("y", -13);
+simu.transition().duration(500).attr("y", -3);
+simu_text.transition().duration(500).text("");
+base_text.transition().duration(500).text("");
 
-        	//console.log(programcol, episodecol);
+          d3.selectAll("text.viewers").transition().text(d[short_viewers[viewers_index] + short_audience[show_index] + "1"]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
         	d3.selectAll("text.program").transition().text(d[programcol]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
         	d3.selectAll("text.episode").transition().text(d[episodecol]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
         })
@@ -336,12 +347,14 @@ showbars[2].on('mouseover', function(d){
         	d3.selectAll("text").style('font-weight', 'normal');        	
         	var programcol = programs[2];
         	var episodecol = episodes[2];
-        	        	network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
+        	       // 	network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
 
-simu_bar.transition().duration(500).attr("width", 0);
-base_bar.transition().duration(500).attr("width", 0);
-simu_text.transition().duration(500).attr("x", 0).text("");
-base_text.transition().duration(500).attr("x", 0).text("");
+base.transition().duration(500).attr("y", -13);
+simu.transition().duration(500).attr("y", -3);
+simu_text.transition().duration(500).text("");
+base_text.transition().duration(500).text("");
+
+          d3.selectAll("text.viewers").transition().text(d[short_viewers[viewers_index] + short_audience[show_index] + "2"]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
 
         //	console.log(programcol, episodecol);
         	d3.selectAll("text.program").transition().text(d[programcol]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
@@ -354,12 +367,14 @@ showbars[3].on('mouseover', function(d){
         	d3.selectAll("text").style('font-weight', 'normal');        	
         	var programcol = programs[3];
         	var episodecol = episodes[3];
-        	        	network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
+        	       // 	network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
 
-simu_bar.transition().duration(500).attr("width", 0);
-base_bar.transition().duration(500).attr("width", 0);
-simu_text.transition().duration(500).attr("x", 0).text("");
-base_text.transition().duration(500).attr("x", 0).text("");
+base.transition().duration(500).attr("y", -13);
+simu.transition().duration(500).attr("y", -3);
+simu_text.transition().duration(500).text("");
+base_text.transition().duration(500).text("");
+
+          d3.selectAll("text.viewers").transition().text(d[short_viewers[viewers_index] + short_audience[show_index] + "3"]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
 
         //	console.log(programcol, episodecol);
         	d3.selectAll("text.program").transition().text(d[programcol]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
@@ -369,73 +384,83 @@ base_text.transition().duration(500).attr("x", 0).text("");
 
 svg.append('text')
 .attr("class", "program")
-        .attr('x', 135)
-        .attr('y', -23)
+        .attr('x', 250)
+        .attr('y', -3)
         .style('font-size', 10)
         .attr('text-anchor', 'start')
         .text("Program");
 
 svg.append('text')
+.attr("class", "audience")
+        .attr('x', 310)
+        .attr('y', -3)
+        .style('font-size', 10)
+        .attr('text-anchor', 'start')
+        .text("Audience:");
+
+
+svg.append('text')
+.attr("class", "network")
+        .attr('x', 210)
+        .attr('y', -3)
+        .style('font-size', 10)
+        .attr('text-anchor', 'end')
+        .text("Network");
+
+
+svg.append('text')
 .attr("class", "episode")
-        .attr('x', 1035)
-        .attr('y', -23)
+        .attr('x', 1050)
+        .attr('y', -3)
         .style('font-size', 10)
         .attr('text-anchor', 'end')
         .text("Episode");
 
 svg.append('text')
+.attr("class", "viewers")
+        .attr('x', 1055)
+        .attr('y', -3)
+        .style('font-size', 10)
+        .attr('text-anchor', 'start')
+        .text("Viewers");
+
+svg.append('text')
+.attr("class", "sort")
+        .attr('x', 210)
+        .attr('y', -25)
+        .style('font-size', 10)
+        .attr('text-anchor', 'end')
+        .text("Sort Networks By:");
+
+
+var simu = svg.append('text')
 .attr("class", "simulmedia")
-        .attr('x', 105)
-        .attr('y', 1480 +5)
+        .attr('x', 115)
+        .attr('y', -3)
         .style('font-size', 10)
         .attr('text-anchor', 'end')
         .text("Simulmedia");
 
-svg.append('text')
-.attr("class", "base")
-        .attr('x', 105)
-        .attr('y', 1500)
+var base = svg.append('text')
+        .attr('x', 115)
+        .attr('y', -13)
         .style('font-size', 10)
         .attr('text-anchor', 'end')
         .text("Base");
 
-
-var simu_bar = svg
-	.append("rect")
-    .attr("fill", "#377eb8")
-      .attr("x",  135)
-        .attr("y", 1480 - 8 + 5)
-              .attr("width", 0 )
-     .attr("height", 8);
-
 var simu_text= svg
 	.append("text")
     .text("")
-      .attr("x",  135 + 900 + 5)
-        .attr("y", 1480 + 5);
-
-
-var base_bar = svg
-	.append("rect")
-    .attr("fill", "#e41a1c")
-      .attr("x",  135)
-        .attr("y", 1500 - 8)
-              .attr("width", 0)
-     .attr("height", 8);
+    .attr('text-anchor', 'end')
+      .attr("x",  50)
+        .attr("y", 845);
 
 var base_text= svg
 	.append("text")
     .text("")
-      .attr("x",  135 + 900 + 5)
-        .attr("y", 1500);
- 
-var network_text = svg
-	.append("text")
-    .text("NETWORK")
-            .attr('text-anchor', 'end')
-      .attr("x",  105)
-        .attr("y", 1455);
-
+    .attr('text-anchor', 'end')
+      .attr("x",  50)
+        .attr("y", 867);
 
 bar_order.domain(network_list);
 bar_labels.transition().duration(500).attr("y", function(d, i) { 
@@ -496,6 +521,16 @@ d3.selectAll('.mg_dropdown')
 
 
 
+function updateCompare(ylocation, svalue, bvalue){
+
+base_text.transition().duration(500).attr("y", ylocation - 10).text(bvalue).style('font-weight', 'bold');
+simu_text.transition().duration(500).attr("y", ylocation).text(svalue).style('font-weight', 'bold');
+simu.transition().duration(500).attr("y", ylocation).style('font-weight', 'bold');
+base.transition().duration(500).attr("y", ylocation - 10).style('font-weight', 'bold');
+
+}
+
+
 
 function updatecolor(viewers_index, leadin_index, leadout_index, show_index){
 
@@ -538,6 +573,18 @@ showbars[j].transition().duration(500).attr("fill", function(d, i){
     })
 }
 
+base.transition().duration(500).attr("y", -13).style('font-weight', 'normal');
+simu.transition().duration(500).attr("y", -3).style('font-weight', 'normal');
+
+simu_text.transition().duration(500).text("");
+base_text.transition().duration(500).text("");
+
+          d3.selectAll("text.program").transition().text("Program").attr('y', -3);
+          d3.selectAll("text.episode").transition().text("Episode").attr('y', -3);
+          d3.selectAll("text.viewers").transition().text("Viewers").attr('y', -3);
+          d3.selectAll("rect").style("stroke", "black").style("stroke-width", 0);
+                d3.selectAll("text").style('font-weight', 'normal');  
+
 }
 
 function updatelocation(network_index, timeshift_index, order_index){
@@ -571,58 +618,41 @@ for (var i = 0; i < all.length; i++) {
 
 
 bar_order.domain(old_network_list);
-bar_order.rangeBands([10, height - 130],0.5,0);
-
+bar_order.rangeBands([70, height - 40],0.5,0);
 // console.log(network_values);
 // console.log(network_list);
 
 
 bar_order.domain(network_list);
 bar_labels.transition().duration(500).attr("y", function(d, i) { 
-          return bar_order(d.network) - 8; });
+          return bar_order(d.network) ; });
 leadinbar.transition().duration(500).attr("y", function(d, i) { 
           return bar_order(d.network) - 8; });
 leadoutbar.transition().duration(500).attr("y", function(d, i) { 
           return bar_order(d.network) - 8; });
 for (j = 0; j < 4; j++) { 
 	showbars[j].transition().duration(500).attr("y", function(d, i) { 
-          return (bar_order(d.network)); });
+          return bar_order(d.network) -8 ; });
 }
 
-network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
+//network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
 
-simu_bar.transition().duration(500).attr("width", 0);
-base_bar.transition().duration(500).attr("width", 0);
-simu_text.transition().duration(500).attr("x", 0).text("");
-base_text.transition().duration(500).attr("x", 0).text("");
+base.transition().duration(500).attr("y", -13).style('font-weight', 'normal');
+simu.transition().duration(500).attr("y", -3).style('font-weight', 'normal');
 
-}
-
-
-
-function updatebars(svalue, bvalue){
-
-var max = Math.max(svalue, bvalue);
-
-if(max != 0){
-	
-simu_bar.transition().duration(500).attr("width", svalue/max * 800);
-base_bar.transition().duration(500).attr("width", bvalue/max * 800);
-simu_text.transition().duration(500).attr("x", svalue/max * 800 + 140).text(toCommas(svalue));
-base_text.transition().duration(500).attr("x", bvalue/max * 800 + 140).text(toCommas(bvalue));
-
-}
-else{
-
-simu_bar.transition().duration(500).attr("width", 0)
-base_bar.transition().duration(500).attr("width", 0);
-simu_text.transition().duration(500).attr("x", svalue/max * 800 + 140).text("");
-base_text.transition().duration(500).attr("x", bvalue/max * 800 + 140).text("");
+simu_text.transition().duration(500).text("");
+base_text.transition().duration(500).text("");
+          d3.selectAll("text.program").transition().text("Program").attr('y', -3);
+          d3.selectAll("text.episode").transition().text("Episode").attr('y', -3);
+          d3.selectAll("text.viewers").transition().text("Viewers").attr('y', -3);
+          d3.selectAll("rect").style("stroke", "black").style("stroke-width", 0);
+                d3.selectAll("text").style('font-weight', 'normal');          
 
 }
 
 
-}
+
+
 
 });
 
@@ -698,7 +728,11 @@ return;
 
 
 function toCommas(x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    if (x > 1){
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");}
+    else {
+      return x;
+    }
     }
 
 
