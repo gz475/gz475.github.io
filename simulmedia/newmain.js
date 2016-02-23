@@ -96,7 +96,7 @@ svg.append("g")
         .call(xAxis);
 svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(250," + 1520 + ")")
+        .attr("transform", "translate(250," + 1515 + ")")
         .call(xxAxis);
 
 //parse data
