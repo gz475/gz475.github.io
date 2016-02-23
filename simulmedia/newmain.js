@@ -202,13 +202,18 @@ var bar_xlocation = 250,
 	starthour = 18,
 	startminute = 0;
 
+var leadin_color = ["#fee5d9", "#e41a1c"],
+    leadout_color = ["#edf8e9", "#4daf4a"],
+    show_color = ["#eff3ff", "#377eb8"];
+
+
 var leadinbar = svg
 	.selectAll("leadinbar")
       .data(tvdata)
     .enter().append("rect")
 	 .attr("class", function(d, i){return "mg_bar " + d.network;})
     .attr("fill", function(d, i){
-    	var color = d3.scale.linear().domain([Math.min.apply(Math, leadin_values), Math.max.apply(Math, leadin_values)]).range(["#feedde", "#ff7f00"]);
+    	var color = d3.scale.linear().domain([Math.min.apply(Math, leadin_values), Math.max.apply(Math, leadin_values)]).range([leadin_color[0], leadin_color[1]]);
     	return color(d[leadin_value_col]);
     })
       .attr("x",  function(d, i){
@@ -247,7 +252,7 @@ var leadoutbar = svg
     .enter().append("rect")
 	 .attr("class", function(d, i){return "mg_bar " + d.network;})
     .attr("fill", function(d, i){
-    	var color = d3.scale.linear().domain([Math.min.apply(Math, leadout_values), Math.max.apply(Math, leadout_values)]).range(["#f2f0f7", "#984ea3"]);
+    	var color = d3.scale.linear().domain([Math.min.apply(Math, leadout_values), Math.max.apply(Math, leadout_values)]).range([leadout_color[0], leadout_color[1]]);
     	return color(d[leadout_value_col]);
     })
       .attr("x",  function(d, i){
@@ -290,7 +295,7 @@ for (j = 0; j < 4; j++) {
     .enter().append("rect")
 	 .attr("class", function(d, i){return "mg_bar " + d.network;})
     .attr("fill", function(d, i){
-    	var color = d3.scale.linear().domain([Math.min.apply(Math, show_values), Math.max.apply(Math, show_values)]).range(["#edf8e9", "#4daf4a"]);
+    	var color = d3.scale.linear().domain([Math.min.apply(Math, show_values), Math.max.apply(Math, show_values)]).range([show_color[0], show_color[1]]);
     	return color(d[short_viewers[viewers_index] + short_audience[show_index] + j.toString()]);
     })
       .attr("x",  function(d, i){
@@ -563,18 +568,18 @@ tvdata.forEach(function(d, i){
 });
 
 leadinbar.transition().duration(500).attr("fill", function(d, i){
-    	var color = d3.scale.linear().domain([Math.min.apply(Math, leadin_values), Math.max.apply(Math, leadin_values)]).range(["#feedde", "#ff7f00"]);
+    	var color = d3.scale.linear().domain([Math.min.apply(Math, leadin_values), Math.max.apply(Math, leadin_values)]).range([leadin_color[0], leadin_color[1]]);
     	return color(d[leadin_value_col]);
     });
 
 leadoutbar.transition().duration(500).attr("fill", function(d, i){
-    	var color = d3.scale.linear().domain([Math.min.apply(Math, leadout_values), Math.max.apply(Math, leadout_values)]).range(["#f2f0f7", "#984ea3"]);
+    	var color = d3.scale.linear().domain([Math.min.apply(Math, leadout_values), Math.max.apply(Math, leadout_values)]).range([leadout_color[0], leadout_color[1]]);
     	return color(d[leadout_value_col]);
     })
 
 for (j = 0; j < 4; j++) { 
 showbars[j].transition().duration(500).attr("fill", function(d, i){
-    	var color = d3.scale.linear().domain([Math.min.apply(Math, show_values), Math.max.apply(Math, show_values)]).range(["#edf8e9", "#4daf4a"]);
+    	var color = d3.scale.linear().domain([Math.min.apply(Math, show_values), Math.max.apply(Math, show_values)]).range([show_color[0], show_color[1]]);
     	return color(d[short_viewers[viewers_index] + short_audience[show_index] + j.toString()]);
     })
 }
