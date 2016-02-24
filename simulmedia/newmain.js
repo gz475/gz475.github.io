@@ -8,7 +8,7 @@ d3.select('.showaudience.nmg_dropdown').style({'left': 575 + 'px', 'top': 35 + '
 d3.select('.networkaudience.mg_dropdown').style({'left': 370 + 'px', 'top': 15 + 'px'});
 d3.select('.timeshift.mg_dropdown').style({'left': 575 + 'px', 'top': 15 + 'px'});
 d3.select('.order.mg_dropdown').style({'left': 250  + 'px', 'top': 15 + 'px'});
-d3.select('.schedule.mg_dropdown').style({'left': 645 + 'px', 'top': 15 + 'px'});
+d3.select('.schedule.mg_dropdown').style({'left': 644 + 'px', 'top': 15 + 'px'});
 
 
 schedule = ["Schedule", "Simulmedia", "Base"];
