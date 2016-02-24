@@ -3,10 +3,10 @@
 //add dropdown buttons
 //d3.select('.viewers.nmg_dropdown').style({'left': 225 + 'px', 'top': 15 + 'px'});  
 d3.select('.leadinaudience.nmg_dropdown').style({'left': 370 + 'px', 'top': 35 + 'px'});
-d3.select('.leadoutaudience.nmg_dropdown').style({'left': 772 + 'px', 'top': 35 + 'px'});
-d3.select('.showaudience.nmg_dropdown').style({'left': 571 + 'px', 'top': 35 + 'px'});
+d3.select('.leadoutaudience.nmg_dropdown').style({'left': 774 + 'px', 'top': 35 + 'px'});
+d3.select('.showaudience.nmg_dropdown').style({'left': 572 + 'px', 'top': 35 + 'px'});
 d3.select('.networkaudience.mg_dropdown').style({'left': 370 + 'px', 'top': 15 + 'px'});
-d3.select('.timeshift.mg_dropdown').style({'left': 571 + 'px', 'top': 15 + 'px'});
+d3.select('.timeshift.mg_dropdown').style({'left': 572 + 'px', 'top': 15 + 'px'});
 d3.select('.order.mg_dropdown').style({'left': 250  + 'px', 'top': 15 + 'px'});
 d3.select('.schedule.mg_dropdown').style({'left': 645 + 'px', 'top': 15 + 'px'});
 
