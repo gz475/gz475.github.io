@@ -8,12 +8,20 @@ d3.select('.showaudience.nmg_dropdown').style({'left': 570 + 'px', 'top': 35 + '
 d3.select('.networkaudience.mg_dropdown').style({'left': 370 + 'px', 'top': 15 + 'px'});
 d3.select('.timeshift.mg_dropdown').style({'left': 570 + 'px', 'top': 15 + 'px'});
 d3.select('.order.mg_dropdown').style({'left': 250 + 'px', 'top': 15 + 'px'});
+d3.select('.schedule.mg_dropdown').style({'left': 645 + 'px', 'top': 15 + 'px'});
 
-viewers = ["Number Of", "Viewers", "Viewers Percent"];
-      for (ix in viewers) {
-        d3.select(".viewers.nmg_dropdown").insert('option').text(viewers[ix]).attr('value', viewers[ix]);
+
+schedule = ["Schedule", "Simulmedia", "Base"];
+      for (ix in schedule) {
+        d3.select(".schedule.mg_dropdown").insert('option').text(schedule[ix]).attr('value', schedule[ix]);
        // console.log(ix);
       };
+
+// viewers = ["Number Of", "Viewers", "Viewers Percent"];
+//       for (ix in viewers) {
+//         d3.select(".viewers.nmg_dropdown").insert('option').text(viewers[ix]).attr('value', viewers[ix]);
+//        // console.log(ix);
+//       };
 
 showaudience = ["Show Audience", "Adults 25-54", "A25-54 Viewers of Similar Programming"];
       for (ix in showaudience) {
@@ -59,6 +67,8 @@ setDisabledIndex(document.getElementById("showaudience"), showaudience[0]);
 setDisabledIndex(document.getElementById("networkaudience"), networkaudience[0]);
 setDisabledIndex(document.getElementById("timeshift"), timeshift[0]);
 setDisabledIndex(document.getElementById("order"), orders[0]);
+setDisabledIndex(document.getElementById("schedule"), schedule[0]);
+
 
 //set up svg
 var margin = {top: 50, right: 0, bottom: 0, left: 0},
@@ -108,6 +118,7 @@ var viewers_index = 1,
 	show_index = 1,
 	network_index = 1,
 	timeshift_index = 1,
+  schedule_index = 1,
 	order_index = 1;
 
 var short_viewers = ["nothing", "", "p"],
@@ -116,7 +127,8 @@ var short_viewers = ["nothing", "", "p"],
 	short_timeshift = ["nothing", "l", "l3", "l7"],
 	short_network_au = ["nothing", "a", "ap", "h", "p"],
 	short_order = ["nothing", "impressions", "unduplicated_reach", "duplicated_reach",
-	 	"total_reach", "frequency", "conversion", "cv_rate"];
+	 	"total_reach", "frequency", "conversion", "cv_rate"],
+    short_schedule = ["nothing", "s", "b"];
 
 var leadin_values = [],
 	show_values = [],
@@ -523,9 +535,11 @@ d3.selectAll('.mg_dropdown')
            // current_level = d3.select(this)[0][0].value.split('_')[1].split('-');
           } else if (dropdown_kind == 'order') {
             order_index = orders.indexOf(d3.select(this)[0][0].value);
+          }else if (dropdown_kind == 'schedule') {
+            schedule_index = schedule.indexOf(d3.select(this)[0][0].value);
           };
 
-         updatelocation(network_index, timeshift_index, order_index);
+         updatelocation(network_index, timeshift_index, order_index, schedule_index);
 
         });
 
@@ -598,13 +612,13 @@ base_text.transition().duration(500).text("");
 
 }
 
-function updatelocation(network_index, timeshift_index, order_index){
+function updatelocation(network_index, timeshift_index, order_index, schedule_index){
 
 old_network_list = [];
 network_list = [];
 network_values = [];
 
-network_value_col = "s" + short_timeshift[timeshift_index] + short_network_au[network_index]
+network_value_col = short_schedule[schedule_index] + short_timeshift[timeshift_index] + short_network_au[network_index]
 			+ short_order[order_index];
 
 // console.log(network_value_col);
