@@ -87,7 +87,7 @@ var svg = d3.select("#div1").append("svg")
 
 // var x = d3.time.scale().range([0, bar_chart_width]);
 var x = d3.time.scale()
-    .domain([new Date(2015, 2, 1, 18, 0, 0), new Date(2015, 2, 2, 0, 45, 0)])
+    .domain([new Date(2015, 2, 1, 18, 0, 0), new Date(2015, 2, 2, 1, 0, 0)])
     .range([0, bar_chart_width]);
 
 var xAxis = d3.svg.axis().scale(x)
@@ -210,7 +210,7 @@ var bar_labels = svg
         .style("cursor", "pointer");
 
 var bar_xlocation = 250,
-	totaltime = 405,
+	totaltime = 420,
 	starthour = 18,
 	startminute = 0;
 
