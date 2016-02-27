@@ -253,8 +253,10 @@ var leadinbar = svg
 
 base.transition().duration(500).attr("y", -13);
 simu.transition().duration(500).attr("y", -3);
-simu_text.transition().duration(500).text("");
-base_text.transition().duration(500).text(""); })
+simu_text.transition().duration(500).attr("y", -3).text("");
+base_text.transition().duration(500).attr("y", -13).text("");
+
+ })
         .style("cursor", "pointer");
 
 
@@ -290,8 +292,8 @@ var leadoutbar = svg
 
 base.transition().duration(500).attr("y", -13);
 simu.transition().duration(500).attr("y", -3);
-simu_text.transition().duration(500).text("");
-base_text.transition().duration(500).text("");
+simu_text.transition().duration(500).attr("y", -3).text("");
+base_text.transition().duration(500).attr("y", -13).text("");
         })
         .style("cursor", "pointer");
 
@@ -338,8 +340,8 @@ showbars[0].on('mouseover', function(d){
         	        //	network_text.transition().duration(500).text("NETWORK").style("font-weight", "normal");
 base.transition().duration(500).attr("y", -13);
 simu.transition().duration(500).attr("y", -3);
-simu_text.transition().duration(500).text("");
-base_text.transition().duration(500).text("");
+simu_text.transition().duration(500).attr("y", -3).text("");
+base_text.transition().duration(500).attr("y", -13).text("");
 
           d3.selectAll("text.viewers").transition().text(d[short_viewers[viewers_index] + short_audience[show_index] + "0"]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
         	d3.selectAll("text.program").transition().text(d[programcol]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
@@ -356,8 +358,8 @@ showbars[1].on('mouseover', function(d){
 
 base.transition().duration(500).attr("y", -13);
 simu.transition().duration(500).attr("y", -3);
-simu_text.transition().duration(500).text("");
-base_text.transition().duration(500).text("");
+simu_text.transition().duration(500).attr("y", -3).text("");
+base_text.transition().duration(500).attr("y", -13).text("");
 
           d3.selectAll("text.viewers").transition().text(d[short_viewers[viewers_index] + short_audience[show_index] + "1"]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
         	d3.selectAll("text.program").transition().text(d[programcol]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
@@ -374,8 +376,8 @@ showbars[2].on('mouseover', function(d){
 
 base.transition().duration(500).attr("y", -13);
 simu.transition().duration(500).attr("y", -3);
-simu_text.transition().duration(500).text("");
-base_text.transition().duration(500).text("");
+simu_text.transition().duration(500).attr("y", -3).text("");
+base_text.transition().duration(500).attr("y", -13).text("");
 
           d3.selectAll("text.viewers").transition().text(d[short_viewers[viewers_index] + short_audience[show_index] + "2"]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
 
@@ -394,8 +396,8 @@ showbars[3].on('mouseover', function(d){
 
 base.transition().duration(500).attr("y", -13);
 simu.transition().duration(500).attr("y", -3);
-simu_text.transition().duration(500).text("");
-base_text.transition().duration(500).text("");
+simu_text.transition().duration(500).attr("y", -3).text("");
+base_text.transition().duration(500).attr("y", -13).text("");
 
           d3.selectAll("text.viewers").transition().text(d[short_viewers[viewers_index] + short_audience[show_index] + "3"]).attr('y', bar_order(d.network)).style('font-weight', 'bold');
 
@@ -476,14 +478,14 @@ var simu_text= svg
     .text("")
     .attr('text-anchor', 'end')
       .attr("x",  50)
-        .attr("y", 845);
+        .attr("y", -3);
 
 var base_text= svg
 	.append("text")
     .text("")
     .attr('text-anchor', 'end')
       .attr("x",  50)
-        .attr("y", 867);
+        .attr("y", -13);
 
 bar_order.domain(network_list);
 bar_labels.transition().duration(500).attr("y", function(d, i) { 
@@ -601,8 +603,8 @@ showbars[j].transition().duration(500).attr("fill", function(d, i){
 base.transition().duration(500).attr("y", -13).style('font-weight', 'normal');
 simu.transition().duration(500).attr("y", -3).style('font-weight', 'normal');
 
-simu_text.transition().duration(500).text("");
-base_text.transition().duration(500).text("");
+simu_text.transition().duration(500).attr("y", -3).text("");
+base_text.transition().duration(500).attr("y", -13).text("");
 
           d3.selectAll("text.program").transition().text("Program").attr('y', -3);
           d3.selectAll("text.episode").transition().text("Episode").attr('y', -3);
@@ -665,8 +667,8 @@ for (j = 0; j < 4; j++) {
 base.transition().duration(500).attr("y", -13).style('font-weight', 'normal');
 simu.transition().duration(500).attr("y", -3).style('font-weight', 'normal');
 
-simu_text.transition().duration(500).text("");
-base_text.transition().duration(500).text("");
+simu_text.transition().duration(500).attr("y", -3).text("");
+base_text.transition().duration(500).attr("y", -13).text("");
           d3.selectAll("text.program").transition().text("Program").attr('y', -3);
           d3.selectAll("text.episode").transition().text("Episode").attr('y', -3);
           d3.selectAll("text.viewers").transition().text("Viewers").attr('y', -3);
