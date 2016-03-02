@@ -67,4 +67,4 @@ if __name__ == "__main__":
         df[x] = data[x]
         
     df = df.rename(columns = {'p0':'Lot_and_Timestamp', 'p4':'Size', 'p9':'Price_in_CHF', 'p3':'Description', 'img':'Large_Img_URL'})
-    df.to_csv('current_auctions.csv', encoding='utf-8', index=False)
+    df.to_csv('current_auctions_example.csv', encoding='utf-8', index=False)
