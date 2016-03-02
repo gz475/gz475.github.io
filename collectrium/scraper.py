@@ -4,21 +4,27 @@ import time
 import pandas as pd
 import math
 
-def getWholepage(url, times):
+def getWholepage(url):
     
     driver = webdriver.Firefox()
-    delay = 3
     driver.implicitly_wait(30)
     driver.get(url)
+    html_source = driver.page_source
+    data = html_source.encode('utf-8')
     
-    for i in range(0, times):
+    sp = BeautifulSoup(data)
+    for x in sp.find_all("option", "wp-filterselect wp-novalue"):
+        num = re.sub("[^0-9]", "", x.text)
+    
+    for i in range(0, int(num)/2):
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(0.5)
+        time.sleep(1)
 
     html_source = driver.page_source
     data = html_source.encode('utf-8')
     driver.quit()
     return data
+    
     
 def getPages(soup, name, num):
         
@@ -44,27 +50,43 @@ def getPages(soup, name, num):
                 info.append(x.text)         
             for x in sp.find_all('img', 'img-responsive'):
                 fieldDict['img'].append("https://www.kollerauktionen.ch" + x['data-large-image'])
+                break
             for x in range(0, num):
                 term = 'p' + str(x)
                 fieldDict[term].append(info[x])
             newdriver.quit()
               
     return fieldDict
+        
+
+def parseCategory(url):
     
-if __name__ == "__main__":
-    
-    currentURL = "https://www.kollerauktionen.ch/en/object-search.htm"
-    scrollTime = int(math.ceil(float(1)/12))
-    page = getWholepage(currentURL, scrollTime)
+    page = getWholepage(url)
     soup = BeautifulSoup(page)
 
     attrClass = "M0200_Action_Panel btn btn-default btn-xs"
     fieldNum = 12
     data = getPages(soup, attrClass, fieldNum)
-
+    
     df = pd.DataFrame()
     for x in data:
         df[x] = data[x]
-        
-    df = df.rename(columns = {'p0':'Lot_and_Timestamp', 'p4':'Size', 'p9':'Price_in_CHF', 'p3':'Description', 'img':'Large_Img_URL'})
-    df.to_csv('current_auctions_example.csv', encoding='utf-8', index=False)
+    
+    df.to_csv( url.split('/')[-1]+ '.csv', encoding='utf-8', index=False)
+    
+
+if __name__ == "__main__":    
+    
+    driver = webdriver.Firefox()
+    driver.implicitly_wait(30)
+
+    driver.get("https://www.kollerauktionen.ch/en/auctioncalendar-archive.htm")
+    html_source = driver.page_source
+    data = html_source.encode('utf-8')
+    soup = BeautifulSoup(data)
+
+    for x in soup.find_all("a", "btn btn-default btn-xs"):
+        if x.text == 'Online catalogue':
+            parseCategory("https://www.kollerauktionen.ch" + x['href'])
+            
+    driver.quit()
