@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import time
 import pandas as pd
 import math
+import re
 
 def getWholepage(url):
     
