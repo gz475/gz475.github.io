@@ -27,7 +27,7 @@ def getSalepage(url):
     driver.quit()
     return data
     
-##go through all the lot pages in one sale    
+##go through all the lot pages within one sale    
 def getLots(soup, name, num):
         
     fieldDict = {}
