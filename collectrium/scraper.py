@@ -5,7 +5,7 @@ import pandas as pd
 import math
 import re
 
-def getWholepage(url):
+def getSalepage(url):
     
     driver = webdriver.Firefox()
     driver.implicitly_wait(30)
@@ -27,7 +27,7 @@ def getWholepage(url):
     return data
     
     
-def getPages(soup, name, num):
+def getLots(soup, name, num):
         
     fieldDict = {}
     for x in range(0, num):
@@ -60,14 +60,14 @@ def getPages(soup, name, num):
     return fieldDict
         
 
-def parseCategory(url):
+def parseSale(url):
     
-    page = getWholepage(url)
+    page = getSalepage(url)
     soup = BeautifulSoup(page)
 
     attrClass = "M0200_Action_Panel btn btn-default btn-xs"
     fieldNum = 12
-    data = getPages(soup, attrClass, fieldNum)
+    data = getLots(soup, attrClass, fieldNum)
     
     df = pd.DataFrame()
     for x in data:
@@ -88,6 +88,6 @@ if __name__ == "__main__":
 
     for x in soup.find_all("a", "btn btn-default btn-xs"):
         if x.text == 'Online catalogue':
-            parseCategory("https://www.kollerauktionen.ch" + x['href'])
+            parseSale("https://www.kollerauktionen.ch" + x['href'])
             
     driver.quit()
