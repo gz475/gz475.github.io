@@ -5,6 +5,7 @@ import pandas as pd
 import math
 import re
 
+##scroll down the sale page to retrieve all the lots
 def getSalepage(url):
     
     driver = webdriver.Firefox()
@@ -26,7 +27,7 @@ def getSalepage(url):
     driver.quit()
     return data
     
-    
+##go through all the lot pages in one sale    
 def getLots(soup, name, num):
         
     fieldDict = {}
@@ -59,7 +60,7 @@ def getLots(soup, name, num):
               
     return fieldDict
         
-
+##get lot data from one sale
 def parseSale(url):
     
     page = getSalepage(url)
@@ -86,6 +87,7 @@ if __name__ == "__main__":
     data = html_source.encode('utf-8')
     soup = BeautifulSoup(data)
 
+    ##go throuth each sale
     for x in soup.find_all("a", "btn btn-default btn-xs"):
         if x.text == 'Online catalogue':
             parseSale("https://www.kollerauktionen.ch" + x['href'])
