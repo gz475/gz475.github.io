@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+  <head>
+     <title>Dashboard</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div id="charts">
+	<h1>Dashboard</h1>
+	<div class="left top chart" id="dropdown-chart">
+		<div class="title" style="font-weight: bold">Select Auction House and Artform:</div>
+		<select class="house dropdown" id="house"></select>
+		<select class="artform dropdown" id="artform"></select>
+	</div>
+	<div class="right top chart" id="select-chart">
+			<div class="number" id="period"></div>
+		<div class="title" style="font-weight: bold">Select Time Period:</div>
+
+	</div>
+	<div class="left chart" id="sale-chart">
+		<div class="number" id="sale-number"></div>
+		<div class="title">Sales Distribution by Status</div>
+	
+	</div>
+	<div class="right chart" id="total-chart">
+		<div class="number" id="total-number"></div>
+		<div class="title">Lots Running Total</div>
+	</div>
+	<div class="left chart" id="price-chart">
+		<div class="number" id="price-number"></div>
+		<div class="title">Lots Distribution by Price</div>
+
+	</div>
+	<div class="right chart" id="sequence-chart">
+		<div class="number" id="sequence-number"></div>
+		<div class="title">Lots Sequence</div>
+	</div>
+
+</div>
+
+<script type="text/javascript" src="d3.v3.min.js"></script>
+<script type="text/javascript" src="main.js"></script>
+
+</body>
+</html>

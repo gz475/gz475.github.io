@@ -1,0 +1,60 @@
+body{font:10px sans-serif}
+
+h1{font-size:25px}
+
+#charts{width:1300px;margin:auto;overflow:hidden}
+
+.chart rect{fill:#08519c;stroke:#08306b}
+
+.chart text{fill:#000;text-anchor:middle;}
+
+.bar{fill:#9ecae1}
+
+/*.dropdown{font-weight:300;color:#000;position:relative;margin:30px 0 0 10px;padding:10px;font-size:15px}*/
+
+.left{float:left;height:230px;margin-bottom:10px;width:40%;width:450px;max-width:450px; }
+
+.right{float:right;height:230px;margin-bottom:10px;width:60%;width:820px;max-width:820px;}
+
+.middle{width:100%;width:1300px;max-width:1300px;}
+
+.number{float:right;text-align:right;margin:10px 10px 0;font-size:15px;width:250px}
+
+.lnumber{float:right;text-align:right;margin:10px 10px 0;font-size:15px;width:900px}
+
+.title{margin:10px 0 0 10px;font-size:15px;width:450px}
+
+@media all and (max-width: 1200px){.left,.right{float:none;margin-bottom:5px}}
+
+.area{fill:#08519c;stroke:#08306b;clip-path:url(#clip)}
+
+.lines{clip-path:url(#clip)}
+
+.context.area{fill:none;stroke:#000;stroke-width:1}
+
+/*.axis path,.axis line{fill:none;stroke:#000;shape-rendering:crispEdges}*/
+
+.brush .extent{stroke:#4682b4;shape-rendering:crispEdges}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.xx.axis path {
+}
+
+.line {
+  fill: none;
+  stroke-width: 1.5px;
+}
