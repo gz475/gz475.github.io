@@ -1,0 +1,242 @@
+{
+  "chapters": [
+    {
+      "title": "Look at me?<br/>Follow me...",
+      "subtitle": "Does an artist's popularity help sales?",
+      "subchapters": [
+        {
+          "body": "Browsing the Artsy data set reveals a number of interesting trends: As we track the user engagement with the site we can see that John Currin has the most page views of any living artist.",
+          "caption": "",
+          "models": [
+            {
+              "viewType": "cluster",
+              "genes": [],
+              "sizeBy": "num_pageviews",
+              "filters": {"birth_date": null},
+              "animActive": false,
+              "vistitle": "Living Artists by Number of Page Views",
+              "colorWithGenes": [],
+              "label": ["john-currin","damien-hirst","gerhard-richter"],
+              "geneThreshold": 60,
+              "filter_by_living_status": "living"
+            }
+          ]
+        },
+        {
+          "body": "But he has a relative modest number of followers (~2,900) compared to over 10,000 user following Damien Hirst.",
+          "caption": "",
+          "models": [
+            {
+              "viewType": "cluster",
+              "genes": [],
+              "sizeBy": "num_followers",
+              "filters": {"birth_date": null},
+              "animActive": false,
+              "vistitle": "Living Artists by Number of Followers",
+              "colorWithGenes": [],
+              "label": ["john-currin","damien-hirst","gerhard-richter"],
+              "geneThreshold": 60,
+              "filter_by_living_status": "living"
+            }
+          ]
+        },
+        {
+          "body": "And while Gerhard Richter might not have Currin’s or Hirst’s page views, he clearly leads the pack in terms of total auction.",
+          "caption": "",
+          "models": [
+            {
+              "viewType": "cluster",
+              "genes": [],
+              "sizeBy": "total_auction_val",
+              "filters": {"birth_date": null},
+              "animActive": false,
+              "vistitle": "Living Artists by Total Auction Value",
+              "colorWithGenes": [],
+              "label": ["john-currin","damien-hirst","gerhard-richter"],
+              "geneThreshold": 60,
+              "filter_by_living_status": "living"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Making money is art...<span class='quote'>-- Andy Warhol</span>",
+      "subtitle": "And good business is the best art",
+      "subchapters": [
+        {
+          "body": "It’s save to assume that Warhol would be pleased with this ranking. Based on total auction value of artworks listed on Artsy, Warhol is surpassed only by Pablo Picasso. The only living artist that made it on this Top 20 list is Gerhard Richter, the most expensive living artist based on the sale of “Domplatz Mailand” (Cathedral Square, Milan”) in 2013 for $37.1 million.",
+          "caption": "Show top 20 male artists",
+          "models": [
+            {
+               "viewType": "ranking",
+               "rankBy": "total_auction_val",
+               "sizeByRank": "total_auction_val",
+               "genes": ["Male"],
+               "binByGender": false,
+               "filters": {"birth_date": null},
+               "label": null,
+               "animActive": false,
+               "vistitle": null,
+               "geneThreshold": 60,
+               "filter_by_living_status": "all"
+            },
+            {
+               "viewType": "ranking",
+               "rankBy": "total_auction_val",
+               "sizeByRank": "total_auction_val",
+               "genes": ["Male"],
+               "binByGender": false,
+               "filters": {"birth_date": null},
+               "label": null,
+               "vistitle": null,
+               "animActive": false,
+               "geneThreshold": 60,
+               "filter_by_living_status": "living"
+            }
+          ]
+        },
+        {
+          "body": "Five living female artists made the Top 20 list, including Japanese artist Yayoi Kusama. In November 2008, Christie's New York sold Kusama’s &ldquo;Infinity Net&rdquo; painting formerly owned by Donald Judd, for US$5.1 million, then a record for a living female artist.",
+          "caption": "Show top 20 female artists",
+          "models": [
+            {
+               "viewType": "ranking",
+               "rankBy": "total_auction_val",
+               "sizeByRank": "total_auction_val",
+               "genes": ["Female"],
+               "binByGender": false,
+               "filters": {"birth_date": null},
+               "vistitle": null,
+               "label": null,
+               "animActive": false,
+               "geneThreshold": 60,
+               "filter_by_living_status": "all"
+            },
+            {
+               "viewType": "ranking",
+               "rankBy": "total_auction_val",
+               "sizeByRank": "total_auction_val",
+               "genes": ["Female"],
+               "binByGender": false,
+               "vistitle": null,
+               "filters": {"birth_date": null},
+               "label": null,
+               "animActive": false,
+               "geneThreshold": 60,
+               "filter_by_living_status": "living"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Do women still have to be naked to get into the Met?<br/><span class='quote'>-- Guerrilla Girls</span>",
+      "subtitle": "Gender diversity in the artsy database",
+      "subchapters": [
+        {
+          "body": "We can see a modest upward trend in the ratio between female and male artists currently included in the Artsy database. Of the roughly 7,000 artists born in the 20th century, about two thousand are women. The current ratio of 28.2% is an improvement compared with the below 20% mark for the earlier part of the century.",
+          "caption": "",
+          "models": [
+            {
+              "viewType": "timeline",
+              "genes": [],
+              "colorWithGenes": ["Female", "Male"],
+              "ratioGene": "Female",
+              "lineY": "num_artists",
+              "filters": {"birth_date": [1900,2000]},
+              "animActive": false,
+              "vistitle": "",
+              "label": [],
+              "geneThreshold": 60,
+              "filter_by_living_status": "all"
+            }
+          ]
+        },
+        {
+          "body": "Not surprisingly the increased number of female artists has yet to influence the male-dominated art auction market. If we look at the cumulative top auction lots from 1900 – 2000 we can see that sales of artwork by female artists only account for 6.9% of the total market volume.",
+          "caption": "",
+          "models": [
+            {
+              "viewType": "timeline",
+              "genes": [],
+              "colorWithGenes": ["Female", "Male"],
+              "ratioGene": "Female",
+              "lineY": "total_auction_val",
+              "filters": {"birth_date": [1900,2000]},
+              "animActive": false,
+              "vistitle": "",
+              "label": [],
+              "geneThreshold": 60,
+              "filter_by_living_status": "all"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "EST vs. PST",
+      "subtitle": "The east-west divide in the U.S.",
+      "subchapters": [
+        {
+          "body": "This animation shows us the number of U.S.-based artists by hometown over the last 150 years. We can clearly see the east-west divide, with the majority of artists being from the eastern part of the United States.",
+          "caption": "",
+          "models": [
+            {
+              "viewType": "map",
+              "sizeBy": "num_artists",
+              "mapTo": "hometown_lon_lat",
+              "zoomTo": "North America",
+              "genes": [],
+              "filters": {"birth_date": [1849.5,2014]},
+              "label": ["-73.98,40.71", "-118.24,34.05"],
+              "filter_by_living_status": "all",
+              "vistitle": "U.S.-based Artists By Hometown",
+              "animActive": false,
+              "link_type": "animation",
+              "geneThreshold": 30
+            }
+          ]
+        },
+        {
+          "body": "This trend is even more obvious if we only look at artists of the Abstract Expressionism movement.",
+          "caption": "",
+          "models": [
+            {
+               "viewType": "map",
+               "sizeBy": "num_artists",
+               "mapTo": "hometown_lon_lat",
+               "zoomTo": "North America",
+               "genes": ["Abstract Expressionism"],
+               "filters": {"birth_date": null},
+               "animActive": false,
+               "label": ["-73.9780035,40.7056308"],
+               "filter_by_living_status": "all",
+               "vistitle": "U.S.-based &ldquo;Abstract Expressionism&rdquo; Artists By Hometown",
+               "geneThreshold": 30
+             }
+           ]
+        },
+        {
+          "body": "But we can see a more balanced distribution for Pop Art artists.",
+          "caption": "",
+          "models": [
+            {
+               "viewType": "map",
+               "sizeBy": "num_artists",
+               "mapTo": "hometown_lon_lat",
+               "zoomTo": "North America",
+               "genes": ["Pop Art"],
+               "filters": {"birth_date": null},
+               "animActive": false,
+               "label": [],
+               "filter_by_living_status": "all",
+               "vistitle": "U.S.-based &ldquo;Pop Art&rdquo; Artists By Hometown",
+               "geneThreshold": 30
+             }
+           ]
+        }
+      ]
+    }
+  ]
+}
