@@ -1,0 +1,1967 @@
+[
+    {
+        "values": [
+            {
+                "position": 3, 
+                "price": 19636144.13, 
+                "year": 1996
+            }, 
+            {
+                "position": 8, 
+                "price": 25735537.24, 
+                "year": 2002
+            }, 
+            {
+                "position": 4, 
+                "price": 38208187.5, 
+                "year": 2005
+            }, 
+            {
+                "position": 4, 
+                "price": 80024430.8672, 
+                "year": 2006
+            }, 
+            {
+                "position": 9, 
+                "price": 123109251.49412501, 
+                "year": 2013
+            }, 
+            {
+                "position": 10, 
+                "price": 96050657.79, 
+                "year": 2016
+            }
+        ], 
+        "name": "Willem de Kooning"
+    }, 
+    {
+        "values": [
+            {
+                "position": 8, 
+                "price": 264198.66000000003, 
+                "year": 1987
+            }
+        ], 
+        "name": "Marino Marini"
+    }, 
+    {
+        "values": [
+            {
+                "position": 5, 
+                "price": 797500.0, 
+                "year": 1987
+            }, 
+            {
+                "position": 2, 
+                "price": 1902032.0310459998, 
+                "year": 1988
+            }, 
+            {
+                "position": 6, 
+                "price": 3520000.0, 
+                "year": 1989
+            }, 
+            {
+                "position": 10, 
+                "price": 1992381.9, 
+                "year": 1990
+            }, 
+            {
+                "position": 4, 
+                "price": 8156564.35, 
+                "year": 1991
+            }, 
+            {
+                "position": 10, 
+                "price": 6471691.1, 
+                "year": 1992
+            }, 
+            {
+                "position": 5, 
+                "price": 11223151.560000002, 
+                "year": 1993
+            }, 
+            {
+                "position": 10, 
+                "price": 3934684.3200000003, 
+                "year": 1994
+            }, 
+            {
+                "position": 10, 
+                "price": 4247839.4025, 
+                "year": 1995
+            }, 
+            {
+                "position": 9, 
+                "price": 11344852.61, 
+                "year": 1997
+            }, 
+            {
+                "position": 8, 
+                "price": 18197269.839999996, 
+                "year": 1999
+            }
+        ], 
+        "name": "Camille Pissarro"
+    }, 
+    {
+        "values": [
+            {
+                "position": 5, 
+                "price": 18720786.32, 
+                "year": 1997
+            }
+        ], 
+        "name": "Edouard Manet"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 286000.0, 
+                "year": 1987
+            }, 
+            {
+                "position": 4, 
+                "price": 5170000.0, 
+                "year": 1989
+            }
+        ], 
+        "name": "Alfred Sisley"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 36622530.22, 
+                "year": 2004
+            }
+        ], 
+        "name": "Girolamo Ticciati"
+    }, 
+    {
+        "values": [
+            {
+                "position": 5, 
+                "price": 33164819.449999988, 
+                "year": 2000
+            }
+        ], 
+        "name": "Rembrandt van Rijn"
+    }, 
+    {
+        "values": [
+            {
+                "position": 9, 
+                "price": 6831022.0, 
+                "year": 1992
+            }
+        ], 
+        "name": "Pieter de Hooch"
+    }, 
+    {
+        "values": [
+            {
+                "position": 9, 
+                "price": 159500.0, 
+                "year": 1988
+            }, 
+            {
+                "position": 7, 
+                "price": 96416201.138608, 
+                "year": 2007
+            }, 
+            {
+                "position": 9, 
+                "price": 87074142.41062501, 
+                "year": 2010
+            }, 
+            {
+                "position": 5, 
+                "price": 157404290.449375, 
+                "year": 2012
+            }, 
+            {
+                "position": 3, 
+                "price": 287133728.25520504, 
+                "year": 2013
+            }, 
+            {
+                "position": 8, 
+                "price": 155429197.06660002, 
+                "year": 2014
+            }, 
+            {
+                "position": 4, 
+                "price": 171817669.75691003, 
+                "year": 2016
+            }
+        ], 
+        "name": "Jean-Michel Basquiat"
+    }, 
+    {
+        "values": [
+            {
+                "position": 9, 
+                "price": 44738891.559999995, 
+                "year": 2001
+            }
+        ], 
+        "name": "Frate Vincenzo"
+    }, 
+    {
+        "values": [
+            {
+                "position": 5, 
+                "price": 5324000.0, 
+                "year": 1991
+            }
+        ], 
+        "name": "Robert Delaunay"
+    }, 
+    {
+        "values": [
+            {
+                "position": 5, 
+                "price": 67441932.6992, 
+                "year": 2006
+            }
+        ], 
+        "name": "Egon Schiele"
+    }, 
+    {
+        "values": [
+            {
+                "position": 5, 
+                "price": 114066000.0, 
+                "year": 2011
+            }
+        ], 
+        "name": "Clyfford Still"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 5441109.100000001, 
+                "year": 1994
+            }, 
+            {
+                "position": 6, 
+                "price": 16275746.629999999, 
+                "year": 1997
+            }
+        ], 
+        "name": "Henri de Toulouse-Lautrec"
+    }, 
+    {
+        "values": [
+            {
+                "position": 8, 
+                "price": 8517956.629999999, 
+                "year": 1992
+            }, 
+            {
+                "position": 8, 
+                "price": 11017481.520000001, 
+                "year": 1998
+            }
+        ], 
+        "name": "Georges Braque"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 748000.0, 
+                "year": 1988
+            }, 
+            {
+                "position": 9, 
+                "price": 27165188.490000002, 
+                "year": 2005
+            }, 
+            {
+                "position": 10, 
+                "price": 40392510.87659998, 
+                "year": 2009
+            }
+        ], 
+        "name": "Kees van Dongen"
+    }, 
+    {
+        "values": [
+            {
+                "position": 6, 
+                "price": 528000.0, 
+                "year": 1987
+            }
+        ], 
+        "name": "James Ensor"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 4722810.0, 
+                "year": 1991
+            }
+        ], 
+        "name": "Diego Rivera"
+    }, 
+    {
+        "values": [
+            {
+                "position": 1, 
+                "price": 49000000.0, 
+                "year": 1987
+            }, 
+            {
+                "position": 1, 
+                "price": 82500000.0, 
+                "year": 1990
+            }, 
+            {
+                "position": 4, 
+                "price": 19267207.04, 
+                "year": 1996
+            }, 
+            {
+                "position": 3, 
+                "price": 40945883.769999996, 
+                "year": 1999
+            }, 
+            {
+                "position": 2, 
+                "price": 50760993.940000005, 
+                "year": 2003
+            }, 
+            {
+                "position": 8, 
+                "price": 40337099.32, 
+                "year": 2006
+            }
+        ], 
+        "name": "Vincent van Gogh"
+    }, 
+    {
+        "values": [
+            {
+                "position": 3, 
+                "price": 9181128.0, 
+                "year": 1991
+            }, 
+            {
+                "position": 8, 
+                "price": 30544556.54, 
+                "year": 2003
+            }, 
+            {
+                "position": 6, 
+                "price": 99762043.24609001, 
+                "year": 2007
+            }
+        ], 
+        "name": "Fernand L\u00e9ger"
+    }, 
+    {
+        "values": [
+            {
+                "position": 5, 
+                "price": 1017000.0, 
+                "year": 1988
+            }
+        ], 
+        "name": "Morris Louis"
+    }, 
+    {
+        "values": [
+            {
+                "position": 10, 
+                "price": 3794388.73, 
+                "year": 1991
+            }
+        ], 
+        "name": "Bernardo Bellotto"
+    }, 
+    {
+        "values": [
+            {
+                "position": 8, 
+                "price": 28326274.59, 
+                "year": 2000
+            }
+        ], 
+        "name": "Francesco Guardi"
+    }, 
+    {
+        "values": [
+            {
+                "position": 2, 
+                "price": 9181150.0, 
+                "year": 1991
+            }
+        ], 
+        "name": "Robert Rauschenberg"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 134162625.46174996, 
+                "year": 2016
+            }
+        ], 
+        "name": "Wu Guanzhong"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 48488530.2868, 
+                "year": 2006
+            }
+        ], 
+        "name": "Joseph Mallord William Turner"
+    }, 
+    {
+        "values": [
+            {
+                "position": 6, 
+                "price": 51566066.69, 
+                "year": 2001
+            }
+        ], 
+        "name": "Piranesi"
+    }, 
+    {
+        "values": [
+            {
+                "position": 3, 
+                "price": 21161172.34, 
+                "year": 1990
+            }
+        ], 
+        "name": "John Constable"
+    }, 
+    {
+        "values": [
+            {
+                "position": 6, 
+                "price": 11865550.96, 
+                "year": 1992
+            }, 
+            {
+                "position": 2, 
+                "price": 12127627.46, 
+                "year": 1993
+            }, 
+            {
+                "position": 7, 
+                "price": 5669314.75, 
+                "year": 1995
+            }, 
+            {
+                "position": 2, 
+                "price": 20772348.38, 
+                "year": 1996
+            }, 
+            {
+                "position": 9, 
+                "price": 24690250.839999996, 
+                "year": 2000
+            }, 
+            {
+                "position": 4, 
+                "price": 34866833.480000004, 
+                "year": 2002
+            }, 
+            {
+                "position": 7, 
+                "price": 30768044.68, 
+                "year": 2003
+            }, 
+            {
+                "position": 8, 
+                "price": 34244343.5942, 
+                "year": 2004
+            }, 
+            {
+                "position": 8, 
+                "price": 125433157.76580252, 
+                "year": 2008
+            }, 
+            {
+                "position": 7, 
+                "price": 47180648.71875, 
+                "year": 2009
+            }
+        ], 
+        "name": "Edgar Degas"
+    }, 
+    {
+        "values": [
+            {
+                "position": 1, 
+                "price": 91703452.0, 
+                "year": 1989
+            }, 
+            {
+                "position": 3, 
+                "price": 20966613.800000004, 
+                "year": 1992
+            }, 
+            {
+                "position": 7, 
+                "price": 10746031.74, 
+                "year": 1993
+            }, 
+            {
+                "position": 2, 
+                "price": 13904592.080000008, 
+                "year": 1994
+            }, 
+            {
+                "position": 1, 
+                "price": 54169866.85000005, 
+                "year": 1995
+            }, 
+            {
+                "position": 5, 
+                "price": 17966635.400000025, 
+                "year": 1996
+            }, 
+            {
+                "position": 1, 
+                "price": 152445179.07999998, 
+                "year": 1997
+            }, 
+            {
+                "position": 1, 
+                "price": 39239118.59999999, 
+                "year": 1998
+            }, 
+            {
+                "position": 4, 
+                "price": 36434443.62000002, 
+                "year": 1999
+            }, 
+            {
+                "position": 1, 
+                "price": 131755939.23999989, 
+                "year": 2000
+            }, 
+            {
+                "position": 5, 
+                "price": 64338500.150000006, 
+                "year": 2001
+            }, 
+            {
+                "position": 1, 
+                "price": 79335575.70999976, 
+                "year": 2002
+            }, 
+            {
+                "position": 1, 
+                "price": 70646110.67999995, 
+                "year": 2003
+            }, 
+            {
+                "position": 1, 
+                "price": 242554715.5499999, 
+                "year": 2004
+            }, 
+            {
+                "position": 1, 
+                "price": 93650090.58000004, 
+                "year": 2005
+            }, 
+            {
+                "position": 2, 
+                "price": 167183674.38777527, 
+                "year": 2006
+            }, 
+            {
+                "position": 2, 
+                "price": 327038422.05187035, 
+                "year": 2007
+            }, 
+            {
+                "position": 1, 
+                "price": 278702523.8768883, 
+                "year": 2008
+            }, 
+            {
+                "position": 1, 
+                "price": 129646821.65227246, 
+                "year": 2009
+            }, 
+            {
+                "position": 1, 
+                "price": 401290213.806152, 
+                "year": 2010
+            }, 
+            {
+                "position": 1, 
+                "price": 342685013.0798916, 
+                "year": 2011
+            }, 
+            {
+                "position": 1, 
+                "price": 402211710.0483797, 
+                "year": 2012
+            }, 
+            {
+                "position": 2, 
+                "price": 403959978.9435664, 
+                "year": 2013
+            }, 
+            {
+                "position": 2, 
+                "price": 428982321.41195285, 
+                "year": 2014
+            }, 
+            {
+                "position": 1, 
+                "price": 646049215.9848746, 
+                "year": 2015
+            }, 
+            {
+                "position": 1, 
+                "price": 304341720.6211306, 
+                "year": 2016
+            }
+        ], 
+        "name": "Pablo Picasso"
+    }, 
+    {
+        "values": [
+            {
+                "position": 1, 
+                "price": 14690367.56, 
+                "year": 1991
+            }
+        ], 
+        "name": "Titian"
+    }, 
+    {
+        "values": [
+            {
+                "position": 9, 
+                "price": 202322532.83460012, 
+                "year": 2015
+            }
+        ], 
+        "name": "Lucio Fontana"
+    }, 
+    {
+        "values": [
+            {
+                "position": 8, 
+                "price": 137137441.26978248, 
+                "year": 2013
+            }
+        ], 
+        "name": "Zao Wou-Ki"
+    }, 
+    {
+        "values": [
+            {
+                "position": 10, 
+                "price": 24357906.77, 
+                "year": 2000
+            }
+        ], 
+        "name": "Christopher Wool"
+    }, 
+    {
+        "values": [
+            {
+                "position": 1, 
+                "price": 55100600.0, 
+                "year": 1999
+            }, 
+            {
+                "position": 3, 
+                "price": 68193037.5, 
+                "year": 2001
+            }
+        ], 
+        "name": "Paul C\u00e9zanne"
+    }, 
+    {
+        "values": [
+            {
+                "position": 4, 
+                "price": 1320000.0, 
+                "year": 1987
+            }
+        ], 
+        "name": "Edward Hopper"
+    }, 
+    {
+        "values": [
+            {
+                "position": 3, 
+                "price": 150325475.32999998, 
+                "year": 2011
+            }, 
+            {
+                "position": 2, 
+                "price": 208132626.40555948, 
+                "year": 2016
+            }
+        ], 
+        "name": "Zhang Daqian"
+    }, 
+    {
+        "values": [
+            {
+                "position": 4, 
+                "price": 1418947.53, 
+                "year": 1988
+            }
+        ], 
+        "name": "Balthus"
+    }, 
+    {
+        "values": [
+            {
+                "position": 9, 
+                "price": 1011192.0, 
+                "year": 1989
+            }
+        ], 
+        "name": "Giorgio de Chirico"
+    }, 
+    {
+        "values": [
+            {
+                "position": 9, 
+                "price": 41575911.696842805, 
+                "year": 2009
+            }
+        ], 
+        "name": "Eileen Gray"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 26084460.19, 
+                "year": 2002
+            }, 
+            {
+                "position": 6, 
+                "price": 31732314.770000007, 
+                "year": 2003
+            }, 
+            {
+                "position": 6, 
+                "price": 32250697.599999998, 
+                "year": 2005
+            }, 
+            {
+                "position": 10, 
+                "price": 87299008.52108201, 
+                "year": 2007
+            }, 
+            {
+                "position": 7, 
+                "price": 137071609.970608, 
+                "year": 2008
+            }, 
+            {
+                "position": 4, 
+                "price": 141469486.977958, 
+                "year": 2011
+            }, 
+            {
+                "position": 3, 
+                "price": 295603653.03620005, 
+                "year": 2012
+            }, 
+            {
+                "position": 4, 
+                "price": 183284551.52691, 
+                "year": 2013
+            }, 
+            {
+                "position": 3, 
+                "price": 287023953.49125004, 
+                "year": 2014
+            }, 
+            {
+                "position": 10, 
+                "price": 194095679.2060002, 
+                "year": 2015
+            }, 
+            {
+                "position": 3, 
+                "price": 188700296.68628433, 
+                "year": 2016
+            }
+        ], 
+        "name": "Gerhard Richter"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 18685855.79, 
+                "year": 1999
+            }
+        ], 
+        "name": "Frans Hals"
+    }, 
+    {
+        "values": [
+            {
+                "position": 9, 
+                "price": 97726576.747795, 
+                "year": 2016
+            }
+        ], 
+        "name": "Jean Dubuffet"
+    }, 
+    {
+        "values": [
+            {
+                "position": 8, 
+                "price": 3080000.0, 
+                "year": 1990
+            }, 
+            {
+                "position": 4, 
+                "price": 64933612.521000005, 
+                "year": 2009
+            }
+        ], 
+        "name": "Piet Mondrian"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 1815000.0, 
+                "year": 1989
+            }
+        ], 
+        "name": "Pierre Bonnard"
+    }, 
+    {
+        "values": [
+            {
+                "position": 10, 
+                "price": 44700313.14, 
+                "year": 2001
+            }
+        ], 
+        "name": "Cesare Maggi"
+    }, 
+    {
+        "values": [
+            {
+                "position": 1, 
+                "price": 24877090.459999997, 
+                "year": 1992
+            }, 
+            {
+                "position": 8, 
+                "price": 5071729.130000001, 
+                "year": 1994
+            }, 
+            {
+                "position": 8, 
+                "price": 28914701.299999993, 
+                "year": 2005
+            }
+        ], 
+        "name": "Canaletto"
+    }, 
+    {
+        "values": [
+            {
+                "position": 9, 
+                "price": 231000.0, 
+                "year": 1987
+            }
+        ], 
+        "name": "Richard Diebenkorn"
+    }, 
+    {
+        "values": [
+            {
+                "position": 9, 
+                "price": 106715616.05, 
+                "year": 2008
+            }, 
+            {
+                "position": 8, 
+                "price": 127777111.39, 
+                "year": 2012
+            }, 
+            {
+                "position": 5, 
+                "price": 182857951.69, 
+                "year": 2013
+            }
+        ], 
+        "name": "Sir Francis Bacon"
+    }, 
+    {
+        "values": [
+            {
+                "position": 8, 
+                "price": 220000.0, 
+                "year": 1988
+            }
+        ], 
+        "name": "Tamara de Lempicka"
+    }, 
+    {
+        "values": [
+            {
+                "position": 10, 
+                "price": 9927178.98, 
+                "year": 1997
+            }, 
+            {
+                "position": 6, 
+                "price": 42394330.440000005, 
+                "year": 2004
+            }
+        ], 
+        "name": "Paul Gauguin"
+    }, 
+    {
+        "values": [
+            {
+                "position": 9, 
+                "price": 9973000.0, 
+                "year": 1998
+            }
+        ], 
+        "name": "Winslow Homer"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 9042700.670000002, 
+                "year": 1992
+            }, 
+            {
+                "position": 6, 
+                "price": 10816394.349999994, 
+                "year": 1993
+            }, 
+            {
+                "position": 4, 
+                "price": 8431935.210000005, 
+                "year": 1994
+            }, 
+            {
+                "position": 6, 
+                "price": 8086066.420000001, 
+                "year": 1995
+            }, 
+            {
+                "position": 8, 
+                "price": 8994767.22, 
+                "year": 1996
+            }, 
+            {
+                "position": 7, 
+                "price": 11951867.150000002, 
+                "year": 1998
+            }, 
+            {
+                "position": 9, 
+                "price": 15074803.530000001, 
+                "year": 1999
+            }, 
+            {
+                "position": 8, 
+                "price": 95414315.87408943, 
+                "year": 2007
+            }, 
+            {
+                "position": 9, 
+                "price": 76420445.50931752, 
+                "year": 2011
+            }
+        ], 
+        "name": "Marc Chagall"
+    }, 
+    {
+        "values": [
+            {
+                "position": 3, 
+                "price": 1593824.7599999998, 
+                "year": 1987
+            }
+        ], 
+        "name": "Andr\u00e9 Derain"
+    }, 
+    {
+        "values": [
+            {
+                "position": 2, 
+                "price": 2289721.72, 
+                "year": 1987
+            }, 
+            {
+                "position": 1, 
+                "price": 3080000.0, 
+                "year": 1988
+            }
+        ], 
+        "name": "Henri Fantin-Latour"
+    }, 
+    {
+        "values": [
+            {
+                "position": 6, 
+                "price": 51280564.56, 
+                "year": 2006
+            }
+        ], 
+        "name": "Ernst Ludwig Kirchner"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 134209551.376075, 
+                "year": 2012
+            }
+        ], 
+        "name": "Edvard Munch"
+    }, 
+    {
+        "values": [
+            {
+                "position": 4, 
+                "price": 16550251.020000001, 
+                "year": 1992
+            }, 
+            {
+                "position": 9, 
+                "price": 6809493.6400000015, 
+                "year": 1993
+            }, 
+            {
+                "position": 4, 
+                "price": 9329674.579999998, 
+                "year": 1995
+            }, 
+            {
+                "position": 6, 
+                "price": 12127068.04, 
+                "year": 1996
+            }, 
+            {
+                "position": 6, 
+                "price": 21721650.650000002, 
+                "year": 1999
+            }, 
+            {
+                "position": 9, 
+                "price": 33078837.94, 
+                "year": 2004
+            }, 
+            {
+                "position": 7, 
+                "price": 96328910.55999999, 
+                "year": 2010
+            }
+        ], 
+        "name": "Henri Matisse and James Joyce"
+    }, 
+    {
+        "values": [
+            {
+                "position": 4, 
+                "price": 17722800.0, 
+                "year": 1998
+            }
+        ], 
+        "name": "Childe Hassam"
+    }, 
+    {
+        "values": [
+            {
+                "position": 10, 
+                "price": 528000.0, 
+                "year": 1989
+            }
+        ], 
+        "name": "Giorgio Morandi"
+    }, 
+    {
+        "values": [
+            {
+                "position": 3, 
+                "price": 42894378.60000001, 
+                "year": 2000
+            }, 
+            {
+                "position": 7, 
+                "price": 48478428.51000001, 
+                "year": 2001
+            }, 
+            {
+                "position": 6, 
+                "price": 26356203.529999997, 
+                "year": 2002
+            }, 
+            {
+                "position": 3, 
+                "price": 73101687.72057499, 
+                "year": 2009
+            }, 
+            {
+                "position": 6, 
+                "price": 100233566.81674999, 
+                "year": 2010
+            }
+        ], 
+        "name": "Henri Matisse"
+    }, 
+    {
+        "values": [
+            {
+                "position": 1, 
+                "price": 30802607.68, 
+                "year": 1994
+            }
+        ], 
+        "name": "Leonardo da Vinci"
+    }, 
+    {
+        "values": [
+            {
+                "position": 6, 
+                "price": 4792912.08, 
+                "year": 1991
+            }
+        ], 
+        "name": "Jan van de Cappelle"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 3960000.0, 
+                "year": 1990
+            }, 
+            {
+                "position": 10, 
+                "price": 7889083.51, 
+                "year": 1998
+            }, 
+            {
+                "position": 6, 
+                "price": 147179822.39715254, 
+                "year": 2008
+            }, 
+            {
+                "position": 5, 
+                "price": 60176219.033786505, 
+                "year": 2009
+            }, 
+            {
+                "position": 3, 
+                "price": 236405260.8298, 
+                "year": 2010
+            }, 
+            {
+                "position": 7, 
+                "price": 229605255.87250003, 
+                "year": 2014
+            }, 
+            {
+                "position": 5, 
+                "price": 249060565.5657801, 
+                "year": 2015
+            }
+        ], 
+        "name": "Alberto Giacometti"
+    }, 
+    {
+        "values": [
+            {
+                "position": 8, 
+                "price": 6944245.110000001, 
+                "year": 1993
+            }
+        ], 
+        "name": "Wassily Kandinsky"
+    }, 
+    {
+        "values": [
+            {
+                "position": 2, 
+                "price": 16500000.0, 
+                "year": 1989
+            }, 
+            {
+                "position": 4, 
+                "price": 15757500.0, 
+                "year": 1990
+            }, 
+            {
+                "position": 2, 
+                "price": 23082863.47, 
+                "year": 1992
+            }, 
+            {
+                "position": 3, 
+                "price": 11937124.7, 
+                "year": 1993
+            }, 
+            {
+                "position": 3, 
+                "price": 8649610.2, 
+                "year": 1994
+            }, 
+            {
+                "position": 2, 
+                "price": 22914454.61, 
+                "year": 1995
+            }, 
+            {
+                "position": 1, 
+                "price": 44942246.22, 
+                "year": 1996
+            }, 
+            {
+                "position": 3, 
+                "price": 31780093.53, 
+                "year": 1997
+            }, 
+            {
+                "position": 2, 
+                "price": 31906957.580000002, 
+                "year": 1998
+            }, 
+            {
+                "position": 2, 
+                "price": 51150925.31, 
+                "year": 1999
+            }, 
+            {
+                "position": 2, 
+                "price": 117565405.60149999, 
+                "year": 2000
+            }, 
+            {
+                "position": 2, 
+                "price": 76661323.49000001, 
+                "year": 2001
+            }, 
+            {
+                "position": 2, 
+                "price": 64166045.60000001, 
+                "year": 2002
+            }, 
+            {
+                "position": 10, 
+                "price": 28869189.439999998, 
+                "year": 2003
+            }, 
+            {
+                "position": 3, 
+                "price": 55080318.980000004, 
+                "year": 2004
+            }, 
+            {
+                "position": 3, 
+                "price": 39370628.89, 
+                "year": 2005
+            }, 
+            {
+                "position": 10, 
+                "price": 36892352.212, 
+                "year": 2006
+            }, 
+            {
+                "position": 5, 
+                "price": 174276332.46288002, 
+                "year": 2007
+            }, 
+            {
+                "position": 4, 
+                "price": 195370923.9317575, 
+                "year": 2008
+            }, 
+            {
+                "position": 8, 
+                "price": 45304912.298062496, 
+                "year": 2009
+            }, 
+            {
+                "position": 10, 
+                "price": 87066543.15, 
+                "year": 2010
+            }, 
+            {
+                "position": 7, 
+                "price": 153298627.88563251, 
+                "year": 2013
+            }, 
+            {
+                "position": 6, 
+                "price": 252149340.49649996, 
+                "year": 2014
+            }, 
+            {
+                "position": 3, 
+                "price": 337438273.08, 
+                "year": 2015
+            }, 
+            {
+                "position": 5, 
+                "price": 170785186.1, 
+                "year": 2016
+            }
+        ], 
+        "name": "Claude Monet"
+    }, 
+    {
+        "values": [
+            {
+                "position": 3, 
+                "price": 1650000.0, 
+                "year": 1988
+            }
+        ], 
+        "name": "Martin Johnson Heade"
+    }, 
+    {
+        "values": [
+            {
+                "position": 5, 
+                "price": 6612057.5, 
+                "year": 1994
+            }
+        ], 
+        "name": "Rufino Tamayo"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 80772343.260465, 
+                "year": 2011
+            }
+        ], 
+        "name": "Ren\u00e9 Magritte"
+    }, 
+    {
+        "values": [
+            {
+                "position": 6, 
+                "price": 6050000.0, 
+                "year": 1990
+            }, 
+            {
+                "position": 10, 
+                "price": 20384992.16, 
+                "year": 2002
+            }, 
+            {
+                "position": 5, 
+                "price": 126586235.55760495, 
+                "year": 2010
+            }, 
+            {
+                "position": 8, 
+                "price": 78567669.21497999, 
+                "year": 2011
+            }, 
+            {
+                "position": 9, 
+                "price": 125510896.6495, 
+                "year": 2012
+            }, 
+            {
+                "position": 6, 
+                "price": 154301285.96666, 
+                "year": 2013
+            }, 
+            {
+                "position": 10, 
+                "price": 124850711.867066, 
+                "year": 2014
+            }, 
+            {
+                "position": 8, 
+                "price": 210268972.51760012, 
+                "year": 2015
+            }
+        ], 
+        "name": "Roy Lichtenstein"
+    }, 
+    {
+        "values": [
+            {
+                "position": 6, 
+                "price": 792000.0, 
+                "year": 1988
+            }, 
+            {
+                "position": 8, 
+                "price": 1430000.0, 
+                "year": 1989
+            }
+        ], 
+        "name": "Paul Signac"
+    }, 
+    {
+        "values": [
+            {
+                "position": 8, 
+                "price": 45365466.29, 
+                "year": 2001
+            }, 
+            {
+                "position": 5, 
+                "price": 27756677.250000004, 
+                "year": 2002
+            }
+        ], 
+        "name": "Albertus Magnus"
+    }, 
+    {
+        "values": [
+            {
+                "position": 10, 
+                "price": 8117445.79, 
+                "year": 1996
+            }
+        ], 
+        "name": "Joan Mir\u00f3"
+    }, 
+    {
+        "values": [
+            {
+                "position": 2, 
+                "price": 265032798.20032555, 
+                "year": 2008
+            }
+        ], 
+        "name": "Damien Hirst"
+    }, 
+    {
+        "values": [
+            {
+                "position": 10, 
+                "price": 25482435.57, 
+                "year": 2005
+            }, 
+            {
+                "position": 3, 
+                "price": 233281894.2807771, 
+                "year": 2007
+            }, 
+            {
+                "position": 5, 
+                "price": 180440671.15884805, 
+                "year": 2008
+            }, 
+            {
+                "position": 5, 
+                "price": 260117189.2844, 
+                "year": 2014
+            }
+        ], 
+        "name": "Francis Bacon"
+    }, 
+    {
+        "values": [
+            {
+                "position": 9, 
+                "price": 2420000.0, 
+                "year": 1990
+            }, 
+            {
+                "position": 10, 
+                "price": 113402750.0, 
+                "year": 2013
+            }
+        ], 
+        "name": "Jackson Pollock"
+    }, 
+    {
+        "values": [
+            {
+                "position": 4, 
+                "price": 11411496.2, 
+                "year": 1993
+            }
+        ], 
+        "name": "Ill Canale called Canaletto"
+    }, 
+    {
+        "values": [
+            {
+                "position": 3, 
+                "price": 12100000.0, 
+                "year": 1989
+            }, 
+            {
+                "position": 2, 
+                "price": 71000000.0, 
+                "year": 1990
+            }, 
+            {
+                "position": 9, 
+                "price": 4190158.4800000004, 
+                "year": 1991
+            }, 
+            {
+                "position": 5, 
+                "price": 12215487.860000001, 
+                "year": 1992
+            }, 
+            {
+                "position": 1, 
+                "price": 20246162.8965, 
+                "year": 1993
+            }, 
+            {
+                "position": 5, 
+                "price": 8655342.2, 
+                "year": 1995
+            }, 
+            {
+                "position": 7, 
+                "price": 11901788.55, 
+                "year": 1996
+            }, 
+            {
+                "position": 2, 
+                "price": 37033746.1, 
+                "year": 1997
+            }, 
+            {
+                "position": 3, 
+                "price": 18039400.27, 
+                "year": 1998
+            }, 
+            {
+                "position": 5, 
+                "price": 35474909.55, 
+                "year": 1999
+            }, 
+            {
+                "position": 4, 
+                "price": 40817011.88999999, 
+                "year": 2000
+            }, 
+            {
+                "position": 9, 
+                "price": 25149908.150000002, 
+                "year": 2002
+            }, 
+            {
+                "position": 5, 
+                "price": 39294429.96, 
+                "year": 2003
+            }, 
+            {
+                "position": 5, 
+                "price": 46139171.390200004, 
+                "year": 2004
+            }, 
+            {
+                "position": 9, 
+                "price": 40086052.969424, 
+                "year": 2006
+            }, 
+            {
+                "position": 9, 
+                "price": 90649310.302526, 
+                "year": 2007
+            }
+        ], 
+        "name": "Pierre-Auguste Renoir"
+    }, 
+    {
+        "values": [
+            {
+                "position": 10, 
+                "price": 46200.0, 
+                "year": 1987
+            }, 
+            {
+                "position": 5, 
+                "price": 4162100.0, 
+                "year": 1989
+            }, 
+            {
+                "position": 9, 
+                "price": 4703163.860000001, 
+                "year": 1994
+            }, 
+            {
+                "position": 5, 
+                "price": 14785314.740000004, 
+                "year": 1998
+            }, 
+            {
+                "position": 6, 
+                "price": 32265594.41999999, 
+                "year": 2000
+            }, 
+            {
+                "position": 3, 
+                "price": 62493776.17000004, 
+                "year": 2002
+            }, 
+            {
+                "position": 3, 
+                "price": 49600637.18000001, 
+                "year": 2003
+            }, 
+            {
+                "position": 2, 
+                "price": 81508799.90135, 
+                "year": 2004
+            }, 
+            {
+                "position": 5, 
+                "price": 36727460.57, 
+                "year": 2005
+            }, 
+            {
+                "position": 3, 
+                "price": 145863275.4486, 
+                "year": 2006
+            }, 
+            {
+                "position": 1, 
+                "price": 434125641.3333721, 
+                "year": 2007
+            }, 
+            {
+                "position": 3, 
+                "price": 252116752.79650608, 
+                "year": 2008
+            }, 
+            {
+                "position": 2, 
+                "price": 116341825.42589498, 
+                "year": 2009
+            }, 
+            {
+                "position": 2, 
+                "price": 349817384.3522712, 
+                "year": 2010
+            }, 
+            {
+                "position": 2, 
+                "price": 342090296.7899259, 
+                "year": 2011
+            }, 
+            {
+                "position": 2, 
+                "price": 370668660.9759024, 
+                "year": 2012
+            }, 
+            {
+                "position": 1, 
+                "price": 414374997.8703136, 
+                "year": 2013
+            }, 
+            {
+                "position": 1, 
+                "price": 642830054.2466865, 
+                "year": 2014
+            }, 
+            {
+                "position": 2, 
+                "price": 507081882.554077, 
+                "year": 2015
+            }, 
+            {
+                "position": 6, 
+                "price": 156339369.25610173, 
+                "year": 2016
+            }
+        ], 
+        "name": "Andy Warhol"
+    }, 
+    {
+        "values": [
+            {
+                "position": 6, 
+                "price": 103893604.22000004, 
+                "year": 2011
+            }
+        ], 
+        "name": "Qi Baishi"
+    }, 
+    {
+        "values": [
+            {
+                "position": 8, 
+                "price": 4474689.99, 
+                "year": 1991
+            }, 
+            {
+                "position": 8, 
+                "price": 13698775.0, 
+                "year": 1997
+            }
+        ], 
+        "name": "Jasper Johns"
+    }, 
+    {
+        "values": [
+            {
+                "position": 5, 
+                "price": 11550000.0, 
+                "year": 1990
+            }, 
+            {
+                "position": 3, 
+                "price": 11351965.85, 
+                "year": 1995
+            }, 
+            {
+                "position": 6, 
+                "price": 13317500.0, 
+                "year": 1998
+            }, 
+            {
+                "position": 4, 
+                "price": 47266771.309999995, 
+                "year": 2004
+            }, 
+            {
+                "position": 4, 
+                "price": 156205166.48, 
+                "year": 2010
+            }, 
+            {
+                "position": 4, 
+                "price": 251779138.85166, 
+                "year": 2015
+            }
+        ], 
+        "name": "Amedeo Modigliani"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 13994835.5, 
+                "year": 1997
+            }, 
+            {
+                "position": 7, 
+                "price": 31293570.819999993, 
+                "year": 2005
+            }
+        ], 
+        "name": "Constantin Brancusi"
+    }, 
+    {
+        "values": [
+            {
+                "position": 10, 
+                "price": 103440336.2180255, 
+                "year": 2008
+            }, 
+            {
+                "position": 8, 
+                "price": 90694303.05264498, 
+                "year": 2010
+            }, 
+            {
+                "position": 10, 
+                "price": 120236393.37015001, 
+                "year": 2012
+            }
+        ], 
+        "name": "Yves Klein"
+    }, 
+    {
+        "values": [
+            {
+                "position": 10, 
+                "price": 70987292.76362, 
+                "year": 2011
+            }, 
+            {
+                "position": 6, 
+                "price": 147124729.132, 
+                "year": 2012
+            }, 
+            {
+                "position": 8, 
+                "price": 101290046.47373775, 
+                "year": 2016
+            }
+        ], 
+        "name": "Alexander Calder"
+    }, 
+    {
+        "values": [
+            {
+                "position": 7, 
+                "price": 29782250.0, 
+                "year": 2000
+            }, 
+            {
+                "position": 4, 
+                "price": 43268788.9, 
+                "year": 2003
+            }, 
+            {
+                "position": 10, 
+                "price": 29424873.96, 
+                "year": 2004
+            }, 
+            {
+                "position": 2, 
+                "price": 45670904.0, 
+                "year": 2005
+            }, 
+            {
+                "position": 4, 
+                "price": 182605173.3544, 
+                "year": 2007
+            }, 
+            {
+                "position": 4, 
+                "price": 187169158.79, 
+                "year": 2012
+            }, 
+            {
+                "position": 4, 
+                "price": 281287356.34, 
+                "year": 2014
+            }, 
+            {
+                "position": 7, 
+                "price": 219159142.29, 
+                "year": 2015
+            }
+        ], 
+        "name": "Mark Rothko"
+    }, 
+    {
+        "values": [
+            {
+                "position": 1, 
+                "price": 152782006.53, 
+                "year": 2001
+            }
+        ], 
+        "name": "Francesco Petrarch"
+    }, 
+    {
+        "values": [
+            {
+                "position": 6, 
+                "price": 6165919.4799999995, 
+                "year": 1994
+            }, 
+            {
+                "position": 4, 
+                "price": 23716631.419999998, 
+                "year": 1997
+            }, 
+            {
+                "position": 9, 
+                "price": 29566174.63, 
+                "year": 2003
+            }, 
+            {
+                "position": 1, 
+                "price": 185288530.0084, 
+                "year": 2006
+            }
+        ], 
+        "name": "Gustav Klimt"
+    }, 
+    {
+        "values": [
+            {
+                "position": 9, 
+                "price": 8765175.18, 
+                "year": 1996
+            }, 
+            {
+                "position": 6, 
+                "price": 47616123.208317, 
+                "year": 2009
+            }
+        ], 
+        "name": "Raphael"
+    }, 
+    {
+        "values": [
+            {
+                "position": 10, 
+                "price": 13951305.23694632, 
+                "year": 1999
+            }, 
+            {
+                "position": 9, 
+                "price": 140958651.2666, 
+                "year": 2014
+            }, 
+            {
+                "position": 6, 
+                "price": 222554865.15059996, 
+                "year": 2015
+            }
+        ], 
+        "name": "Cy Twombly"
+    }, 
+    {
+        "values": [
+            {
+                "position": 4, 
+                "price": 68121364.23, 
+                "year": 2001
+            }
+        ], 
+        "name": "Giampiccoli Venezia"
+    }, 
+    {
+        "values": [
+            {
+                "position": 8, 
+                "price": 5077575.01, 
+                "year": 1995
+            }
+        ], 
+        "name": "George Stubbs"
+    }, 
+    {
+        "values": [
+            {
+                "position": 9, 
+                "price": 4424676.06, 
+                "year": 1995
+            }
+        ], 
+        "name": "Emil Nolde"
+    }, 
+    {
+        "values": [
+            {
+                "position": 10, 
+                "price": 6299421.39, 
+                "year": 1993
+            }
+        ], 
+        "name": "Michelangelo Buonarroti"
+    }
+]
