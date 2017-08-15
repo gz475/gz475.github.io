@@ -1,0 +1,253 @@
+[
+    {
+        "date": "2016-06-21", 
+        "currency": "GBP", 
+        "lots": [
+            {
+                "estimate_high": 350000.0, 
+                "lot_number": "1", 
+                "estimate_low": 250000.0, 
+                "price": 593000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 300000.0, 
+                "lot_number": "2", 
+                "estimate_low": 200000.0, 
+                "price": 629000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 700000.0, 
+                "lot_number": "3", 
+                "estimate_low": 500000.0, 
+                "price": 533000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 700000.0, 
+                "lot_number": "4", 
+                "estimate_low": 500000.0, 
+                "price": 1325000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 600000.0, 
+                "lot_number": "5", 
+                "estimate_low": 400000.0, 
+                "price": 449000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 1200000.0, 
+                "lot_number": "6", 
+                "estimate_low": 800000.0, 
+                "price": 1805000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 350000.0, 
+                "lot_number": "7", 
+                "estimate_low": 250000.0, 
+                "price": 581000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 700000.0, 
+                "lot_number": "8", 
+                "estimate_low": 500000.0, 
+                "price": 785000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 1200000.0, 
+                "lot_number": "9", 
+                "estimate_low": 800000.0, 
+                "price": 1265000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 2800000.0, 
+                "lot_number": "10", 
+                "estimate_low": 2200000.0, 
+                "price": 3397000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 1500000.0, 
+                "lot_number": "11", 
+                "estimate_low": 1000000.0, 
+                "price": 1385000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 12000000.0, 
+                "lot_number": "12", 
+                "estimate_low": 8000000.0, 
+                "price": "", 
+                "status": "Unsold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 1500000.0, 
+                "lot_number": "13", 
+                "estimate_low": 1000000.0, 
+                "price": 965000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 800000.0, 
+                "lot_number": "14", 
+                "estimate_low": 600000.0, 
+                "price": 989000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 1500000.0, 
+                "lot_number": "15", 
+                "estimate_low": 1000000.0, 
+                "price": 1421000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 600000.0, 
+                "lot_number": "16", 
+                "estimate_low": 400000.0, 
+                "price": 725000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 1200000.0, 
+                "lot_number": "17", 
+                "estimate_low": 800000.0, 
+                "price": 701000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 850000.0, 
+                "lot_number": "18", 
+                "estimate_low": 650000.0, 
+                "price": 1145000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 400000.0, 
+                "lot_number": "19", 
+                "estimate_low": 300000.0, 
+                "price": 389000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 700000.0, 
+                "lot_number": "20", 
+                "estimate_low": 500000.0, 
+                "price": "", 
+                "status": "Unsold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 900000.0, 
+                "lot_number": "21", 
+                "estimate_low": 700000.0, 
+                "price": "", 
+                "status": "Unsold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 450000.0, 
+                "lot_number": "22", 
+                "estimate_low": 350000.0, 
+                "price": 365000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 1000000.0, 
+                "lot_number": "23", 
+                "estimate_low": 700000.0, 
+                "price": 821000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 800000.0, 
+                "lot_number": "24", 
+                "estimate_low": 600000.0, 
+                "price": 845000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": 350000.0, 
+                "lot_number": "25", 
+                "estimate_low": 250000.0, 
+                "price": 389000.0, 
+                "status": "Sold", 
+                "image": true, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": "", 
+                "lot_number": "26", 
+                "estimate_low": "", 
+                "price": 43269000.0, 
+                "status": "Sold", 
+                "image": false, 
+                "approved": true
+            }, 
+            {
+                "estimate_high": "", 
+                "lot_number": "27", 
+                "estimate_low": "", 
+                "price": 38509000.0, 
+                "status": "Sold", 
+                "image": false, 
+                "approved": true
+            }
+        ], 
+        "name": "Impressionist & Modern Art Evening Sale", 
+        "location": "London"
+    }
+]
