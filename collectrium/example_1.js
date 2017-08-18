@@ -6899,6 +6899,6 @@ var data = [
             }
         ], 
         "name": "Finest and Rarest Wines and Spirits", 
-        "location": "NEw York"
+        "location": "New York"
     }
 ]
